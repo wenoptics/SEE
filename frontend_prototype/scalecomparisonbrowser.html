@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Scale Comparison Browser</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            position: relative;
+
+        }
+
+        .swiper-container {
+            width: 100%;
+            height: 300px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .swiper-container#sw1 {
+            height: 100%;
+        }
+
+        .swiper-slide {
+            text-align: center;
+            font-size: 18px;
+            background: #fff;
+            overflow: hidden;
+
+            /* Center slide text vertically */
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+        }
+
+        .swiper-slide-h {
+            /*background-color: #dedede;*/
+        }
+
+        .slide-v-container {
+            border-style: ridge;
+            border-width: 20px;
+            width: 100px;
+        }
+
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.6/css/swiper.css">
+
+</head>
+<body>
+
+<!-- Slider main container -->
+<div class="swiper-container" id="sw1">
+    <!-- Additional required wrapper -->
+    <div class="swiper-wrapper">
+        <!-- Slides -->
+        <div class="swiper-slide swiper-slide-h" data-hash="slide1">Slide 1</div>
+        <div class="swiper-slide swiper-slide-h" data-hash="slide2"style="background-color: darkgray">Slide 3</div>
+        <div class="swiper-slide swiper-slide-h">
+            <div class="swiper-container" id="sw3" style="height: 600px;">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/images/-4.jpg" /></div>
+                    <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/images/-3.jpg" /></div>
+                    <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/images/-2.jpg" /></div>
+                    <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/images/-1.jpg" /></div>
+                    <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/images/0.jpg" /></div>
+                    <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/images/1.jpg" /></div>
+                    <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/images/2.jpg" /></div>
+                    <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/images/3.jpg" /></div>
+                    <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/images/4.jpg" /></div>
+                </div> class="slide-v-container"
+                <!-- Add Pagination -->
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+        <div class="swiper-slide swiper-slide-h">Slide 2</div>
+        <div class="swiper-slide swiper-slide-h">
+            <span id="move">See it moves</span>
+        </div>
+        <div class="swiper-slide swiper-slide-h">
+            <div style="
+                position: relative;
+                width: 50%;
+                height: 50%;
+                background-color: wheat;
+                border-color: black;
+            "><button onclick="alert('yo')">hey</button></div>
+        </div>
+        <div class="swiper-slide swiper-slide-h">
+            <div class="swiper-wrapper" id="sw2">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide swiper-slide-v">
+                        <div class="slide-v-container">Vertical Slide 1</div>
+                    </div>
+                    <div class="swiper-slide swiper-slide-v">
+                        <div class="slide-v-container">Vertical Slide 1</div>
+                    </div>
+                    <div class="swiper-slide swiper-slide-v">
+                        <div class="slide-v-container">Vertical Slide 1</div>
+                    </div>
+                    <div class="swiper-slide swiper-slide-v">
+                        <div class="slide-v-container">Vertical Slide 1</div>
+                    </div>
+                    <div class="swiper-slide swiper-slide-v">
+                        <div class="slide-v-container">Vertical Slide 1</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide swiper-slide-h">Slide 2</div>
+        <div class="swiper-slide swiper-slide-h">Slide 2</div>
+        <div class="swiper-slide swiper-slide-h">Slide 2</div>
+        <div class="swiper-slide swiper-slide-h">Slide 2</div>
+    </div>
+
+    <!-- If we need scrollbar -->
+    <div class="swiper-scrollbar"></div>
+</div>
+
+
+<script src="https://unpkg.com/animejs@3.0.0/lib/anime.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.6/js/swiper.js"></script>
+
+<script>
+    // init the swiper
+    var sw1 = new Swiper('#sw1', {
+        speed: 400,
+        spaceBetween: 30,
+        slidesPerView: 4,
+        initialSlide: 4,
+        centeredSlides: true,
+        slideToClickedSlide: true, //click on any slide will produce transition to this slide
+        keyboard: {
+            enabled: true,
+        },
+        mousewheel: {
+            invert: false,
+            releaseOnEdges: true
+        },
+        hashNavigation: {
+            watchState: true,
+        },
+        scrollbar: {
+            el: '.swiper-scrollbar',
+            draggable: true,
+        },
+        breakpoints: {
+            1024: {
+                slidesPerView: 4,
+                spaceBetween: 30,
+            },
+            640: {
+                slidesPerView: 2,
+                spaceBetween: 20,
+            }
+        },
+        on: {
+            progress: function (progress) {
+                console.log('in event "progress":' + progress);
+            },
+            transitionEnd: () => {
+                if (sw1 === undefined) return;
+                console.log('on transitionEnd: "realIndex" = ' + sw1.realIndex)
+            }
+        }
+    });
+
+    new Swiper('#sw2', {
+        direction: 'vertical',
+        spaceBetween: 50,
+    });
+
+    new Swiper('#sw3', {
+        direction: 'vertical',
+        effect: 'coverflow',
+        slidesPerView: 4,
+        grabCursor: true,
+        centeredSlides: true,
+        coverflowEffect: {
+            rotate: 20,
+            stretch: 0,
+            depth: 300,
+            modifier: 1,
+            slideShadows : false,
+        },
+
+    });
+
+
+    // Test a basic animation
+
+    var animation = anime({
+        targets: '#move',
+        translateY: 20,
+        elasticity: 200,
+        easing: 'easeInOutSine',
+        autoplay: false
+    });
+    animation.seek(0.5 * animation.duration);
+    
+    function onSwiperMove() {
+
+    }
+
+
+</script>
+
+</body>
+</html>
