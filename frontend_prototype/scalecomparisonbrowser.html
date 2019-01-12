@@ -322,7 +322,7 @@
                     targets: sp,
                     ttTranslateValue: 0,
                     elasticity: 200,
-                    duration: 400,
+                    duration: 600,
                     easing: 'easeInBack',
                     autoplay: true,
                     update: function () {
@@ -387,12 +387,14 @@
                 console.log('in event "progress":' + progress);
             },
             transitionEnd: function() {
-                console.log('on transitionEnd: "realIndex" = ' + this.realIndex);
-                if (lastActiveSlideId !== null) {
-                    // Deactivate the current (previous) ecosys
-                    ecoSlides[lastActiveSlideId].allowTouchMove = false;
-                    ecoSlides[lastActiveSlideId].anim.collapse();
+                console.log('on transitionEnd: realIndex=' + this.realIndex + ' lastActiveSlideId='+lastActiveSlideId);
+                if (lastActiveSlideId === null) {
+                    return
                 }
+
+                // Deactivate the current (previous) ecosys
+                ecoSlides[lastActiveSlideId].allowTouchMove = false;
+                ecoSlides[lastActiveSlideId].anim.collapse();
 
                 // Activate the current
                 ecoSlides[this.realIndex].allowTouchMove = true;
@@ -402,7 +404,11 @@
             },
             init: function() {
                 const startSlide = this.realIndex || this.params.initialSlide;
+                console.log('on init: "startSlide" = ' + startSlide);
+
                 ecoSlides[startSlide].allowTouchMove = true;
+                ecoSlides[this.realIndex].anim.expand();
+
                 lastActiveSlideId = startSlide;
             }
         }
