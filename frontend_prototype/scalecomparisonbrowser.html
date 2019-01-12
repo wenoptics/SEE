@@ -294,7 +294,7 @@
 
     ecoSlides = [];
     for (var i = 0; i < _testImgSet.length; i++) {
-        ecoSlides.push(new Swiper('#slide-'+i, {
+        const sp = new Swiper('#slide-'+i, {
             direction: 'vertical',
             effect: 'coverflow',
             slidesPerView: 3,
@@ -311,9 +311,41 @@
             on: {
                 init: function () {
                     this.allowTouchMove = false;
+                    this.coverflowEffect.transitToTranslate(0);
                 }
             }
-        }));
+        });
+
+        sp.anim = {
+            collapse: function () {
+                anime({
+                    targets: sp,
+                    ttTranslateValue: 0,
+                    elasticity: 200,
+                    duration: 400,
+                    easing: 'easeInBack',
+                    autoplay: true,
+                    update: function () {
+                        sp.coverflowEffect.updateTtTranslate();
+                    }
+                });
+            },
+            expand: function () {
+                anime({
+                    targets: sp,
+                    ttTranslateValue: 1,
+                    elasticity: 200,
+                    duration: 600,
+                    easing: 'easeInOutSine',
+                    autoplay: true,
+                    update: function() {
+                        sp.coverflowEffect.updateTtTranslate();
+                    }
+                });
+            }
+        };
+
+        ecoSlides.push(sp);
     }
 
     lastActiveSlideId = null;
@@ -356,8 +388,16 @@
             },
             transitionEnd: function() {
                 console.log('on transitionEnd: "realIndex" = ' + this.realIndex);
-                if (lastActiveSlideId !== null) ecoSlides[lastActiveSlideId].allowTouchMove = false;
+                if (lastActiveSlideId !== null) {
+                    // Deactivate the current (previous) ecosys
+                    ecoSlides[lastActiveSlideId].allowTouchMove = false;
+                    ecoSlides[lastActiveSlideId].anim.collapse();
+                }
+
+                // Activate the current
                 ecoSlides[this.realIndex].allowTouchMove = true;
+                ecoSlides[this.realIndex].anim.expand();
+
                 lastActiveSlideId = this.realIndex;
             },
             init: function() {
