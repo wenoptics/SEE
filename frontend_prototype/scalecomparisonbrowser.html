@@ -20,7 +20,7 @@
             margin-right: auto;
         }
 
-        .swiper-container#sw1 {
+        .swiper-container#swiper-container-h {
             height: 100%;
         }
 
@@ -49,6 +49,10 @@
             /*background-color: #dedede;*/
         }
 
+        .swiper-container-v {
+            height: 400px;
+        }
+
         .slide-v-container {
             width: 100px;
             border-width: 5px;
@@ -56,7 +60,6 @@
             border-color: white;
             box-shadow: 0 0 10px 0 #8080806e;
         }
-
     </style>
 
     <link rel="stylesheet" href="css/swiper.css">
@@ -65,7 +68,7 @@
 <body>
 
 <!-- Slider main container -->
-<div class="swiper-container" id="sw1">
+<div class="swiper-container" id="swiper-container-h">
     <!-- Additional required wrapper -->
     <div class="swiper-wrapper">
         <!-- Slides -->
@@ -74,16 +77,16 @@
         <div class="swiper-slide swiper-slide-h">
             <div class="swiper-container" id="sw3" style="height: 600px;">
                 <div class="swiper-wrapper">
-                    <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/images/-4.jpg" /></div>
-                    <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/images/-3.jpg" /></div>
-                    <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/images/-2.jpg" /></div>
-                    <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/images/-1.jpg" /></div>
-                    <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/images/0.jpg" /></div>
-                    <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/images/1.jpg" /></div>
-                    <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/images/2.jpg" /></div>
-                    <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/images/3.jpg" /></div>
-                    <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/images/4.jpg" /></div>
-                </div> class="slide-v-container"
+                    <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/image_set/Powers of Ten/images/-4.jpg" /></div>
+                    <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/image_set/Powers of Ten/images/-3.jpg" /></div>
+                    <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/image_set/Powers of Ten/images/-2.jpg" /></div>
+                    <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/image_set/Powers of Ten/images/-1.jpg" /></div>
+                    <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/image_set/Powers of Ten/images/0.jpg" /></div>
+                    <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/image_set/Powers of Ten/images/1.jpg" /></div>
+                    <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/image_set/Powers of Ten/images/2.jpg" /></div>
+                    <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/image_set/Powers of Ten/images/3.jpg" /></div>
+                    <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/image_set/Powers of Ten/images/4.jpg" /></div>
+                </div>
                 <!-- Add Pagination -->
                 <div class="swiper-pagination"></div>
             </div>
@@ -138,7 +141,79 @@
 
 <script>
 
-    var imageSetData = [
+    // Helper function to render a dom HTML string
+    function render(domHtmlString, targetNode) {
+        targetNode.innerHTML = domHtmlString;
+    }
+
+    // Helper function to append html dom to a parent
+    function appendDom(parentNode, domHtmlString) {
+        // const _wrap = document.createElement('div');
+        // render(domHtmlString, _wrap);
+        // parentNode.appendChild(_wrap);
+        parentNode.innerHTML += domHtmlString;
+    }
+
+    // Helper function to join path
+    function pathJoin(parts, sep){
+        var separator = sep || '/';
+        var replace = new RegExp(separator+'{1,}', 'g');
+        return parts.join(separator).replace(replace, separator);
+    }
+
+    function loadImgData(setPath, imageSetData) {
+        var ecosysContainer = document.querySelector('div#swiper-container-h').querySelector('.swiper-wrapper');
+
+        // Remove the demo data filled
+        while(ecosysContainer.firstChild){
+            ecosysContainer.removeChild(ecosysContainer.firstChild);
+        }
+
+        for (var setIdx = 0; setIdx < imageSetData.length; setIdx++) {
+            var ecoInnerSlideList = '';
+            for (var i=0; i<imageSetData[setIdx].imageList.length; i++) {
+                const imgPath = pathJoin([setPath, imageSetData[setIdx].path, imageSetData[setIdx].imageList[i]]);
+                ecoInnerSlideList +=
+                    '<div class="swiper-slide swiper-slide-v">' +
+                    '   <img class="slide-v-container" src="'+ imgPath +'"  alt=""/>' +
+                    '</div>';
+            }
+
+            const slideId = 'slide-' + setIdx;
+            appendDom(ecosysContainer,
+                '<div class="swiper-slide" data-hash="' + slideId + '">' +
+                '    <div class="swiper-container swiper-container-v" id="'+slideId+'">' +
+                '        <div class="swiper-wrapper">' +
+                            ecoInnerSlideList +
+                // '            <div class="swiper-slide swiper-slide-v">' +
+                // '               <img class="slide-v-container" src="res/image_set/Powers of Ten/images/-4.jpg" />' +
+                // '            </div>' +
+                '        </div>' +
+                // '        <!-- Add Pagination -->' +
+                // '        <div class="swiper-pagination"></div>' +
+                '    </div>' +
+                '</div>');
+
+            /*swipers.push(new Swiper('#'+slideId, {
+                direction: 'vertical',
+                effect: 'coverflow',
+                slidesPerView: 3,
+                // grabCursor: true,
+                centeredSlides: true,
+                spaceBetween: 5,
+                coverflowEffect: {
+                    rotate: 20,
+                    stretch: 40,
+                    depth: 500,
+                    modifier: 1,
+                    slideShadows : false,
+                },
+            }));*/
+        }
+
+    }
+
+    const imageSetData = [
         {
             name: 'Dune',
             path: 'Dune/Dune Scale Project Images/',
@@ -214,15 +289,41 @@
             ]
         }
     ];
+    const _testImgSet = imageSetData;//.concat(imageSetData).concat(imageSetData);
+    loadImgData('res/image_set', _testImgSet);
 
+    ecoSlides = [];
+    for (var i = 0; i < _testImgSet.length; i++) {
+        ecoSlides.push(new Swiper('#slide-'+i, {
+            direction: 'vertical',
+            effect: 'coverflow',
+            slidesPerView: 3,
+            // grabCursor: true,
+            centeredSlides: true,
+            spaceBetween: 5,
+            coverflowEffect: {
+                rotate: 20,
+                stretch: 40,
+                depth: 500,
+                modifier: 1,
+                slideShadows : false,
+            },
+            on: {
+                init: function () {
+                    this.allowTouchMove = false;
+                }
+            }
+        }));
+    }
 
+    lastActiveSlideId = null;
 
     // init the swiper
-    var sw1 = new Swiper('#sw1', {
+    var swiperEco = new Swiper('#swiper-container-h', {
         speed: 400,
         spaceBetween: 20,
         slidesPerView: 4,
-        initialSlide: 4,
+        initialSlide: 1,
         centeredSlides: true,
         slideToClickedSlide: true, //click on any slide will produce transition to this slide
         keyboard: {
@@ -253,23 +354,25 @@
             progress: function (progress) {
                 console.log('in event "progress":' + progress);
             },
-            transitionEnd: () => {
-                if (sw1 === undefined) return;
-                console.log('on transitionEnd: "realIndex" = ' + sw1.realIndex)
+            transitionEnd: function() {
+                console.log('on transitionEnd: "realIndex" = ' + this.realIndex);
+                if (lastActiveSlideId !== null) ecoSlides[lastActiveSlideId].allowTouchMove = false;
+                ecoSlides[this.realIndex].allowTouchMove = true;
+                lastActiveSlideId = this.realIndex;
+            },
+            init: function() {
+                const startSlide = this.realIndex || this.params.initialSlide;
+                ecoSlides[startSlide].allowTouchMove = true;
+                lastActiveSlideId = startSlide;
             }
         }
     });
 
-    new Swiper('#sw2', {
-        direction: 'vertical',
-        spaceBetween: 50,
-    });
-
-    new Swiper('#sw3', {
+    /*new Swiper('.swiper-container-v', {
         direction: 'vertical',
         effect: 'coverflow',
         slidesPerView: 3,
-        grabCursor: true,
+        // grabCursor: true,
         centeredSlides: true,
         spaceBetween: 5,
         coverflowEffect: {
@@ -277,14 +380,11 @@
             stretch: 40,
             depth: 500,
             modifier: 1,
-            slideShadows : false,
+            slideShadows: false,
         },
+    });*/
 
-    });
-
-
-    // Test a basic animation
-
+    /*// Test a basic animation
     var animation = anime({
         targets: '#move',
         translateY: 20,
@@ -293,11 +393,7 @@
         autoplay: false
     });
     animation.seek(0.5 * animation.duration);
-
-    function onSwiperMove() {
-
-    }
-
+*/
 
 </script>
 
