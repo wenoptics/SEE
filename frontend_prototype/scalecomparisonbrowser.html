@@ -19,6 +19,7 @@
 
         .swiper-container#swiper-container-h {
             height: 100%;
+            position: fixed;
         }
 
         .swiper-slide {
@@ -47,7 +48,7 @@
         }
 
         .swiper-container-v {
-            height: 500px;
+            height: 80vh;
         }
 
         .slide-v-container {
@@ -57,6 +58,22 @@
             border-color: white;
             box-shadow: 0 0 10px 0 #8080806e;
         }
+
+        .dot-bg {
+            position: fixed;
+            background:
+                linear-gradient(90deg, #FBFBFB 19px, transparent 1%) center,
+                linear-gradient(#FBFBFB 19px, transparent 1%)
+                center,
+                #E4E4E4;
+            background-size: 22px 22px;
+            /*enlarge the bg so that we can make some effect*/
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+        }
+
     </style>
 
     <link rel="stylesheet" href="css/swiper.css">
@@ -64,6 +81,7 @@
 </head>
 <body>
 
+<div class='dot-bg'></div>
 <!-- Slider main container -->
 <div class="swiper-container" id="swiper-container-h">
     <!-- Additional required wrapper -->
@@ -437,6 +455,28 @@
     });
     animation.seek(0.5 * animation.duration);
 */
+
+    document.body.onmousemove = function(evt) {
+        const halfH = document.documentElement.clientHeight /2;
+        const halfW = document.documentElement.clientWidth /2;
+        const dy = halfH - evt.clientY;
+        const dx = halfW - evt.clientX;
+
+        const pdx = dx / halfW;
+        const pdy = dy / halfH;
+
+        // console.log( evt.clientX + "," + evt.clientY
+        //     + " | " + dx + "," + dy
+        //     + " | " + pdx + "," + pdy);
+
+        document.querySelector('div.dot-bg').style.transform =
+            ' rotateX('+pdx*10+'deg) rotateY('+pdy*10+'deg)' +
+            ' skew('+pdy*5+'deg,'+pdx*5+'deg)';
+    };
+
+    document.body.onmousedown = function (evt) {
+        console.log('onmousedown');
+    }
 
 </script>
 
