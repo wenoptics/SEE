@@ -52,11 +52,18 @@
         }
 
         .slide-v-container {
-            height: 90%;
+            /*height: 90%;*/
             border-width: 5px;
             border-style: solid;
             border-color: white;
+            background-color: white;
             box-shadow: 0 0 10px 0 #8080806e;
+        }
+
+        .slide-img {
+            height: 300px;
+            width: 300px;
+            object-fit: cover
         }
 
         .dot-bg {
@@ -190,13 +197,15 @@
                 const imgPath = pathJoin([setPath, imageSetData[setIdx].path, imageSetData[setIdx].imageList[i]]);
                 ecoInnerSlideList +=
                     '<div class="swiper-slide swiper-slide-v">' +
-                    '   <img class="slide-v-container" src="'+ imgPath +'"  alt=""/>' +
+                    '   <div class="slide-v-container">' +
+                    '       <img class="slide-img" src="'+ imgPath +'"  alt=""/>' +
+                    '   </div>' +
                     '</div>';
             }
 
             const slideId = 'slide-' + setIdx;
             appendDom(ecosysContainer,
-                '<div class="swiper-slide" data-hash="' + slideId + '">' +
+                '<div class="swiper-slide swiper-slide-h" data-hash="' + slideId + '">' +
                 '    <div class="swiper-container swiper-container-v" id="'+slideId+'">' +
                 '        <div class="swiper-wrapper">' +
                             ecoInnerSlideList +
@@ -316,6 +325,7 @@
             // grabCursor: true,
             centeredSlides: true,
             spaceBetween: 5,
+            slideToClickedSlide: true,
             coverflowEffect: {
                 rotate: 20,
                 stretch: 40,
@@ -327,8 +337,10 @@
                 init: function () {
                     this.allowTouchMove = false;
                     this.coverflowEffect.transitToTranslate(0);
+                    this.el.style.opacity = 1;
                 }
-            }
+            },
+            touchStart: function (evt) {}
         });
 
         sp.anim = {
@@ -399,21 +411,63 @@
         },
         on: {
             progress: function (progress) {
-                console.log('in event "progress":' + progress);
+                console.log('on "progress":' + progress);
+                if (this.canPlayLRAnim === true) {
+                    if (lastActiveSlideId === null) {return}
+                    const swiper = this;
+                    // left-right animation -- collapse
+                    anime({
+                        targets: '.swiper-slide-h',
+                        autoplay: true,
+                        translateX: 0,
+                        scale: 1,
+                        duration: 100,
+                        easing: 'easeInOutSine',
+                        delay: function(el, i, l) {
+                            return Math.abs(i-swiper.realIndex) * 100;
+                        },
+                    });
+                    this.canPlayLRAnim = false;
+                }
             },
             transitionEnd: function() {
                 console.log('on transitionEnd: realIndex=' + this.realIndex + ' lastActiveSlideId='+lastActiveSlideId);
-                if (lastActiveSlideId === null) {
-                    return
+                if (lastActiveSlideId === null) {return}
+
+                this.canPlayLRAnim = true;
+                const swiper = this;
+                // left-right animation -- expand
+                anime({
+                    targets: '.swiper-slide-h',
+                    autoplay: true,
+                    translateX: function (el, i, l) {
+                        return Math.sign(i - swiper.realIndex) * (50);
+                    },
+                    scale: function (el, i, l) {
+                        return (1 - Math.abs(i - swiper.realIndex) * 0.1);
+                    },
+                    opacity: function (el, i, l) {
+                        if (i === swiper.realIndex) return 1;
+                        return .6
+                    },
+                    duration: 500,
+                    easing: 'easeInOutSine',
+                    delay: function(el, i, l) {
+                        return Math.abs(i-swiper.realIndex) * 100;
+                    },
+                });
+
+                if (lastActiveSlideId !== this.realIndex) {
+                    // actually move changed slides
+
+                    // Deactivate the current (previous) ecosys
+                    ecoSlides[lastActiveSlideId].allowTouchMove = false;
+                    ecoSlides[lastActiveSlideId].anim.collapse();
+
+                    // Activate the current
+                    ecoSlides[this.realIndex].allowTouchMove = true;
+                    ecoSlides[this.realIndex].anim.expand();
                 }
-
-                // Deactivate the current (previous) ecosys
-                ecoSlides[lastActiveSlideId].allowTouchMove = false;
-                ecoSlides[lastActiveSlideId].anim.collapse();
-
-                // Activate the current
-                ecoSlides[this.realIndex].allowTouchMove = true;
-                ecoSlides[this.realIndex].anim.expand();
 
                 lastActiveSlideId = this.realIndex;
             },
