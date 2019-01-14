@@ -9,7 +9,7 @@
  - [x] Auto layout (not fixed to 500px height)
  - [x] `BUG` bug of move-horizontally but not actually moves any slide, vertical slides got disappeared
  - [ ] `BUG` bug of when click on a non-active slide, not expanding correctly
- - [ ] Fix image size
+ - [x] Fix image size
  - [ ] Parallax bg
  - [ ] Backend rendering
 

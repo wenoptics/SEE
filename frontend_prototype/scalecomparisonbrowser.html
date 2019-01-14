@@ -48,7 +48,7 @@
         }
 
         .swiper-container-v {
-            height: 80vh;
+            height: 100vh;
         }
 
         .slide-v-container {
@@ -64,6 +64,28 @@
             height: 300px;
             width: 300px;
             object-fit: cover
+        }
+
+        @media only screen and (max-width: 640px) {
+            /*600px and down*/
+            .slide-img {
+                height: 45vw;
+                width: 45vw;
+            }
+        }
+        @media only screen and (min-width: 640px) {
+            /*640px and up*/
+            .slide-img {
+                height: 20vw;
+                width: 20vw;
+            }
+        }
+        @media only screen and (min-width: 1024px) {
+            /*1440px and up*/
+            .slide-img {
+                height: 14vw;
+                width: 14vw;
+            }
         }
 
         .dot-bg {
@@ -84,77 +106,99 @@
     </style>
 
     <link rel="stylesheet" href="css/swiper.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
 </head>
 <body>
 
-<div class='dot-bg'></div>
-<!-- Slider main container -->
-<div class="swiper-container" id="swiper-container-h">
-    <!-- Additional required wrapper -->
-    <div class="swiper-wrapper">
-        <!-- Slides -->
-        <div class="swiper-slide swiper-slide-h" data-hash="slide1">Slide 1</div>
-        <div class="swiper-slide swiper-slide-h" data-hash="slide2"style="background-color: darkgray">Slide 3</div>
-        <div class="swiper-slide swiper-slide-h">
-            <div class="swiper-container" id="sw3" style="height: 600px;">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/image_set/Powers of Ten/images/-4.jpg" /></div>
-                    <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/image_set/Powers of Ten/images/-3.jpg" /></div>
-                    <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/image_set/Powers of Ten/images/-2.jpg" /></div>
-                    <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/image_set/Powers of Ten/images/-1.jpg" /></div>
-                    <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/image_set/Powers of Ten/images/0.jpg" /></div>
-                    <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/image_set/Powers of Ten/images/1.jpg" /></div>
-                    <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/image_set/Powers of Ten/images/2.jpg" /></div>
-                    <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/image_set/Powers of Ten/images/3.jpg" /></div>
-                    <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/image_set/Powers of Ten/images/4.jpg" /></div>
+<!-- Navbar (sit on top) -->
+<div class="w3-top" style="z-index: 10000">
+    <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+        <a href="#" class="w3-bar-item w3-button"><b></b> Speculative Explorer </a>
+        <!-- Float links to the right. Hide them on small screens -->
+        <div class="w3-right w3-hide-small">
+            <a href="#about" class="w3-bar-item w3-button">About</a>
+        </div>
+    </div>
+</div>
+
+<div>
+
+
+    <div class='dot-bg'></div>
+
+    <!--Text and note goes here-->
+    <div></div>
+
+    <!-- Slider main container -->
+    <div class="swiper-container" id="swiper-container-h">
+        <!-- Additional required wrapper -->
+        <div class="swiper-wrapper">
+            <!-- Slides -->
+            <div class="swiper-slide swiper-slide-h" data-hash="slide1">Slide 1</div>
+            <div class="swiper-slide swiper-slide-h" data-hash="slide2"style="background-color: darkgray">Slide 3</div>
+            <div class="swiper-slide swiper-slide-h">
+                <div class="swiper-container" id="sw3" style="height: 600px;">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/image_set/Powers of Ten/images/-4.jpg" /></div>
+                        <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/image_set/Powers of Ten/images/-3.jpg" /></div>
+                        <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/image_set/Powers of Ten/images/-2.jpg" /></div>
+                        <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/image_set/Powers of Ten/images/-1.jpg" /></div>
+                        <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/image_set/Powers of Ten/images/0.jpg" /></div>
+                        <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/image_set/Powers of Ten/images/1.jpg" /></div>
+                        <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/image_set/Powers of Ten/images/2.jpg" /></div>
+                        <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/image_set/Powers of Ten/images/3.jpg" /></div>
+                        <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/image_set/Powers of Ten/images/4.jpg" /></div>
+                    </div>
+                    <!-- Add Pagination -->
+                    <div class="swiper-pagination"></div>
                 </div>
-                <!-- Add Pagination -->
-                <div class="swiper-pagination"></div>
             </div>
-        </div>
-        <div class="swiper-slide swiper-slide-h">Slide 2</div>
-        <div class="swiper-slide swiper-slide-h">
-            <span id="move">See it moves</span>
-        </div>
-        <div class="swiper-slide swiper-slide-h">
-            <div style="
+            <div class="swiper-slide swiper-slide-h">Slide 2</div>
+            <div class="swiper-slide swiper-slide-h">
+                <span id="move">See it moves</span>
+            </div>
+            <div class="swiper-slide swiper-slide-h">
+                <div style="
                 position: relative;
                 width: 50%;
                 height: 50%;
                 background-color: wheat;
                 border-color: black;
             "><button onclick="alert('yo')">hey</button></div>
-        </div>
-        <div class="swiper-slide swiper-slide-h">
-            <div class="swiper-wrapper" id="sw2">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide swiper-slide-v">
-                        <div class="slide-v-container">Vertical Slide 1</div>
-                    </div>
-                    <div class="swiper-slide swiper-slide-v">
-                        <div class="slide-v-container">Vertical Slide 1</div>
-                    </div>
-                    <div class="swiper-slide swiper-slide-v">
-                        <div class="slide-v-container">Vertical Slide 1</div>
-                    </div>
-                    <div class="swiper-slide swiper-slide-v">
-                        <div class="slide-v-container">Vertical Slide 1</div>
-                    </div>
-                    <div class="swiper-slide swiper-slide-v">
-                        <div class="slide-v-container">Vertical Slide 1</div>
+            </div>
+            <div class="swiper-slide swiper-slide-h">
+                <div class="swiper-wrapper" id="sw2">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide swiper-slide-v">
+                            <div class="slide-v-container">Vertical Slide 1</div>
+                        </div>
+                        <div class="swiper-slide swiper-slide-v">
+                            <div class="slide-v-container">Vertical Slide 1</div>
+                        </div>
+                        <div class="swiper-slide swiper-slide-v">
+                            <div class="slide-v-container">Vertical Slide 1</div>
+                        </div>
+                        <div class="swiper-slide swiper-slide-v">
+                            <div class="slide-v-container">Vertical Slide 1</div>
+                        </div>
+                        <div class="swiper-slide swiper-slide-v">
+                            <div class="slide-v-container">Vertical Slide 1</div>
+                        </div>
                     </div>
                 </div>
             </div>
+            <div class="swiper-slide swiper-slide-h">Slide 2</div>
+            <div class="swiper-slide swiper-slide-h">Slide 2</div>
+            <div class="swiper-slide swiper-slide-h">Slide 2</div>
+            <div class="swiper-slide swiper-slide-h">Slide 2</div>
         </div>
-        <div class="swiper-slide swiper-slide-h">Slide 2</div>
-        <div class="swiper-slide swiper-slide-h">Slide 2</div>
-        <div class="swiper-slide swiper-slide-h">Slide 2</div>
-        <div class="swiper-slide swiper-slide-h">Slide 2</div>
+
+        <!-- If we need scrollbar -->
+        <div class="swiper-scrollbar"></div>
     </div>
 
-    <!-- If we need scrollbar -->
-    <div class="swiper-scrollbar"></div>
+
 </div>
 
 
@@ -327,9 +371,9 @@
             spaceBetween: 5,
             slideToClickedSlide: true,
             coverflowEffect: {
-                rotate: 20,
-                stretch: 40,
-                depth: 500,
+                rotate: 25,
+                stretch: 90,
+                depth: 600,
                 modifier: 1,
                 slideShadows : false,
             },
@@ -380,8 +424,6 @@
     // init the swiper
     var swiperEco = new Swiper('#swiper-container-h', {
         speed: 400,
-        spaceBetween: 20,
-        slidesPerView: 4,
         initialSlide: 1,
         centeredSlides: true,
         slideToClickedSlide: true, //click on any slide will produce transition to this slide
@@ -399,6 +441,9 @@
             el: '.swiper-scrollbar',
             draggable: true,
         },
+        // Responsive breakpoints
+        slidesPerView: 6,
+        spaceBetween: 20,
         breakpoints: {
             1024: {
                 slidesPerView: 4,
@@ -441,7 +486,7 @@
                     targets: '.swiper-slide-h',
                     autoplay: true,
                     translateX: function (el, i, l) {
-                        return Math.sign(i - swiper.realIndex) * (50);
+                        return Math.sign(i - swiper.realIndex) * (30);
                     },
                     scale: function (el, i, l) {
                         return (1 - Math.abs(i - swiper.realIndex) * 0.1);
