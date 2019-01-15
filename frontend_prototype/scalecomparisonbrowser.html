@@ -103,6 +103,32 @@
             height: 200%;
         }
 
+        .float-text {
+            position: absolute;
+            top: 17vh;
+            left: 6vw;
+            width: 30vw;
+            z-index: 10000;
+        }
+
+        .float-text--content {
+            position: relative;
+            background-color: #ffffff99;
+            /* padding-top: 10px; */
+            padding: 10px;
+            top: -10px;
+            left: 20px;
+            height: 20vh;
+            border-style: solid;
+            border-color: #00000033;
+        }
+
+        .float-text--header {
+            font-family: sans-serif;
+            color: white;
+            background-color: #77777745;
+            text-shadow: #533d4a 1px 1px, #533d4a 2px 2px, #533d4a 3px 3px, #533d4a 4px 4px, #533d4a 5px 5px, #533d4a 6px 6px;
+        }
     </style>
 
     <link rel="stylesheet" href="css/swiper.css">
@@ -128,7 +154,12 @@
     <div class='dot-bg'></div>
 
     <!--Text and note goes here-->
-    <div></div>
+    <div class="float-text">
+        <h2 class="float-text--header">Powers of Ten</h2>
+        <div class="float-text--content">
+            it is the product  fossilized trees in scale 1 and  makes up the base of the ...
+        </div>
+    </div>
 
     <!-- Slider main container -->
     <div class="swiper-container" id="swiper-container-h">
@@ -512,6 +543,15 @@
                     // Activate the current
                     ecoSlides[this.realIndex].allowTouchMove = true;
                     ecoSlides[this.realIndex].anim.expand();
+
+                    // Text animation
+                    anime({
+                        targets: ['.float-text--header', '.float-text--content'],
+                        translateX: [-100, 0],
+                        opacity: [0, 1],
+                        delay: anime.stagger(100),
+                        autoplay: true
+                    });
                 }
 
                 lastActiveSlideId = this.realIndex;
@@ -555,22 +595,30 @@
     animation.seek(0.5 * animation.duration);
 */
 
+    const el_fText = document.querySelector('.float-text');
+    const el_dotBg = document.querySelector('div.dot-bg');
+
     document.body.onmousemove = function(evt) {
         const halfH = document.documentElement.clientHeight /2;
         const halfW = document.documentElement.clientWidth /2;
-        const dy = halfH - evt.clientY;
-        const dx = halfW - evt.clientX;
 
-        const pdx = dx / halfW;
-        const pdy = dy / halfH;
+        var pdx = 1 - evt.clientX / halfW;
+        var pdy = 1 - evt.clientY / halfH;
 
         // console.log( evt.clientX + "," + evt.clientY
         //     + " | " + dx + "," + dy
         //     + " | " + pdx + "," + pdy);
 
-        document.querySelector('div.dot-bg').style.transform =
-            ' rotateX('+pdx*10+'deg) rotateY('+pdy*10+'deg)' +
-            ' skew('+pdy*5+'deg,'+pdx*5+'deg)';
+        el_dotBg.style.transform =
+            ' rotateX('+pdx*5+'deg) rotateY('+pdy*5+'deg)' +
+            ' skew('+-pdy*5+'deg,'+-pdx*5+'deg)';
+
+        const sz = el_fText.getBoundingClientRect();
+        pdx = (sz.x + sz.width / 2 - event.clientX) / document.documentElement.clientWidth;
+        pdy = (sz.y + sz.height / 2 - event.clientY) / document.documentElement.clientHeight;
+        el_fText.style.transform =
+            ' rotateX('+pdy*10+'deg) rotateY('+pdx*10+'deg)' +
+            ' skew(-10deg)';
     };
 
     document.body.onmousedown = function (evt) {
