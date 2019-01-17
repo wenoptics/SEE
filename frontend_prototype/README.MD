@@ -10,7 +10,8 @@
  - [x] `BUG` bug of move-horizontally but not actually moves any slide, vertical slides got disappeared
  - [ ] `BUG` bug of when click on a non-active slide, not expanding correctly
  - [x] Fix image size
- - [ ] Caption
+ - [x] Caption design
+ - [x] Nav indicators
  - [ ] Parallax bg
  - [ ] Backend rendering
 
