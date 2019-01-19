@@ -214,9 +214,17 @@
 
     }
 
+    const el_fText_title = document.querySelector('.float-text--header');
+    const el_fText_content = document.querySelector('.float-text--content');
+    function setCaption(title, content) {
+        el_fText_title.innerHTML = title;
+        el_fText_content.innerHTML = content;
+    }
+
     const imageSetData = JSON.parse(ajax('GET', 'res/test_data/imageset.json', false, (data)=>{})).imageset;
     const _testImgSet = imageSetData.concat(imageSetData).concat(imageSetData);
 
+    lastActiveSlideId = null;
 
     loadImgData('res/image_set', _testImgSet);
 
@@ -287,7 +295,7 @@
     });
     arrowAct.hide();
 
-    ecoSlides = [];
+    var ecoSlides = [];
     for (var i = 0; i < _testImgSet.length; i++) {
         const sp = new Swiper('#slide-'+i, {
             direction: 'vertical',
@@ -295,6 +303,7 @@
             slidesPerView: 2,
             // grabCursor: true,
             centeredSlides: true,
+            initialSlide: parseInt(_testImgSet[i].imageList.length / 2 + (Math.random()-0.5)*6),
             spaceBetween: 5,
             slideToClickedSlide: true,
             coverflowEffect: {
@@ -310,6 +319,42 @@
                 },
                 transitionEnd: function () {
                     allow_nav_arrow = true;
+
+                    if (ecoSwiper !== undefined ) {
+
+                        // todo change other eco-systems' images here
+
+                        // left-right animation
+                        anime({
+                            targets: '.swiper-slide-h:not(.swiper-slide-active)',
+                            autoplay: true,
+                            rotateX: [0, 30, 0],
+                            duration: 600,
+                            easing: 'easeOutSine',
+                            delay: function (el, i, l) {
+                                return Math.abs(i - ecoSwiper.realIndex) * 100;
+                            },
+                        });
+                    }
+
+                    if (lastActiveSlideId === null) return;
+                    /*// Text animation
+                    anime({
+                        targets: ['.float-text--header', '.float-text--content'],
+                        opacity: [0, 1],
+                        delay: anime.stagger(100),
+                        autoplay: true
+                    });*/
+                    const el = _testImgSet[ecoSwiper.realIndex].imageList[this.realIndex];
+                    var title = '{Image Set Title}'; var content = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged'.substring(Math.random()*200);
+                    if (typeof(el) === "object") {
+                        title = el.name;
+                        if (el.notes !== '') {
+                            content = el.notes;
+                        }
+                    }
+                    setCaption(title, content);
+
                 },
                 init: function () {
                     this.allowTouchMove = false;
@@ -351,8 +396,6 @@
 
         ecoSlides.push(sp);
     }
-
-    lastActiveSlideId = null;
 
     // init the swiper
     var ecoSwiper = new Swiper('#swiper-container-h', {
@@ -457,6 +500,15 @@
                         delay: anime.stagger(100),
                         autoplay: true
                     });
+                    const el = _testImgSet[this.realIndex].imageList[ecoSlides[lastActiveSlideId].realIndex];
+                    var title = '{Image Set Title}'; var content = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged';
+                    if (typeof(el) === "object") {
+                        title = el.name;
+                        if (el.notes !== '') {
+                            content = el.notes;
+                        }
+                    }
+                    setCaption(title, content);
                 }
 
                 lastActiveSlideId = this.realIndex;
@@ -472,7 +524,6 @@
             }
         }
     });
-
 
     const el_fText = document.querySelector('.float-text');
     const el_dotBg = document.querySelector('div.dot-bg');
@@ -491,8 +542,8 @@
         //     + " | " + pdx + "," + pdy);
 
         el_dotBg.style.transform =
-            ' rotateX('+pdx*5+'deg) rotateY('+pdy*5+'deg)' +
-            // ' skew('+-pdy*5+'deg,'+-pdx*5+'deg)' +
+            // ' rotateX('+pdx*10+'deg) rotateY('+pdy*10+'deg)' +
+            ' skew('+-pdy*5+'deg,'+-pdx*5+'deg)' +
             ' translateX('+pdx*5+'px) translateY('+pdy*5+'px)';
 
         // Dynamic effects on the text
