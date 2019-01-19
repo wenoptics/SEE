@@ -13,7 +13,8 @@
  - [x] Caption design
  - [x] |- Nav indicators
  - [x] |---- Nav indicators animation
- - [ ] Parallax bg
+ - [x] Parallax bg
+ - [ ] Ecosystem sync moving
  - [ ] Backend rendering
 
 ## Current Progress

@@ -560,23 +560,25 @@
             ' skew(-10deg)';
 
         // Nav-arrows monitor
-        const elementMouseIsOver = document.elementFromPoint(evt.clientX, evt.clientY);
-        if (elementMouseIsOver === lastMouseOverElement) return;
-
         const activeSlide = document.querySelector('' +
             '.swiper-slide-h.swiper-slide-active ' +
             '.swiper-slide-v.swiper-slide-active ' +
             '.slide-img');
-        if (lastMouseOverElement === activeSlide) {
-            console.log('move outside');
-            arrowAct.hide();
-        }
-        if (allow_nav_arrow && elementMouseIsOver === activeSlide) {
-            console.log('inside');
-            arrowAct.show(activeSlide);
+        const elementMouseIsOver = document.elementFromPoint(evt.clientX, evt.clientY);
+        if (elementMouseIsOver !== lastMouseOverElement) {
+
+            if (lastMouseOverElement === activeSlide) {
+                console.log('move outside');
+                arrowAct.hide();
+            }
+            if (allow_nav_arrow && elementMouseIsOver === activeSlide) {
+                console.log('inside');
+                arrowAct.show(activeSlide);
+            }
+
+            lastMouseOverElement = elementMouseIsOver;
         }
 
-        lastMouseOverElement = elementMouseIsOver;
     };
 
     document.body.onmousedown = function (evt) {
