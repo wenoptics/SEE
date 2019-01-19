@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Eco-System Mode</title>
+
+    <link rel="stylesheet" href="css/swiper.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="css/main.css"/>
+</head>
+<body>
+
+<!-- Navbar (sit on top) -->
+<div class="w3-top" style="z-index: 10000">
+    <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+        <a href="#" class="w3-bar-item w3-button"><b></b> Speculative Explorer </a>
+        <!-- Float links to the right. Hide them on small screens -->
+        <div class="w3-right w3-hide-small">
+            <a href="#about" class="w3-bar-item w3-button">About</a>
+        </div>
+    </div>
+</div>
+
+<div>
+
+    <div class='dot-bg'></div>
+
+
+</div>
+
+<script>
+
+    const imageSetData = JSON.parse(ajax('GET', 'res/test_data/imageset.json', false, (data)=>{})).imageset;
+    const _testImgSet = imageSetData[0];
+
+
+    const el_dotBg = document.querySelector('div.dot-bg');
+
+    document.body.onmousemove = function(evt) {
+        const halfH = document.documentElement.clientHeight /2;
+        const halfW = document.documentElement.clientWidth /2;
+
+        var pdx = 1 - evt.clientX / halfW;
+        var pdy = 1 - evt.clientY / halfH;
+
+        // console.log( evt.clientX + "," + evt.clientY
+        //     + " | " + dx + "," + dy
+        //     + " | " + pdx + "," + pdy);
+
+        el_dotBg.style.transform =
+            ' rotateX('+pdx*5+'deg) rotateY('+pdy*5+'deg)' +
+            // ' skew('+-pdy*5+'deg,'+-pdx*5+'deg)' +
+            ' translateX('+pdx*5+'px) translateY('+pdy*5+'px)';
+    };
+</script>
+
+</body>
+</html>

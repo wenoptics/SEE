@@ -1,0 +1,78 @@
+{
+  "imageset": [
+    {
+      "name": "Dune",
+      "path": "Dune/Dune Scale Project Images/",
+      "imageList": [
+        "10^-9 DNA molecule.jpg",
+        "10^-8 DNA molecule.jpg",
+        "10^-7 chromosome.jpg",
+        "10^-6 cell nucleus.jpg",
+        "10^-5 nucleus.jpg",
+        "10^-3 Skull.jpg",
+        "10^-2 skin.jpg",
+        "10^-1 face.jpg",
+        "10^0 human body.jpg",
+        "10^1 Paul on worm.jpg",
+        "10^2 field.jpg",
+        "10^3 Arrakis.jpg",
+        "10^4 Freeman culture.jpg",
+        "10^5 Melange.jpg",
+        "10^6 geology landscape.jpg",
+        "10^7 Arrakis.jpg",
+        "10^8 Arrakis & Moons.jpg",
+        "10^9 two moons orbits.jpg",
+        "10^10 Arrakis Orbit.jpg",
+        "10^11 Inner Solar System.jpg",
+        "10^12 Inner Solar System.jpg",
+        "10^13 Solar System.jpg",
+        "10^14 Dust Cloud.jpg"
+      ]
+    },
+    {
+      "name": "Nausicaa,toxic jungle",
+      "path": "Nausicaa,toxic jungle/",
+      "imageList": [
+        "-1.png",
+        "0.PNG",
+        "1.PNG",
+        "2.PNG",
+        "3.PNG",
+        "4.PNG"
+      ]
+    },
+    {
+      "name": "Powers of Ten",
+      "path": "Powers of Ten/images/",
+      "imageList": [
+        "-16.jpg", "-15.jpg", "-14.jpg", "-13.jpg", "-12.jpg", "-11.jpg", "-10.jpg", "-9.jpg", "-8.jpg",
+        "-7.jpg", "-6.jpg", "-5.jpg", "-4.jpg", "-3.jpg", "-2.jpg", "-1.jpg",
+        "0.jpg",
+        "1.jpg",
+        "2.jpg",
+        "3.jpg",
+        "4.jpg",
+        "5.jpg",
+        "6.jpg",
+        "7.jpg",
+        "8.jpg",
+        "9.jpg",
+        "10.jpg",
+        "11.jpg",
+        "12.jpg",
+        "13.jpg",
+        "14.jpg",
+        "15.jpg",
+        "16.jpg",
+        "17.jpg",
+        "18.jpg",
+        "19.jpg",
+        "20.jpg",
+        "21.jpg",
+        "22.jpg",
+        "23.jpg",
+        "24.jpg"
+      ]
+    }
+  ]
+}
