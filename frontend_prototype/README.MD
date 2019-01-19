@@ -11,7 +11,8 @@
  - [ ] `BUG` bug of when click on a non-active slide, not expanding correctly
  - [x] Fix image size
  - [x] Caption design
- - [x] Nav indicators
+ - [x] |- Nav indicators
+ - [x] |---- Nav indicators animation
  - [ ] Parallax bg
  - [ ] Backend rendering
 
