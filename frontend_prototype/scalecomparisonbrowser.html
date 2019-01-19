@@ -6,140 +6,12 @@
     <title>Scale Comparison Browser</title>
 
     <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-        }
 
-        .swiper-container {
-            width: 100%;
-            /*margin-left: auto;*/
-            /*margin-right: auto;*/
-        }
-
-        .swiper-container#swiper-container-h {
-            height: 100%;
-            position: fixed;
-        }
-
-        .swiper-slide {
-            text-align: center;
-            font-size: 18px;
-            /*background: #fff;*/
-            overflow: hidden;
-
-            /* Center slide text vertically */
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: -webkit-flex;
-            display: flex;
-            -webkit-box-pack: center;
-            -ms-flex-pack: center;
-            -webkit-justify-content: center;
-            justify-content: center;
-            -webkit-box-align: center;
-            -ms-flex-align: center;
-            -webkit-align-items: center;
-            align-items: center;
-        }
-
-        .swiper-slide-h {
-            /*background-color: #dedede;*/
-        }
-
-        .swiper-container-v {
-            height: 100vh;
-        }
-
-        .slide-v-container {
-            /*height: 90%;*/
-            border-width: 5px;
-            border-style: solid;
-            border-color: white;
-            background-color: white;
-            box-shadow: 0 0 10px 0 #8080806e;
-        }
-
-        .slide-img {
-            height: 300px;
-            width: 300px;
-            object-fit: cover
-        }
-
-        @media only screen and (max-width: 640px) {
-            /*600px and down*/
-            .slide-img {
-                height: 45vw;
-                width: 45vw;
-            }
-        }
-        @media only screen and (min-width: 640px) {
-            /*640px and up*/
-            .slide-img {
-                height: 20vw;
-                width: 20vw;
-            }
-        }
-        @media only screen and (min-width: 1024px) {
-            /*1440px and up*/
-            .slide-img {
-                height: 14vw;
-                width: 14vw;
-            }
-        }
-
-        .dot-bg {
-            position: fixed;
-            background:
-                linear-gradient(90deg, #FBFBFB 19px, transparent 1%) center,
-                linear-gradient(#FBFBFB 19px, transparent 1%)
-                center,
-                #E4E4E4;
-            background-size: 22px 22px;
-            /*enlarge the bg so that we can make some effect*/
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-        }
-
-        .float-text {
-            position: absolute;
-            top: 17vh;
-            left: 6vw;
-            width: 30vw;
-            z-index: 10000;
-        }
-
-        .float-text--content {
-            position: relative;
-            background-color: #ffffff99;
-            /* padding-top: 10px; */
-            padding: 10px;
-            top: -10px;
-            left: 20px;
-            height: 20vh;
-            border-style: solid;
-            border-color: #00000033;
-        }
-
-        .float-text--header {
-            padding-left: 0.5em;
-            font-family: sans-serif;
-            color: white;
-            background-color: #77777745;
-            text-shadow: #533d4a 1px 1px, #533d4a 2px 2px, #533d4a 3px 3px, #533d4a 4px 4px, #533d4a 5px 5px, #533d4a 6px 6px;
-        }
-
-        .nav-arrow {
-            z-index: 10000;
-            position: fixed;
-            width: 2vw;
-        }
     </style>
 
     <link rel="stylesheet" href="css/swiper.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="css/main.css"/>
 
 </head>
 <body>
@@ -170,16 +42,19 @@
 
     <!--Nav Arrows-->
     <div class="nav-arrow" id="arrow-right">
-        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"	 viewBox="0 0 492.004 492.004" style="enable-background:new 0 0 492.004 492.004;" xml:space="preserve"><g>	<g>		<path d="M382.678,226.804L163.73,7.86C158.666,2.792,151.906,0,144.698,0s-13.968,2.792-19.032,7.86l-16.124,16.12			c-10.492,10.504-10.492,27.576,0,38.064L293.398,245.9l-184.06,184.06c-5.064,5.068-7.86,11.824-7.86,19.028			c0,7.212,2.796,13.968,7.86,19.04l16.124,16.116c5.068,5.068,11.824,7.86,19.032,7.86s13.968-2.792,19.032-7.86L382.678,265			c5.076-5.084,7.864-11.872,7.848-19.088C390.542,238.668,387.754,231.884,382.678,226.804z"/>	</g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"	 viewBox="0 0 41.999 41.999" style="enable-background:new 0 0 41.999 41.999;" xml:space="preserve"><path d="M36.068,20.176l-29-20C6.761-0.035,6.363-0.057,6.035,0.114C5.706,0.287,5.5,0.627,5.5,0.999v40	c0,0.372,0.206,0.713,0.535,0.886c0.146,0.076,0.306,0.114,0.465,0.114c0.199,0,0.397-0.06,0.568-0.177l29-20	c0.271-0.187,0.432-0.494,0.432-0.823S36.338,20.363,36.068,20.176z"/><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
     </div>
     <div class="nav-arrow" id="arrow-left" style="transform: rotate(180deg);">
-        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"	 viewBox="0 0 492.004 492.004" style="enable-background:new 0 0 492.004 492.004;" xml:space="preserve"><g>	<g>		<path d="M382.678,226.804L163.73,7.86C158.666,2.792,151.906,0,144.698,0s-13.968,2.792-19.032,7.86l-16.124,16.12			c-10.492,10.504-10.492,27.576,0,38.064L293.398,245.9l-184.06,184.06c-5.064,5.068-7.86,11.824-7.86,19.028			c0,7.212,2.796,13.968,7.86,19.04l16.124,16.116c5.068,5.068,11.824,7.86,19.032,7.86s13.968-2.792,19.032-7.86L382.678,265			c5.076-5.084,7.864-11.872,7.848-19.088C390.542,238.668,387.754,231.884,382.678,226.804z"/>	</g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"	 viewBox="0 0 41.999 41.999" style="enable-background:new 0 0 41.999 41.999;" xml:space="preserve"><path d="M36.068,20.176l-29-20C6.761-0.035,6.363-0.057,6.035,0.114C5.706,0.287,5.5,0.627,5.5,0.999v40	c0,0.372,0.206,0.713,0.535,0.886c0.146,0.076,0.306,0.114,0.465,0.114c0.199,0,0.397-0.06,0.568-0.177l29-20	c0.271-0.187,0.432-0.494,0.432-0.823S36.338,20.363,36.068,20.176z"></path><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+
     </div>
     <div class="nav-arrow" id="arrow-up" style="transform: rotate(-90deg);">
-        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"	 viewBox="0 0 492.004 492.004" style="enable-background:new 0 0 492.004 492.004;" xml:space="preserve"><g>	<g>		<path d="M382.678,226.804L163.73,7.86C158.666,2.792,151.906,0,144.698,0s-13.968,2.792-19.032,7.86l-16.124,16.12			c-10.492,10.504-10.492,27.576,0,38.064L293.398,245.9l-184.06,184.06c-5.064,5.068-7.86,11.824-7.86,19.028			c0,7.212,2.796,13.968,7.86,19.04l16.124,16.116c5.068,5.068,11.824,7.86,19.032,7.86s13.968-2.792,19.032-7.86L382.678,265			c5.076-5.084,7.864-11.872,7.848-19.088C390.542,238.668,387.754,231.884,382.678,226.804z"/>	</g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"	 viewBox="0 0 41.999 41.999" style="enable-background:new 0 0 41.999 41.999;" xml:space="preserve"><path d="M36.068,20.176l-29-20C6.761-0.035,6.363-0.057,6.035,0.114C5.706,0.287,5.5,0.627,5.5,0.999v40	c0,0.372,0.206,0.713,0.535,0.886c0.146,0.076,0.306,0.114,0.465,0.114c0.199,0,0.397-0.06,0.568-0.177l29-20	c0.271-0.187,0.432-0.494,0.432-0.823S36.338,20.363,36.068,20.176z"/><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+
     </div>
     <div class="nav-arrow" id="arrow-down" style="transform: rotate(90deg)">
-        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"	 viewBox="0 0 492.004 492.004" style="enable-background:new 0 0 492.004 492.004;" xml:space="preserve"><g>	<g>		<path d="M382.678,226.804L163.73,7.86C158.666,2.792,151.906,0,144.698,0s-13.968,2.792-19.032,7.86l-16.124,16.12			c-10.492,10.504-10.492,27.576,0,38.064L293.398,245.9l-184.06,184.06c-5.064,5.068-7.86,11.824-7.86,19.028			c0,7.212,2.796,13.968,7.86,19.04l16.124,16.116c5.068,5.068,11.824,7.86,19.032,7.86s13.968-2.792,19.032-7.86L382.678,265			c5.076-5.084,7.864-11.872,7.848-19.088C390.542,238.668,387.754,231.884,382.678,226.804z"/>	</g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"	 viewBox="0 0 41.999 41.999" style="enable-background:new 0 0 41.999 41.999;" xml:space="preserve"><path d="M36.068,20.176l-29-20C6.761-0.035,6.363-0.057,6.035,0.114C5.706,0.287,5.5,0.627,5.5,0.999v40	c0,0.372,0.206,0.713,0.535,0.886c0.146,0.076,0.306,0.114,0.465,0.114c0.199,0,0.397-0.06,0.568-0.177l29-20	c0.271-0.187,0.432-0.494,0.432-0.823S36.338,20.363,36.068,20.176z"/><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+
     </div>
 
     <!-- Slider main container -->
@@ -318,22 +193,6 @@
                 // '        <div class="swiper-pagination"></div>' +
                 '    </div>' +
                 '</div>');
-
-            /*swipers.push(new Swiper('#'+slideId, {
-                direction: 'vertical',
-                effect: 'coverflow',
-                slidesPerView: 3,
-                // grabCursor: true,
-                centeredSlides: true,
-                spaceBetween: 5,
-                coverflowEffect: {
-                    rotate: 20,
-                    stretch: 40,
-                    depth: 500,
-                    modifier: 1,
-                    slideShadows : false,
-                },
-            }));*/
         }
 
     }
@@ -417,6 +276,73 @@
     const _testImgSet = imageSetData.concat(imageSetData).concat(imageSetData);
     loadImgData('res/image_set', _testImgSet);
 
+    const arrowAct = {
+        state: 'hidden',  //hidden, shown, animating
+        el: {
+            up   : document.querySelector('#arrow-up'),
+            down : document.querySelector('#arrow-down'),
+            left : document.querySelector('#arrow-left'),
+            right: document.querySelector('#arrow-right'),
+        },
+        width: document.querySelector('.nav-arrow').getBoundingClientRect().width,
+        height: document.querySelector('.nav-arrow').getBoundingClientRect().height,
+        hide: function () {
+            // this.el.up   .style.display = 'none';
+            // this.el.down .style.display = 'none';
+            // this.el.left .style.display = 'none';
+            // this.el.right.style.display = 'none';
+            if (this.state !== 'hidden') {
+                this.anim.out();
+            }
+        },
+        show: function (el) {
+            // this.el.up   .style.display = 'block';
+            // this.el.down .style.display = 'block';
+            // this.el.left .style.display = 'block';
+            // this.el.right.style.display = 'block';
+            if (el) {
+                // re-position the arrows
+                const rct = el.getBoundingClientRect();
+                this.el.up   .style.left = px_(rct.left + rct.width / 2 - this.width  /2);
+                this.el.up   .style.top = px_(rct.top                   - this.height /2);
+                this.el.down .style.left = px_(rct.left + rct.width / 2 - this.width  /2);
+                this.el.down .style.top = px_(rct.bottom                - this.height /2);
+                this.el.left .style.left = px_(rct.left                 - this.width  /2);
+                this.el.left .style.top = px_(rct.top + rct.height / 2  - this.height /2);
+                this.el.right.style.left = px_(rct.right                - this.width  /2);
+                this.el.right.style.top = px_(rct.top + rct.height / 2  - this.height /2);
+            }
+            if (this.state !== 'shown') {
+                this.anim.in();
+            }
+        },
+        anim: {
+            in: function () {
+                arrowActAnim.restart();
+            },
+            out: function () {
+                arrowActAnim.seek(arrowActAnim.duration - 1);
+                arrowActAnim.reverse();
+                arrowActAnim.play();
+            }
+        }
+    };
+    arrowActAnim = anime({
+        targets: [arrowAct.el.up, arrowAct.el.down, arrowAct.el.left, arrowAct.el.right],
+        translateX: [20, 0],  // Since we've already rotated them, we can simple translate by X.
+        opacity: [0, 1],
+        duration: 400,
+        easing: 'easeInBack',
+        autoplay: false,
+        update: function (anim) {
+            // State machine
+            if (anim.progress === 0) arrowAct.state = 'hidden';
+            else if (anim.progress === 1) arrowAct.state = 'shown';
+            else arrowAct.state = 'animating';
+        }
+    });
+    arrowAct.hide();
+
     ecoSlides = [];
     for (var i = 0; i < _testImgSet.length; i++) {
         const sp = new Swiper('#slide-'+i, {
@@ -435,32 +361,16 @@
                 slideShadows : false,
             },
             on: {
+                progress: function (p) {
+                    allow_nav_arrow = false;
+                },
+                transitionEnd: function () {
+                    allow_nav_arrow = true;
+                },
                 init: function () {
                     this.allowTouchMove = false;
                     this.coverflowEffect.transitToTranslate(0);
                     this.el.style.opacity = 1;
-
-                    for (var i = 0; i < this.slides.length; i++) {
-                        const el = this.slides[i].querySelector('.slide-img');
-                        el.addEventListener('mouseenter', function (evt) {
-                            if (this === document.querySelector('' +
-                                '.swiper-slide-h.swiper-slide-active ' +
-                                '.swiper-slide-v.swiper-slide-active ' +
-                                '.slide-img')) {
-                                console.log('mouse in');
-                                arrowAct.show(this);
-                            }
-                        });
-                        el.addEventListener('mouseleave', function (evt) {
-                            if (this === document.querySelector('' +
-                                '.swiper-slide-h.swiper-slide-active ' +
-                                '.swiper-slide-v.swiper-slide-active ' +
-                                '.slide-img')) {
-                                console.log('mouse out');
-                                arrowAct.hide();
-                            }
-                        });
-                    }
                 }
             },
             touchStart: function (evt) {}
@@ -498,67 +408,10 @@
         ecoSlides.push(sp);
     }
 
-    const arrowAct = {
-        el: {
-            up   : document.querySelector('#arrow-up'),
-            down : document.querySelector('#arrow-down'),
-            left : document.querySelector('#arrow-left'),
-            right: document.querySelector('#arrow-right'),
-        },
-        width: document.querySelector('.nav-arrow').getBoundingClientRect().width,
-        height: document.querySelector('.nav-arrow').getBoundingClientRect().height,
-        hide: function () {
-            // this.el.up   .style.display = 'none';
-            // this.el.down .style.display = 'none';
-            // this.el.left .style.display = 'none';
-            // this.el.right.style.display = 'none';
-            this.anim.out();
-        },
-        show: function (el) {
-            // this.el.up   .style.display = 'block';
-            // this.el.down .style.display = 'block';
-            // this.el.left .style.display = 'block';
-            // this.el.right.style.display = 'block';
-            if (el) {
-                // re-position the arrows
-                const rct = el.getBoundingClientRect();
-                this.el.up   .style.left = px_(rct.left + rct.width / 2 - this.width  /2);
-                this.el.up   .style.top = px_(rct.top                   - this.height /2);
-                this.el.down .style.left = px_(rct.left + rct.width / 2 - this.width  /2);
-                this.el.down .style.top = px_(rct.bottom                - this.height /2);
-                this.el.left .style.left = px_(rct.left                 - this.width  /2);
-                this.el.left .style.top = px_(rct.top + rct.height / 2  - this.height /2);
-                this.el.right.style.left = px_(rct.right                - this.width  /2);
-                this.el.right.style.top = px_(rct.top + rct.height / 2  - this.height /2);
-            }
-            this.anim.in();
-        },
-        anim: {
-            in: function () {
-                arrowActAnim.restart();
-            },
-            out: function () {
-                arrowActAnim.seek(arrowActAnim.duration - 1);
-                arrowActAnim.reverse();
-                arrowActAnim.play();
-            }
-        }
-    };
-
-    arrowActAnim = anime({
-        targets: [arrowAct.el.up, arrowAct.el.down, arrowAct.el.left, arrowAct.el.right],
-        translateX: [20, 0],  // Since we've already rotated them, we can simple translate by X.
-        opacity: [0, 1],
-        duration: 400,
-        easing: 'easeInBack',
-        autoplay: false
-    });
-    arrowAct.hide();
-
     lastActiveSlideId = null;
 
     // init the swiper
-    var swiperEco = new Swiper('#swiper-container-h', {
+    var ecoSwiper = new Swiper('#swiper-container-h', {
         speed: 400,
         initialSlide: 1,
         centeredSlides: true,
@@ -608,6 +461,8 @@
                             return Math.abs(i-swiper.realIndex) * 100;
                         },
                     });
+                    // hide the arrows
+                    allow_nav_arrow = false;
                     this.canPlayLRAnim = false;
                 }
             },
@@ -615,6 +470,7 @@
                 console.log('on transitionEnd: realIndex=' + this.realIndex + ' lastActiveSlideId='+lastActiveSlideId);
                 if (lastActiveSlideId === null) {return}
 
+                allow_nav_arrow = true;
                 this.canPlayLRAnim = true;
                 const swiper = this;
                 // left-right animation -- expand
@@ -673,36 +529,12 @@
         }
     });
 
-    /*new Swiper('.swiper-container-v', {
-        direction: 'vertical',
-        effect: 'coverflow',
-        slidesPerView: 3,
-        // grabCursor: true,
-        centeredSlides: true,
-        spaceBetween: 5,
-        coverflowEffect: {
-            rotate: 20,
-            stretch: 40,
-            depth: 500,
-            modifier: 1,
-            slideShadows: false,
-        },
-    });*/
-
-    /*// Test a basic animation
-    var animation = anime({
-        targets: '#move',
-        translateY: 20,
-        elasticity: 200,
-        easing: 'easeInOutSine',
-        autoplay: false
-    });
-    animation.seek(0.5 * animation.duration);
-*/
 
     const el_fText = document.querySelector('.float-text');
     const el_dotBg = document.querySelector('div.dot-bg');
 
+    var allow_nav_arrow = true;
+    var lastMouseOverElement = null;
     document.body.onmousemove = function(evt) {
         const halfH = document.documentElement.clientHeight /2;
         const halfW = document.documentElement.clientWidth /2;
@@ -716,7 +548,8 @@
 
         el_dotBg.style.transform =
             ' rotateX('+pdx*5+'deg) rotateY('+pdy*5+'deg)' +
-            ' skew('+-pdy*5+'deg,'+-pdx*5+'deg)';
+            // ' skew('+-pdy*5+'deg,'+-pdx*5+'deg)' +
+            ' translateX('+pdx*5+'px) translateY('+pdy*5+'px)';
 
         // Dynamic effects on the text
         const sz = el_fText.getBoundingClientRect();
@@ -725,6 +558,25 @@
         el_fText.style.transform =
             ' rotateX('+pdy*15+'deg) rotateY('+pdx*15+'deg)' +
             ' skew(-10deg)';
+
+        // Nav-arrows monitor
+        const elementMouseIsOver = document.elementFromPoint(evt.clientX, evt.clientY);
+        if (elementMouseIsOver === lastMouseOverElement) return;
+
+        const activeSlide = document.querySelector('' +
+            '.swiper-slide-h.swiper-slide-active ' +
+            '.swiper-slide-v.swiper-slide-active ' +
+            '.slide-img');
+        if (lastMouseOverElement === activeSlide) {
+            console.log('move outside');
+            arrowAct.hide();
+        }
+        if (allow_nav_arrow && elementMouseIsOver === activeSlide) {
+            console.log('inside');
+            arrowAct.show(activeSlide);
+        }
+
+        lastMouseOverElement = elementMouseIsOver;
     };
 
     document.body.onmousedown = function (evt) {
