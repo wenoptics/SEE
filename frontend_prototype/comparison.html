@@ -184,7 +184,10 @@
         for (var setIdx = 0; setIdx < imageSetData.length; setIdx++) {
             var ecoInnerSlideList = '';
             for (var i=0; i<imageSetData[setIdx].imageList.length; i++) {
-                const imgPath = pathJoin([setPath, imageSetData[setIdx].path, imageSetData[setIdx].imageList[i]]);
+                var imgPath = imageSetData[setIdx].imageList[i];
+                if (typeof(imgPath) === "object")
+                    imgPath = imgPath.filename;
+                imgPath = pathJoin([setPath, imageSetData[setIdx].path, imgPath]);
                 ecoInnerSlideList +=
                     '<div class="swiper-slide swiper-slide-v">' +
                     '   <div class="slide-v-container">' +
@@ -213,6 +216,8 @@
 
     const imageSetData = JSON.parse(ajax('GET', 'res/test_data/imageset.json', false, (data)=>{})).imageset;
     const _testImgSet = imageSetData.concat(imageSetData).concat(imageSetData);
+
+
     loadImgData('res/image_set', _testImgSet);
 
     const arrowAct = {
