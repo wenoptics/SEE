@@ -19,9 +19,13 @@
 
 ## Current Progress
 
-![](doc/2019-01-12_23-15-08.gif)
+![](doc/2019-01-19_23-24-57.gif)
 
-Prototyped and implement the animation effect of the ecosystem mode. Now the bare bones is ready, should be easy to implement more frontend features.
+Frontend design v1 for the Comparison mode is (almost) complement. Database structure ready. 
 
- - Implemented smooth expanding and collapsing effects for the image set browsing
- - Responsive Design
+### Coming Plans: 
+
+ - |- Backend 
+ - |---- Database migration
+ - |---- Upload GUI and its backend logic
+ - Ecosystem mode
