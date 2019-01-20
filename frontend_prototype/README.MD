@@ -22,11 +22,11 @@
 
 ![](doc/2019-01-19_23-24-57.gif)
 
-Frontend design v1 for the Comparison mode is (almost) complement. Database structure ready. 
+Frontend design v1 for the Comparison mode is (almost) completed. Database structure ready. 
 
 ### Coming Plans: 
 
- - |- Backend 
- - |---- Database migration
- - |---- Upload GUI and its backend logic
- - Ecosystem mode
+ - [ ] |- Backend 
+ - [ ] |---- Database migration
+ - [ ] |---- Upload GUI and its backend logic
+ - [ ] Ecosystem mode
