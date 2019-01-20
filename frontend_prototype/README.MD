@@ -2,7 +2,7 @@
 
 ## Plans
 
- - [x] `Jan-10-2019` Swiper.js customization for expanding effects (in progress)
+ - [x] `Jan-10-2019` Swiper.js customization for expanding effects
  - [x] Load image sets data with json 
  - [x] |- Animation
  - [X] |---- Fade other ecosystems which are not active
@@ -10,10 +10,11 @@
  - [x] `BUG` bug of move-horizontally but not actually moves any slide, vertical slides got disappeared
  - [ ] `BUG` bug of when click on a non-active slide, not expanding correctly
  - [x] Fix image size
- - [x] Caption design
+ - [x] `Jan-17-2019` Caption design
  - [x] |- Nav indicators
  - [x] |---- Nav indicators animation
  - [x] Parallax bg
+ - [x] `Jan-19-2019` Database structure
  - [ ] Ecosystem sync moving
  - [ ] Backend rendering
 
