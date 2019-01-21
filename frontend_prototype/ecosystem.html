@@ -74,16 +74,16 @@
 
 <div class="swiper-container gallery-thumbs">
     <div class="swiper-wrapper">
-        <div class="swiper-slide" style="background-image:url('res/image_set/Powers of Ten/images/0.jpg')"></div>
-        <div class="swiper-slide" style="background-image:url('res/image_set/Powers of Ten/images/1.jpg')"></div>
-        <div class="swiper-slide" style="background-image:url('res/image_set/Powers of Ten/images/2.jpg')"></div>
-        <div class="swiper-slide" style="background-image:url('res/image_set/Powers of Ten/images/3.jpg')"></div>
-        <div class="swiper-slide" style="background-image:url('res/image_set/Powers of Ten/images/4.jpg')"></div>
-        <div class="swiper-slide" style="background-image:url('res/image_set/Powers of Ten/images/5.jpg')"></div>
-        <div class="swiper-slide" style="background-image:url('res/image_set/Powers of Ten/images/6.jpg')"></div>
-        <div class="swiper-slide" style="background-image:url('res/image_set/Powers of Ten/images/7.jpg')"></div>
-        <div class="swiper-slide" style="background-image:url('res/image_set/Powers of Ten/images/8.jpg')"></div>
-        <div class="swiper-slide" style="background-image:url('res/image_set/Powers of Ten/images/9.jpg')"></div>
+        <div class="swiper-slide connection-thumbnail" style="background-image:url('res/image_set/Powers of Ten/images/0.jpg')"></div>
+        <div class="swiper-slide connection-thumbnail" style="background-image:url('res/image_set/Powers of Ten/images/1.jpg')"></div>
+        <div class="swiper-slide connection-thumbnail" style="background-image:url('res/image_set/Powers of Ten/images/2.jpg')"></div>
+        <div class="swiper-slide connection-thumbnail" style="background-image:url('res/image_set/Powers of Ten/images/3.jpg')"></div>
+        <div class="swiper-slide connection-thumbnail" style="background-image:url('res/image_set/Powers of Ten/images/4.jpg')"></div>
+        <div class="swiper-slide connection-thumbnail" style="background-image:url('res/image_set/Powers of Ten/images/5.jpg')"></div>
+        <div class="swiper-slide connection-thumbnail" style="background-image:url('res/image_set/Powers of Ten/images/6.jpg')"></div>
+        <div class="swiper-slide connection-thumbnail" style="background-image:url('res/image_set/Powers of Ten/images/7.jpg')"></div>
+        <div class="swiper-slide connection-thumbnail" style="background-image:url('res/image_set/Powers of Ten/images/8.jpg')"></div>
+        <div class="swiper-slide connection-thumbnail" style="background-image:url('res/image_set/Powers of Ten/images/9.jpg')"></div>
     </div>
 </div>
 
@@ -110,6 +110,16 @@
         freeMode: true,
         watchSlidesVisibility: true,
         watchSlidesProgress: true,
+        centeredSlides: true,
+        grabCursor: true,
+        /*on: {
+            progress: function(p) {
+                console.log('progress:', document.querySelector('#test_0').getBoundingClientRect().x, document.querySelector('#test_0').getBoundingClientRect().y);
+            },
+            sliderMove: function (evt) {
+                console.log('sliderMove:', document.querySelector('#test_0').getBoundingClientRect().x, document.querySelector('#test_0').getBoundingClientRect().y);
+            }
+        }*/
     });
     /*var galleryTop = new Swiper('.gallery-top', {
         spaceBetween: 10,
@@ -145,7 +155,6 @@
     el_canvas.height = window.innerHeight;
     // Draw on canvas
     const g = el_canvas.getContext('2d');
-    g.clearRect(0, 0, el_canvas.width, el_canvas.height);
     function arrowArc(g, strokeSize, x1, y1, x2, y2) {
         if (strokeSize <= 0) {
             return;
@@ -161,20 +170,20 @@
         var b = ~~(.6 * a);
         y2 -= a;
 
-        var s1 = sign * 5;
-        var s2 = sign * 30;
+        var s1 = sign * 4;
+        var s2 = sign * 5 ;
         g.moveTo(x1, y1);
         // Draw a little short straight line here
         g.lineTo(x1, y1+s1);
         // Draw bezier
-        g.bezierCurveTo(x1, midY - s1, x2, midY - s2,    x2, y2-s2);
+        g.bezierCurveTo(x1, midY - s2, x2, midY - s2,    x2, y2-s2);
         g.lineTo(x2, y2);
         g.stroke();
 
         // Draw an arrow at (x2, y2)
         g.beginPath();
         g.moveTo(x2, y2);
-        g.lineTo(x2 - b, y2 );
+        g.lineTo(x2 - b, y2);
         g.lineTo(x2, y2+a);
         g.lineTo(x2 + b, y2);
         g.fill();
@@ -182,6 +191,30 @@
 
     arrowArc(g, 1, 90, 90, 200, 200);
     arrowArc(g, 1, 93, 90, 100, 200);
+
+    const el_start = document.querySelector('div.gallery-top');
+    const stroke_width = 4;
+
+    function update_drawing(time) {
+
+        var x1 = el_start.getBoundingClientRect().x + el_start.getBoundingClientRect().width / 2;
+        const y1 = el_start.getBoundingClientRect().bottom;
+        const el_ends = document.querySelectorAll('.connection-thumbnail');
+        const step = Math.max(stroke_width-1, 1);
+        x1 -= (el_ends.length / 2)*step;
+
+        g.clearRect(0, 0, el_canvas.width, el_canvas.height);
+        for (var i = 0; i < el_ends.length; i++) {
+            x1 += step;
+            const x2 = el_ends[i].getBoundingClientRect().x + el_ends[i].getBoundingClientRect().width / 2;
+            const y2 = el_ends[i].getBoundingClientRect().top;
+            arrowArc(g, stroke_width, x1, y1, x2, y2);
+        }
+
+        window.requestAnimationFrame(update_drawing);
+    }
+
+    window.requestAnimationFrame(update_drawing);
 
 </script>
 
