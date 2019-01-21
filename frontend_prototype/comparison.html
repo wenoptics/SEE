@@ -6,6 +6,82 @@
     <title>Scale Comparison Browser</title>
 
     <style>
+        .swiper-container {
+            width: 100%;
+            /*margin-left: auto;*/
+            /*margin-right: auto;*/
+        }
+
+        .swiper-container#swiper-container-h {
+            height: 100%;
+            position: fixed;
+        }
+
+        .swiper-slide {
+            text-align: center;
+            font-size: 18px;
+            /*background: #fff;*/
+            overflow: hidden;
+
+            /* Center slide text vertically */
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+        }
+
+        .swiper-slide-h {
+            /*background-color: #dedede;*/
+        }
+
+        .swiper-container-v {
+            height: 100vh;
+        }
+
+        .slide-v-container {
+            /*height: 90%;*/
+            border-width: 5px;
+            border-style: solid;
+            border-color: white;
+            background-color: white;
+            box-shadow: 0 0 10px 0 #8080806e;
+        }
+
+        .slide-img {
+            height: 300px;
+            width: 300px;
+            object-fit: cover
+        }
+
+        @media only screen and (max-width: 640px) {
+            /*600px and down*/
+            .slide-img {
+                height: 45vw;
+                width: 45vw;
+            }
+        }
+        @media only screen and (min-width: 640px) {
+            /*640px and up*/
+            .slide-img {
+                height: 20vw;
+                width: 20vw;
+            }
+        }
+        @media only screen and (min-width: 1024px) {
+            /*1440px and up*/
+            .slide-img {
+                height: 14vw;
+                width: 14vw;
+            }
+        }
 
     </style>
 
@@ -28,7 +104,6 @@
 </div>
 
 <div>
-
 
     <div class='dot-bg'></div>
 
@@ -130,48 +205,11 @@
 
 
 <script src="https://unpkg.com/animejs@3.0.0/lib/anime.min.js"></script>
+<script src="js/utilities.js"></script>
 <script src="js/swiper.js"></script>
 
 <script>
 
-    // Helper function to render a dom HTML string
-    function render(domHtmlString, targetNode) {
-        targetNode.innerHTML = domHtmlString;
-    }
-
-    // Helper function to append html dom to a parent
-    function appendDom(parentNode, domHtmlString) {
-        // const _wrap = document.createElement('div');
-        // render(domHtmlString, _wrap);
-        // parentNode.appendChild(_wrap);
-        parentNode.innerHTML += domHtmlString;
-    }
-
-    // Helper function to join path
-    function pathJoin(parts, sep){
-        var separator = sep || '/';
-        var replace = new RegExp(separator+'{1,}', 'g');
-        return parts.join(separator).replace(replace, separator);
-    }
-
-    function ajax(method, url, ascyn, onSuccess, onFail) {
-        const xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-            if (this.readyState === 4 && this.status === 200) {
-                onSuccess.call(this.responseText);
-            }
-        };
-        xhttp.open(method, url, ascyn);
-        xhttp.send();
-        if (ascyn === false) {
-            return xhttp.responseText;
-        }
-    }
-
-    // Helper function to auto append 'px'
-    function px_(s) {
-        return s + 'px';
-    }
 
     function loadImgData(setPath, imageSetData) {
         var ecosysContainer = document.querySelector('div#swiper-container-h').querySelector('.swiper-wrapper');

@@ -15,6 +15,7 @@
  - [x] |---- Nav indicators animation
  - [x] Parallax bg
  - [x] `Jan-19-2019` Database structure
+ - [ ] Image lazy load
  - [ ] Ecosystem sync moving
  - [ ] Backend rendering
 
