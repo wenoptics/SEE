@@ -21,14 +21,18 @@
             background-position: center;
         }
         .gallery-top {
-            top: 40%;
-            height: 65%;
-            width: 65%;
+            height: 45%;
+            width: 65vw;
+            /*make it horizontally center*/
+            left: 50%;
+            /*and lower a little bit*/
+            top: 55%;
+            box-shadow: 0px -8px 18px 4px #77777759;
         }
         .gallery-thumbs {
             position: absolute;
             bottom: 0;
-            height: 20%;
+            height: 15%;
             box-sizing: border-box;
             padding: 10px 0;
         }
@@ -45,6 +49,38 @@
             height: 100%;
             width: 100%;
             position: absolute;
+        }
+        .float-text {
+            position: absolute;
+            top: 5vh;
+            left: 20vw;
+            width: 60vw;
+            z-index: 10000;
+        }
+        .float-text--content {
+            height: 15vh;
+        }
+        @media only screen and (min-width: 1024px) {
+            /*1024px and up (large screen)*/
+            .gallery-top {
+                top: 40%;
+                /*make it lefty*/
+                left: 65%;
+                height: 55%;
+                width: 50%;
+            }
+            .gallery-thumbs {
+                /*make them larger*/
+                height: 20%;
+            }
+            .float-text {
+                top: 17vh;
+                left: 4vw;
+                width: 30vw;
+            }
+            .float-text--content {
+                height: 30vh;
+            }
         }
     </style>
 
@@ -92,6 +128,14 @@
     <div class='dot-bg'></div>
     <canvas id="drawing"></canvas>
 
+    <div class="float-text">
+        <span class="float-text--header-btn">Change Ecosystem</span>
+        <h2 class="float-text--header">Powers of Ten</h2>
+        <div class="float-text--content">
+            it is the product fossilized trees in scale 1 and  makes up the base of the ...
+        </div>
+    </div>
+
 </div>
 
 <script src="js/swiper.js"></script>
@@ -102,16 +146,28 @@
     const _testImgSet = imageSetData[0];
 
     const el_dotBg = document.querySelector('div.dot-bg');
+    const el_fText = document.querySelector('.float-text');
+    const el_gTop = document.querySelector('.gallery-top');
 
 
     var galleryThumbs = new Swiper('.gallery-thumbs', {
-        spaceBetween: 10,
-        slidesPerView: 4,
+        spaceBetween: 15,
+        slidesPerView: 5,
         freeMode: true,
         watchSlidesVisibility: true,
         watchSlidesProgress: true,
         centeredSlides: true,
         grabCursor: true,
+        breakpoints: {
+            1024: {
+                slidesPerView: 4,
+                spaceBetween: 10,
+            },
+            640: {
+                slidesPerView: 3,
+                spaceBetween: 5,
+            }
+        },
         /*on: {
             progress: function(p) {
                 console.log('progress:', document.querySelector('#test_0').getBoundingClientRect().x, document.querySelector('#test_0').getBoundingClientRect().y);
@@ -132,7 +188,6 @@
         }
     });*/
 
-
     document.body.onmousemove = function(evt) {
         const halfH = document.documentElement.clientHeight /2;
         const halfW = document.documentElement.clientWidth /2;
@@ -148,6 +203,22 @@
             ' rotateX('+pdx*5+'deg) rotateY('+pdy*5+'deg)' +
             // ' skew('+-pdy*5+'deg,'+-pdx*5+'deg)' +
             ' translateX('+pdx*5+'px) translateY('+pdy*5+'px)';
+
+        // Dynamic effects on the text
+        const sz = el_fText.getBoundingClientRect();
+        pdx = (sz.x + sz.width / 2 - event.clientX) / document.documentElement.clientWidth;
+        pdy = (sz.y + sz.height / 2 - event.clientY) / document.documentElement.clientHeight;
+        el_fText.style.transform =
+            ' rotateX('+pdy*15+'deg) rotateY('+pdx*15+'deg)' +
+            ' skew(-10deg)';
+
+        // Dynamic effects on the main image
+        const sz2 = el_gTop.getBoundingClientRect();
+        pdx = (sz2.x + sz2.width / 2 - event.clientX) / document.documentElement.clientWidth;
+        pdy = (sz2.y + sz2.height / 2 - event.clientY) / document.documentElement.clientHeight;
+        const maxBlur = 18;
+        var blur = -(Math.abs(pdx) + Math.abs(pdy)) * maxBlur / 2 + maxBlur;
+        el_gTop.style['box-shadow'] = 8*pdx+'px '+8*pdy+'px '+blur+'px 4px #77777759';
     };
 
     const el_canvas = document.querySelector('canvas#drawing');
@@ -155,7 +226,7 @@
     el_canvas.height = window.innerHeight;
     // Draw on canvas
     const g = el_canvas.getContext('2d');
-    g.strokeStyle = '#adadad';
+    g.strokeStyle = '#8f8f8f';
     function arrowArc(g, strokeSize, x1, y1, x2, y2) {
         if (strokeSize <= 0) {
             return;
@@ -166,7 +237,7 @@
 
         var midY = (y1 + y2) / 2;
         var sign = (y2 > y1 ? 1 : -1);
-        y2 -= strokeSize / 2;
+        // y2 -= strokeSize / 2;
 
         var s1 = sign * 4;
         var s2 = sign * 5 ;
@@ -180,18 +251,14 @@
 
     }
 
-    arrowArc(g, 1, 90, 90, 200, 200);
-    arrowArc(g, 1, 93, 90, 100, 200);
-
-    const el_start = document.querySelector('div.gallery-top');
-    var stroke_width = 5;
+    var strokeWidth = 5;
 
     function update_drawing(time) {
 
-        var x1 = el_start.getBoundingClientRect().x + el_start.getBoundingClientRect().width / 2;
-        const y1 = el_start.getBoundingClientRect().bottom;
+        var x1 = el_gTop.getBoundingClientRect().x + el_gTop.getBoundingClientRect().width / 2;
+        const y1 = el_gTop.getBoundingClientRect().bottom;
         const el_ends = document.querySelectorAll('.connection-thumbnail');
-        const step = Math.max(stroke_width-1, 1);
+        const step = Math.max(strokeWidth-1, 1);
         x1 -= (el_ends.length / 2)*step;
 
         g.clearRect(0, 0, el_canvas.width, el_canvas.height);
@@ -200,10 +267,13 @@
             const x2 = el_ends[i].getBoundingClientRect().x + el_ends[i].getBoundingClientRect().width / 2;
             const y2 = el_ends[i].getBoundingClientRect().top;
 
-            var dist = Math.abs(x2 - document.body.clientWidth / 2);
-            const vdist = document.body.clientWidth * 0.3;
-            dist = vdist / Math.max(vdist, dist);
-            arrowArc(g, stroke_width * dist, x1, y1, x2, y2);
+            const dist = Math.abs(x2 - document.body.clientWidth / 2);
+            const vdist = document.body.clientWidth * 0.2;
+            var sWidth = vdist / Math.max(vdist, dist);
+            // Make it minimum to 1
+            sWidth = Math.max(1, strokeWidth * sWidth);
+
+            arrowArc(g, sWidth, x1, y1, x2, y2);
         }
 
         window.requestAnimationFrame(update_drawing);
