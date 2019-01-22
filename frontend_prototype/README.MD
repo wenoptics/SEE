@@ -16,7 +16,9 @@
  - [x] Parallax bg
  - [x] `Jan-19-2019` Database structure
  - [ ] Image lazy load
- - [ ] `Jan-21-2019` Comparison mode (ongoing)
+ - [ ] |- `Jan-21-2019` Comparison mode (ongoing)
+ - [x] |---- Responsive design
+ - [ ] |---- Layout
  - [ ] Ecosystem sync moving
  - [ ] Backend rendering
 
