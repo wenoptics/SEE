@@ -34,6 +34,7 @@ body, html {
     border-style: solid;
     border-color: #00000033;
     background-color: #d0d0d029;
+    transition: background-color 0.5s;
 }
 
 .float-text--header-btn:hover {
