@@ -38,12 +38,17 @@ function px_(s) {
     return s + 'px';
 }
 
-function getImageNodeById(ecosystemObj, nid) {
-    /// todo Improve by using hashmap
+function getImageIndexById(ecosystemObj, nid) {
     for (var i = 0; i < ecosystemObj.imageList.length; i++) {
         if (ecosystemObj.imageList[i].scale_id === nid) {
-            return ecosystemObj.imageList[i];
+            return i;
         }
     }
     return null;
+}
+
+function getImageNodeById(ecosystemObj, nid) {
+    /// todo Improve by using hashmap
+    const i = getImageIndexById(ecosystemObj, nid);
+    return i === null ? null : ecosystemObj.imageList[i];
 }

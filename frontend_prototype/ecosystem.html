@@ -263,9 +263,17 @@
         // ... And fill the background images data
         const _el_slides = el_thumbsContainer.querySelectorAll('.connection-thumbnail');
         for (i = 0; i < _el_slides.length; i++) {
-            const _imgNode = getImageNodeById(ecosystemData, connectionIdList[i]);
+            const _imgIdx = getImageIndexById(ecosystemData, connectionIdList[i]);
+            const _imgNode = ecosystemData.imageList[_imgIdx];
             const imgPath = _imgNode ? pathJoin([setPath, ecosystemData.path, _imgNode.filename]) : errorImageUrl;
             _el_slides[i].style.backgroundImage = "url('"+imgPath+"')";
+
+            // When click on the connection image
+            _el_slides[i].dataset.realIndex = _imgIdx;
+            _el_slides[i].addEventListener('click', function () {
+                // find the index for this image
+                swiperMain.slideTo(this.dataset.realIndex);
+            })
         }
 
         anime({
