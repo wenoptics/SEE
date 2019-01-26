@@ -169,6 +169,14 @@
     const currentEcosystem = imageSetData[ 1 ];
     const errorImageUrl = 'res/error-image.jpg';
 
+    anime({
+        targets: el_dotBg,
+        rotate: [45, 0],
+        scale: [3, 1],
+        duration: 2000,
+        autoplay: true
+    });
+
     const swiperConnectionThumbs = new Swiper('.gallery-thumbs', {
         spaceBetween: 15,
         slidesPerView: 5,

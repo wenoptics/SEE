@@ -581,7 +581,7 @@
 
     var allow_nav_arrow = true;
     var lastMouseOverElement = null;
-    document.body.onmousemove = function(evt) {
+    window.addEventListener('mousemove', function(evt) {
         const halfH = document.documentElement.clientHeight /2;
         const halfW = document.documentElement.clientWidth /2;
 
@@ -614,22 +614,63 @@
         if (elementMouseIsOver !== lastMouseOverElement) {
 
             if (lastMouseOverElement === activeSlide) {
-                console.log('move outside');
+                // console.log('move outside');
+                document.body.style.cursor = null;
                 arrowAct.hide();
             }
             if (allow_nav_arrow && elementMouseIsOver === activeSlide) {
-                console.log('inside');
+                // console.log('inside');
+                document.body.style.cursor = 'pointer';
                 arrowAct.show(activeSlide);
             }
 
             lastMouseOverElement = elementMouseIsOver;
         }
 
-    };
+    });
 
-    document.body.onmousedown = function (evt) {
-        console.log('onmousedown');
-    };
+    window.addEventListener('click', function (evt) {
+        // Nav-arrows monitor
+        const activeSlide = document.querySelector('' +
+            '.swiper-slide-h.swiper-slide-active ' +
+            '.swiper-slide-v.swiper-slide-active ' +
+            '.slide-img');
+        if (activeSlide === document.elementFromPoint(evt.clientX, evt.clientY)) {
+            console.log('clicked on active slide');
+
+            // todo Activate mode ecosystem mode
+
+            anime({
+                targets: '.swiper-slide-h.swiper-slide:not(.swiper-slide-active)',
+                rotate: anime.stagger([-360, 360]),
+                opacity: 0,
+                duration: 2000,
+                autoplay: true
+            });
+            anime({
+                targets: '.swiper-slide-v.swiper-slide:not(.swiper-slide-active)',
+                translateY: anime.stagger(30, {easing: 'easeOutQuad'}),
+                duration: 2000,
+                autoplay: true
+            });
+            anime({
+                targets: el_dotBg,
+                rotate: [-360, 235],
+                scale: [1, 5],
+                duration: 1000,
+                autoplay: true,
+                complete: function (anim) {
+                    window.location.href = 'ecosystem.html#' + _testImgSet[ecoSwiper.realIndex].imageList[ecoSlides[ecoSwiper.realIndex].realIndex].scale_id;
+                }
+            });
+            anime({
+                targets: document.body,
+                opacity: 0,
+                duration: 3000
+            })
+
+        }
+    });
 
 
 </script>
