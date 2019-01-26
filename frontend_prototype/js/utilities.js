@@ -37,3 +37,13 @@ function ajax(method, url, ascyn, onSuccess, onFail) {
 function px_(s) {
     return s + 'px';
 }
+
+function getImageNodeById(ecosystemObj, nid) {
+    /// todo Improve by using hashmap
+    for (var i = 0; i < ecosystemObj.imageList.length; i++) {
+        if (ecosystemObj.imageList[i].scale_id === nid) {
+            return ecosystemObj.imageList[i];
+        }
+    }
+    return null;
+}

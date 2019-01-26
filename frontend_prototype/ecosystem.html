@@ -35,6 +35,7 @@
             height: 15%;
             box-sizing: border-box;
             padding: 10px 0;
+            cursor: grab;
         }
         .gallery-thumbs .swiper-slide {
             width: 25%;
@@ -44,6 +45,14 @@
         }
         .gallery-thumbs .swiper-slide:hover {
             opacity: .9;
+        }
+
+        .swiper-button-white {
+            cursor: pointer;
+            transition: transform 0.5s;
+        }
+        .swiper-button-white:hover {
+            transform: scale(1.2, 1.2);
         }
 
         canvas#drawing {
@@ -102,7 +111,7 @@
 <!-- Swiper -->
 <div class="swiper-container gallery-top center">
     <div class="swiper-wrapper">
-        <div class="swiper-slide" style="background-image:url('res/image_set/Powers of Ten/images/1.jpg')"></div>
+        <div class="swiper-slide" id="data-big-image" style="background-image:url('res/image_set/Powers of Ten/images/1.jpg')"></div>
     </div>
     <!-- Add Arrows -->
     <div class="swiper-button-next swiper-button-white"></div>
@@ -142,23 +151,18 @@
 <script src="js/swiper.js"></script>
 <script src="js/utilities.js"></script>
 <script>
-
-    const imageSetData = JSON.parse(ajax('GET', 'res/test_data/imageset.json', false, (data)=>{})).imageset;
-    // Load ecosystem
-    const _ecosystemImgSet = imageSetData[1];
-
-    // const el_thumbsContainer = document.querySelector('#data-thumbs-container');
-    // // Remove the previous data
-    // while(el_thumbsContainer.firstChild) {
-    //     el_thumbsContainer.removeChild(el_thumbsContainer.firstChild);
-    // }
-
-
-
+    const el_thumbsContainer = document.querySelector('#data-thumbs-container');
+    const el_bigImage = document.querySelector('#data-big-image');
     const el_dotBg = document.querySelector('div.dot-bg');
     const el_fText = document.querySelector('.float-text');
     const el_gTop = document.querySelector('.gallery-top');
+    const el_canvas = document.querySelector('canvas#drawing');
+</script>
+<script>
 
+    const imageSetData = JSON.parse(ajax('GET', 'res/test_data/imageset.json', false, (data)=>{})).imageset;
+    // Load ecosystem
+    const ecosystemData = imageSetData[1];
 
     const galleryThumbs = new Swiper('.gallery-thumbs', {
         spaceBetween: 15,
@@ -187,51 +191,55 @@
             }
         }*/
     });
-    /*var galleryTop = new Swiper('.gallery-top', {
-        spaceBetween: 10,
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-        thumbs: {
-            swiper: galleryThumbs
+
+    function loadImageNode(setPath, ecosystemData, idx) {
+        const nodeData = ecosystemData.imageList[idx];
+        const imgPath = pathJoin([setPath, ecosystemData.path, nodeData.filename]);
+
+        el_bigImage.style.backgroundImage = "url('"+imgPath+"')";
+        /*var galleryTop = new Swiper('.gallery-top', {
+            spaceBetween: 10,
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            thumbs: {
+                swiper: galleryThumbs
+            }
+        });*/
+
+        loadConnectionData(setPath, ecosystemData, nodeData);
+    }
+    function loadConnectionData(setPath, ecosystemData, nodeData) {
+        // Remove the previous data
+        while(el_thumbsContainer.firstChild) {
+            el_thumbsContainer.removeChild(el_thumbsContainer.firstChild);
         }
-    });*/
 
-    document.body.onmousemove = function(evt) {
-        const halfH = document.documentElement.clientHeight /2;
-        const halfW = document.documentElement.clientWidth /2;
+        var connectionIdList = nodeData.connections;
+        if (typeof connectionIdList === "string") {
+            connectionIdList = connectionIdList.split(',');
+        }
 
-        var pdx = 1 - evt.clientX / halfW;
-        var pdy = 1 - evt.clientY / halfH;
+        // Make the thumbnail DOMs first
+        var ecoInnerSlideList = '', i;
+        for (i = 0; i < connectionIdList.length; i++) {
+            ecoInnerSlideList += '<div class="swiper-slide connection-thumbnail"></div> \n';
+        }
+        el_thumbsContainer.innerHTML = ecoInnerSlideList;
+        galleryThumbs.update();
 
-        // console.log( evt.clientX + "," + evt.clientY
-        //     + " | " + dx + "," + dy
-        //     + " | " + pdx + "," + pdy);
+        // ... And fill the background images data
+        const _el_slides = el_thumbsContainer.querySelectorAll('.connection-thumbnail');
+        for (i = 0; i < _el_slides.length; i++) {
+            const _imgNode = getImageNodeById(ecosystemData, connectionIdList[i]);
+            const imgPath = pathJoin([setPath, ecosystemData.path, _imgNode.filename]);
+            _el_slides[i].style.backgroundImage = "url('"+imgPath+"')";
+        }
+    }
 
-        el_dotBg.style.transform =
-            ' rotateX('+pdx*5+'deg) rotateY('+pdy*5+'deg)' +
-            // ' skew('+-pdy*5+'deg,'+-pdx*5+'deg)' +
-            ' translateX('+pdx*5+'px) translateY('+pdy*5+'px)';
+    loadImageNode('res/image_set', ecosystemData, 2);
 
-        // Dynamic effects on the text
-        const sz = el_fText.getBoundingClientRect();
-        pdx = (sz.x + sz.width / 2 - event.clientX) / document.documentElement.clientWidth;
-        pdy = (sz.y + sz.height / 2 - event.clientY) / document.documentElement.clientHeight;
-        el_fText.style.transform =
-            ' rotateX('+pdy*15+'deg) rotateY('+pdx*15+'deg)' +
-            ' skew(-10deg)';
-
-        // Dynamic effects on the main image
-        const sz2 = el_gTop.getBoundingClientRect();
-        pdx = (sz2.x + sz2.width / 2 - event.clientX) / document.documentElement.clientWidth;
-        pdy = (sz2.y + sz2.height / 2 - event.clientY) / document.documentElement.clientHeight;
-        const maxBlur = 18;
-        var blur = -(Math.abs(pdx) + Math.abs(pdy)) * maxBlur / 2 + maxBlur;
-        el_gTop.style['box-shadow'] = 8*pdx+'px '+8*pdy+'px '+blur+'px 4px #77777759';
-    };
-
-    const el_canvas = document.querySelector('canvas#drawing');
     // Draw on canvas
     const g = el_canvas.getContext('2d');
     function updateCanvasSize() {
@@ -301,6 +309,40 @@
     }
 
     window.requestAnimationFrame(update_drawing);
+
+    document.body.onmousemove = function(evt) {
+        const halfH = document.documentElement.clientHeight /2;
+        const halfW = document.documentElement.clientWidth /2;
+
+        var pdx = 1 - evt.clientX / halfW;
+        var pdy = 1 - evt.clientY / halfH;
+
+        // console.log( evt.clientX + "," + evt.clientY
+        //     + " | " + dx + "," + dy
+        //     + " | " + pdx + "," + pdy);
+
+        el_dotBg.style.transform =
+            ' rotateX('+pdx*5+'deg) rotateY('+pdy*5+'deg)' +
+            // ' skew('+-pdy*5+'deg,'+-pdx*5+'deg)' +
+            ' translateX('+pdx*5+'px) translateY('+pdy*5+'px)';
+
+        // Dynamic effects on the text
+        const sz = el_fText.getBoundingClientRect();
+        pdx = (sz.x + sz.width / 2 - event.clientX) / document.documentElement.clientWidth;
+        pdy = (sz.y + sz.height / 2 - event.clientY) / document.documentElement.clientHeight;
+        el_fText.style.transform =
+            ' rotateX('+pdy*15+'deg) rotateY('+pdx*15+'deg)' +
+            ' skew(-10deg)';
+
+        // Dynamic effects on the main image
+        const sz2 = el_gTop.getBoundingClientRect();
+        pdx = (sz2.x + sz2.width / 2 - event.clientX) / document.documentElement.clientWidth;
+        pdy = (sz2.y + sz2.height / 2 - event.clientY) / document.documentElement.clientHeight;
+        const maxBlur = 18;
+        var blur = -(Math.abs(pdx) + Math.abs(pdy)) * maxBlur / 2 + maxBlur;
+        el_gTop.style['box-shadow'] = 8*pdx+'px '+8*pdy+'px '+blur+'px 4px #77777759';
+    };
+
 
 </script>
 
