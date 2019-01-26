@@ -355,25 +355,35 @@
                 progress: function (p) {
                     allow_nav_arrow = false;
                 },
+                slideChange: function () {
+                    if ( ecoSwiper !== undefined ) {
+
+                        // Change other eco-systems' images
+                        // todo Keep in the same scale
+                        if (this.isActive) {
+
+                            // left-right animation
+                            anime({
+                                targets: '.swiper-slide-h:not(.swiper-slide-active)',
+                                autoplay: true,
+                                rotateX: [0, 30, 0],
+                                duration: 600,
+                                easing: 'easeOutSine',
+                                delay: function (el, i, l) {
+                                    return Math.abs(i - ecoSwiper.realIndex) * 100;
+                                },
+                            });
+
+                            const _slideIncr = this.realIndex - this.previousIndex;
+                            for (var i = 0; i < ecoSlides.length; i++) {
+                                if ( ecoSlides[i] === this ) continue;
+                                ecoSlides[i].slideTo(ecoSlides[i].realIndex + _slideIncr);
+                            }
+                        }
+                    }
+                },
                 transitionEnd: function () {
                     allow_nav_arrow = true;
-
-                    if (ecoSwiper !== undefined ) {
-
-                        // todo change other eco-systems' images here
-
-                        // left-right animation
-                        anime({
-                            targets: '.swiper-slide-h:not(.swiper-slide-active)',
-                            autoplay: true,
-                            rotateX: [0, 30, 0],
-                            duration: 600,
-                            easing: 'easeOutSine',
-                            delay: function (el, i, l) {
-                                return Math.abs(i - ecoSwiper.realIndex) * 100;
-                            },
-                        });
-                    }
 
                     if (lastActiveSlideId === null) return;
                     /*// Text animation
@@ -525,10 +535,12 @@
                     // Deactivate the current (previous) ecosys
                     ecoSlides[lastActiveSlideId].allowTouchMove = false;
                     ecoSlides[lastActiveSlideId].anim.collapse();
+                    ecoSlides[lastActiveSlideId].isActive = false;
 
                     // Activate the current
                     ecoSlides[this.realIndex].allowTouchMove = true;
                     ecoSlides[this.realIndex].anim.expand();
+                    ecoSlides[this.realIndex].isActive = true;
 
                     // Text animation
                     anime({
