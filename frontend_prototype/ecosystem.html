@@ -110,8 +110,8 @@
 
 <!-- Swiper -->
 <div class="swiper-container gallery-top center">
-    <div class="swiper-wrapper">
-        <div class="swiper-slide" id="data-big-image" style="background-image:url('res/image_set/Powers of Ten/images/1.jpg')"></div>
+    <div class="swiper-wrapper" id="data-eco-container">
+        <div class="swiper-slide ecosystem-slide" style="background-image:url('res/image_set/Powers of Ten/images/1.jpg')"></div>
     </div>
     <!-- Add Arrows -->
     <div class="swiper-button-next swiper-button-white"></div>
@@ -148,23 +148,28 @@
 
 </div>
 
+<script src="https://unpkg.com/animejs@3.0.0/lib/anime.min.js"></script>
 <script src="js/swiper.js"></script>
 <script src="js/utilities.js"></script>
 <script>
     const el_thumbsContainer = document.querySelector('#data-thumbs-container');
-    const el_bigImage = document.querySelector('#data-big-image');
+    const el_ecoContainer = document.querySelector('#data-eco-container');
     const el_dotBg = document.querySelector('div.dot-bg');
     const el_fText = document.querySelector('.float-text');
     const el_gTop = document.querySelector('.gallery-top');
     const el_canvas = document.querySelector('canvas#drawing');
+    const el_fText_title = document.querySelector('.float-text--header');
+    const el_fText_content = document.querySelector('.float-text--content');
 </script>
 <script>
 
+    // Load ecosystem data
+    const setPath = 'res/image_set';
     const imageSetData = JSON.parse(ajax('GET', 'res/test_data/imageset.json', false, (data)=>{})).imageset;
-    // Load ecosystem
-    const ecosystemData = imageSetData[1];
+    const currentEcosystem = imageSetData[ 1 ];
+    const errorImageUrl = 'res/error-image.jpg';
 
-    const galleryThumbs = new Swiper('.gallery-thumbs', {
+    const swiperConnectionThumbs = new Swiper('.gallery-thumbs', {
         spaceBetween: 15,
         slidesPerView: 5,
         freeMode: true,
@@ -181,36 +186,62 @@
                 slidesPerView: 3,
                 spaceBetween: 5,
             }
-        },
-        /*on: {
-            progress: function(p) {
-                console.log('progress:', document.querySelector('#test_0').getBoundingClientRect().x, document.querySelector('#test_0').getBoundingClientRect().y);
-            },
-            sliderMove: function (evt) {
-                console.log('sliderMove:', document.querySelector('#test_0').getBoundingClientRect().x, document.querySelector('#test_0').getBoundingClientRect().y);
-            }
-        }*/
+        }
     });
 
-    function loadImageNode(setPath, ecosystemData, idx) {
-        const nodeData = ecosystemData.imageList[idx];
-        const imgPath = pathJoin([setPath, ecosystemData.path, nodeData.filename]);
-
-        el_bigImage.style.backgroundImage = "url('"+imgPath+"')";
-        /*var galleryTop = new Swiper('.gallery-top', {
-            spaceBetween: 10,
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
+    var swiperMain = new Swiper('.gallery-top', {
+        spaceBetween: 10,
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        on: {
+            init: function () {
+                updateViewNode(currentEcosystem, currentEcosystem.imageList[this.realIndex])
             },
-            thumbs: {
-                swiper: galleryThumbs
+            transitionEnd: function () {
+                updateViewNode(currentEcosystem, currentEcosystem.imageList[this.realIndex])
             }
-        });*/
+        }
+    });
 
-        loadConnectionData(setPath, ecosystemData, nodeData);
+    function updateViewNode(ecosystemData, nodeData) {
+        var content = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged';
+        if (nodeData.notes !== '') {
+            content = el.notes;
+        }
+        content = '<strong>' + nodeData.name + '</strong><p>' + content;
+        setCaption(ecosystemData.name, content);
+
+        // Load connections of this image node
+        loadConnectionData(ecosystemData, nodeData);
     }
-    function loadConnectionData(setPath, ecosystemData, nodeData) {
+
+    function loadEcosystem(ecosystemData) {
+        // Remove the previous data
+        while(el_ecoContainer.firstChild) {
+            el_ecoContainer.removeChild(el_ecoContainer.firstChild);
+        }
+
+        // Make the thumbnail DOMs first
+        var ecoInnerSlideList = '', i;
+        for (i = 0; i < ecosystemData.imageList.length; i++) {
+            ecoInnerSlideList += '<div class="swiper-slide ecosystem-slide"></div> \n';
+        }
+        el_ecoContainer.innerHTML = ecoInnerSlideList;
+        swiperMain.update();
+
+        // ... And fill the background images data
+        const _el_slides = el_ecoContainer.querySelectorAll('.ecosystem-slide');
+        for (i = 0; i < _el_slides.length; i++) {
+            const _imgNode = ecosystemData.imageList[i];
+            const imgPath = pathJoin([setPath, ecosystemData.path, _imgNode.filename]);
+            _el_slides[i].style.backgroundImage = "url('"+imgPath+"')";
+        }
+    }
+    function loadConnectionData(ecosystemData, nodeData) {
+        console.log('loadConnectionData called');
+
         // Remove the previous data
         while(el_thumbsContainer.firstChild) {
             el_thumbsContainer.removeChild(el_thumbsContainer.firstChild);
@@ -227,18 +258,36 @@
             ecoInnerSlideList += '<div class="swiper-slide connection-thumbnail"></div> \n';
         }
         el_thumbsContainer.innerHTML = ecoInnerSlideList;
-        galleryThumbs.update();
+        swiperConnectionThumbs.update();
 
         // ... And fill the background images data
         const _el_slides = el_thumbsContainer.querySelectorAll('.connection-thumbnail');
         for (i = 0; i < _el_slides.length; i++) {
             const _imgNode = getImageNodeById(ecosystemData, connectionIdList[i]);
-            const imgPath = pathJoin([setPath, ecosystemData.path, _imgNode.filename]);
+            const imgPath = _imgNode ? pathJoin([setPath, ecosystemData.path, _imgNode.filename]) : errorImageUrl;
             _el_slides[i].style.backgroundImage = "url('"+imgPath+"')";
         }
+
+        anime({
+            targets: [el_canvas, el_thumbsContainer],
+            scaleX: [1.1, 1],
+            opacity: [0.7, 1],
+            autoplay: true
+        });
+
+        var _slideTo = 0;
+        // if (swiperConnectionThumbs.slides.length > 2) {
+        //     _slideTo = parseInt(swiperConnectionThumbs.slides.length / 2);
+        // }
+        swiperConnectionThumbs.slideTo(_slideTo, 100);
     }
 
-    loadImageNode('res/image_set', ecosystemData, 2);
+    loadEcosystem(currentEcosystem);
+
+    function setCaption(title, content) {
+        el_fText_title.innerHTML = title;
+        el_fText_content.innerHTML = content;
+    }
 
     // Draw on canvas
     const g = el_canvas.getContext('2d');
