@@ -222,16 +222,26 @@
     };
 
     const el_canvas = document.querySelector('canvas#drawing');
-    el_canvas.width  = window.innerWidth;
-    el_canvas.height = window.innerHeight;
     // Draw on canvas
     const g = el_canvas.getContext('2d');
-    g.strokeStyle = '#8f8f8f';
+    function updateCanvasSize() {
+        el_canvas.width  = window.innerWidth;
+        el_canvas.height = window.innerHeight;
+        canvasClearAll();
+    }
+    function canvasClearAll() {
+        g.clearRect(0, 0, el_canvas.width, el_canvas.height);
+    }
+
+    window.addEventListener('resize', updateCanvasSize);
+    updateCanvasSize();
+
     function arrowArc(g, strokeSize, x1, y1, x2, y2) {
         if (strokeSize <= 0) {
             return;
         }
 
+        g.strokeStyle = '#8f8f8f';
         g.beginPath();
         g.lineWidth = strokeSize;
 
@@ -261,7 +271,8 @@
         const step = Math.max(strokeWidth-1, 1);
         x1 -= (el_ends.length / 2)*step;
 
-        g.clearRect(0, 0, el_canvas.width, el_canvas.height);
+        canvasClearAll();
+
         for (var i = 0; i < el_ends.length; i++) {
             x1 += step;
             const x2 = el_ends[i].getBoundingClientRect().x + el_ends[i].getBoundingClientRect().width / 2;
