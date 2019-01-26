@@ -41,8 +41,8 @@
             height: 100%;
             opacity: 0.4;
         }
-        .gallery-thumbs .swiper-slide-thumb-active {
-            opacity: 1;
+        .gallery-thumbs .swiper-slide:hover {
+            opacity: .9;
         }
 
         canvas#drawing {
@@ -109,7 +109,7 @@
 </div>
 
 <div class="swiper-container gallery-thumbs">
-    <div class="swiper-wrapper">
+    <div class="swiper-wrapper" id="data-thumbs-container">
         <div class="swiper-slide connection-thumbnail" style="background-image:url('res/image_set/Powers of Ten/images/0.jpg')"></div>
         <div class="swiper-slide connection-thumbnail" style="background-image:url('res/image_set/Powers of Ten/images/1.jpg')"></div>
         <div class="swiper-slide connection-thumbnail" style="background-image:url('res/image_set/Powers of Ten/images/2.jpg')"></div>
@@ -143,14 +143,23 @@
 <script>
 
     const imageSetData = JSON.parse(ajax('GET', 'res/test_data/imageset.json', false, (data)=>{})).imageset;
-    const _testImgSet = imageSetData[0];
+    // Load ecosystem
+    const _ecosystemImgSet = imageSetData[1];
+
+    // const el_thumbsContainer = document.querySelector('#data-thumbs-container');
+    // // Remove the previous data
+    // while(el_thumbsContainer.firstChild) {
+    //     el_thumbsContainer.removeChild(el_thumbsContainer.firstChild);
+    // }
+
+
 
     const el_dotBg = document.querySelector('div.dot-bg');
     const el_fText = document.querySelector('.float-text');
     const el_gTop = document.querySelector('.gallery-top');
 
 
-    var galleryThumbs = new Swiper('.gallery-thumbs', {
+    const galleryThumbs = new Swiper('.gallery-thumbs', {
         spaceBetween: 15,
         slidesPerView: 5,
         freeMode: true,
