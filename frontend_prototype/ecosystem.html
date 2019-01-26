@@ -189,11 +189,14 @@
         }
     });
 
-    var swiperMain = new Swiper('.gallery-top', {
+    const swiperMain = new Swiper('.gallery-top', {
         spaceBetween: 10,
         navigation: {
             nextEl: '.swiper-button-next',
             prevEl: '.swiper-button-prev',
+        },
+        hashNavigation: {
+            watchState: true,
         },
         on: {
             init: function () {
@@ -206,6 +209,8 @@
     });
 
     function updateViewNode(ecosystemData, nodeData) {
+        // console.log('called updateViewNode(ecosystemData, nodeData)', ecosystemData, nodeData);
+
         var content = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged';
         if (nodeData.notes !== '') {
             content = el.notes;
@@ -231,12 +236,26 @@
         el_ecoContainer.innerHTML = ecoInnerSlideList;
         swiperMain.update();
 
+        // The original hash-navigation is kinda break after page load, maybe due to dynamic load. This is a fix
+        if(window.location.hash) {
+            // hash found
+            const hash = window.location.hash.substring(1);
+            const nodeIdxFromHash = getImageIndexById(currentEcosystem, hash);
+            if (nodeIdxFromHash !== null) {
+                swiperMain.slideTo(nodeIdxFromHash);
+            }
+        } else {
+            // No hash found
+        }
+
         // ... And fill the background images data
         const _el_slides = el_ecoContainer.querySelectorAll('.ecosystem-slide');
         for (i = 0; i < _el_slides.length; i++) {
             const _imgNode = ecosystemData.imageList[i];
             const imgPath = pathJoin([setPath, ecosystemData.path, _imgNode.filename]);
             _el_slides[i].style.backgroundImage = "url('"+imgPath+"')";
+            // For hash-navigation
+            _el_slides[i].dataset.hash = _imgNode.scale_id;
         }
     }
     function loadConnectionData(ecosystemData, nodeData) {
