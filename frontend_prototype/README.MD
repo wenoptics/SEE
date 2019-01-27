@@ -16,21 +16,25 @@
  - [x] Parallax bg
  - [x] `Jan-19-2019` Database structure
  - [ ] Image lazy load
- - [ ] |- `Jan-21-2019` Comparison mode (ongoing)
+ - [x] |- `Jan-21-2019` Comparison mode
  - [x] |---- Responsive design
- - [ ] |---- Layout
- - [ ] Ecosystem sync moving
+ - [x] |---- Connections drawing in WebGL
+ - [x] |---- Layout
+ - [x] |---- `Jan-26-2019` Data loading
+ - [x] `Jan-26-2019` Ecosystem sync moving
  - [ ] Backend rendering
+ - [ ] |- Upload page
+ - [ ] |---- Upload function backend, infrastructures
+ - [ ] |---- Upload GUI
 
 ## Current Progress
 
-![](doc/2019-01-19_23-24-57.gif)
+![](doc/2019-01-27_09-45-10.gif)
 
-Frontend design v1 for the Comparison mode is (almost) completed. Database structure ready. 
+Frontend design v1 for the `Comparison` and `Ecosystem` mode completed. Database structure ready. 
 
 ### Coming Plans: 
 
  - [ ] |- Backend 
  - [ ] |---- Database migration
  - [ ] |---- Upload GUI and its backend logic
- - [ ] Ecosystem mode
