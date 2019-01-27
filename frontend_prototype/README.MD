@@ -29,9 +29,25 @@
 
 ## Current Progress
 
+Frontend design v1 for the `Comparison` and `Ecosystem` mode completed. Database structure ready. 
+
+##### Comparision and Ecosystem
+
 ![](doc/2019-01-27_09-45-10.gif)
 
-Frontend design v1 for the `Comparison` and `Ecosystem` mode completed. Database structure ready. 
+---
+
+##### Comparision Mode:
+
+![](doc/2019-01-27_09-59-11.gif)
+
+---
+
+##### Ecosystem Mode:
+
+![](doc/2019-01-27_10-03-21.gif)
+
+---
 
 ### Coming Plans: 
 
