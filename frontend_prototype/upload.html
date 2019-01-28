@@ -82,9 +82,9 @@
 
 
                     <div class="uk-margin">
-                        <label class="uk-form-label" for="form-horizontal-text">Description</label>
+                        <label class="uk-form-label" for="form-set-desc">Description</label>
                         <div class="uk-form-controls">
-                            <textarea class="uk-textarea" rows="5" placeholder="Set description. Tell people about this set"></textarea>
+                            <textarea class="uk-textarea" id="form-set-desc" rows="5" placeholder="Set description. Tell people about this set"></textarea>
                         </div>
                     </div>
 
@@ -144,10 +144,14 @@
                                             </div>
                                             <div>
                                                 <label class="uk-text-right">
-                                                    <input class="uk-checkbox uk-margin-small-right" type="checkbox" checked>Dynamic
+                                                    <input class="uk-checkbox uk-margin-small-right" type="checkbox" checked>
+                                                    Dynamic
                                                 </label>
                                             </div>
                                         </div>
+
+                                        <p><input class="uk-input uk-form-small uk-magin-right"
+                                                  placeholder="Connection node to this image, enter node-id, seperated by comma. e.g. 21,23,25"></p>
 
                                         <p><textarea class="uk-textarea uk-form-blank" rows="5" style="border-left: dashed 1px #e5e5e5;"
                                                       placeholder="Write Description, and tell people about this image"></textarea></p>
@@ -162,9 +166,6 @@
 
                         </div>
                     </div>
-
-
-
 
                 </div>
             </li>
