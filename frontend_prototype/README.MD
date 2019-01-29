@@ -25,7 +25,8 @@
  - [ ] Backend rendering
  - [ ] |- Upload page
  - [ ] |---- Upload function backend, infrastructures
- - [ ] |---- Upload GUI
+ - [x] |---- `Jan-28-2019` Upload GUI
+ - [x] |---- `Jan-28-2019` Upload frontend form implemented base on the [`Metadata field.doc`]()
 
 ## Current Progress
 
