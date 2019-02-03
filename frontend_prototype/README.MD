@@ -23,8 +23,8 @@
  - [x] |---- `Jan-26-2019` Data loading
  - [x] `Jan-26-2019` Ecosystem sync moving
  - [ ] Backend rendering
- - [ ] |- Upload page
- - [ ] |---- Upload function backend, infrastructures
+ - [x] |- Upload page
+ - [x] |---- Upload function backend, infrastructures
  - [x] |---- `Jan-28-2019` Upload GUI
  - [x] |---- `Jan-28-2019` Upload frontend form implemented base on the [`Metadata field.doc`]()
 
