@@ -48,10 +48,14 @@ Frontend design v1 for the `Comparison` and `Ecosystem` mode completed. Database
 
 ![](doc/2019-01-27_10-03-21.gif)
 
+
+##### Upload UI
+
+![](doc/2019-02-02_22-30-38.gif)
+
 ---
 
 ### Coming Plans: 
 
- - [ ] |- Backend 
- - [ ] |---- Database migration
- - [ ] |---- Upload GUI and its backend logic
+ - [ ] |- [Backend](../README.md) 
+ 
