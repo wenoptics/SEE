@@ -1,0 +1,84 @@
+body, html {
+    margin: 0;
+    padding: 0;
+}
+
+.float-text {
+    position: absolute;
+    top: 17vh;
+    left: 6vw;
+    width: 30vw;
+    z-index: 10000;
+    transform: skew(-10deg);
+}
+
+.float-text--content {
+    position: relative;
+    background-color: #ffffff99;
+    /* padding-top: 10px; */
+    padding: 10px;
+    top: -10px;
+    left: 20px;
+    height: 20vh;
+    border-style: solid;
+    border-color: #00000033;
+    overflow-y: auto;
+}
+
+.float-text--header-btn {
+    position: relative;
+    padding: 10px;
+    /*align to the right*/
+    float: right;
+    left: -2%;
+    border-style: solid;
+    border-color: #00000033;
+    background-color: #d0d0d029;
+    transition: background-color 0.5s;
+}
+
+.float-text--header-btn:hover {
+    background-color: rgba(54, 54, 54, 0.16);
+    cursor: pointer;
+}
+
+.float-text--header {
+    padding-left: 0.5em;
+    font-family: sans-serif;
+    color: white;
+    background-color: #77777745;
+    text-shadow: #533d4a 1px 1px, #533d4a 2px 2px, #533d4a 3px 3px, #533d4a 4px 4px, #533d4a 5px 5px, #533d4a 6px 6px;
+}
+
+.nav-arrow {
+    position: fixed;
+    width: 3vw;
+    /*extra margin*/
+    padding-left: 1vw;
+    /*svg color*/
+    fill: rgba(132, 132, 132, 0.25);
+}
+
+.dot-bg {
+    position: fixed;
+    background:
+            linear-gradient(90deg, #FBFBFB 19px, transparent 1%) center,
+            linear-gradient(#FBFBFB 19px, transparent 1%)
+            center,
+            #E4E4E4;
+    background-size: 22px 22px;
+    /*enlarge the bg so that we can make some effect*/
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    z-index: -1;
+}
+
+.center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+

@@ -15,3 +15,5 @@ Repository of the Speculative Scale Explorer
  
   - [x] `2019-Feb-1` Image uploading infrastructure
   - [x] `2019-Feb-1` RESTFul APIs 
+  - [ ] Upload validation
+  - [ ] Backend wiring
