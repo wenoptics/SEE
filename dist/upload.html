@@ -25,7 +25,7 @@
 <!-- Navbar (sit on top) -->
 <div class="w3-top" style="z-index: 10000">
     <div class="w3-bar w3-white w3-wide w3-padding w3-card">
-        <a href="/comparison.html" class="w3-bar-item w3-button"><b></b> Speculative Explorer </a>
+        <a href="comparison.html" class="w3-bar-item w3-button"><b></b> Speculative Explorer </a>
         <!-- Float links to the right. Hide them on small screens -->
         <div class="w3-right w3-hide-small">
             <a href="#about" class="w3-bar-item w3-button">About</a>
@@ -39,7 +39,7 @@
 
     <div class='dot-bg'></div>
 
-    <div class="uk-container uk-container-small" style="margin-top: 10vh">
+    <div id="upload-page-container" class="uk-container uk-container-small" style="margin-top: 10vh">
 
         <div class="uk-card uk-card-body uk-margin-small" style="text-align: center">
             <h3 class="uk-card-title">
@@ -81,9 +81,9 @@
                     <div class="uk-margin">
                         <div class="uk-form-label">Granularity</div>
                         <div class="uk-form-controls uk-form-controls-text">
-                            <label><input class="form-granularity-option uk-radio" type="radio" name="granularity-p10" data-val="10"> Powers of 10</label>
-                            <label><input class="form-granularity-option uk-radio uk-margin-left" type="radio" name="granularity-p2" data-val="2"> Powers of 2</label>
-                            <label><input class="form-granularity-option uk-radio uk-margin-left" type="radio" name="granularity-l" data-val="linear"> Linear</label>
+                            <label><input class="form-granularity-option uk-radio" type="radio" name="granularity" data-val="10"> Powers of 10</label>
+                            <label><input class="form-granularity-option uk-radio uk-margin-left" type="radio" name="granularity" data-val="2"> Powers of 2</label>
+                            <label><input class="form-granularity-option uk-radio uk-margin-left" type="radio" name="granularity" data-val="linear"> Linear</label>
                         </div>
                     </div>
 
@@ -469,6 +469,14 @@
         });
     }
 
+    function promptError(msg) {
+        UIkit.notification({
+            message: msg,
+            status: 'danger',
+            pos: 'bottom-center'
+        })
+    }
+
     function addImageNode(imageUrl, resolution, imageSize, imageId) {
         const uid = el_image_node_container.childElementCount + 1;
         var newNode = document.createElement('li');
@@ -576,7 +584,7 @@
         name: 'files[]',
         // type: 'json',
 
-        beforeSend: function () {
+        /*beforeSend: function () {
             console.log('beforeSend', arguments);
         },
         beforeAll: function () {
@@ -590,7 +598,7 @@
         },
         complete: function () {
             console.log('complete', arguments);
-        },
+        },*/
 
         loadStart: function (e) {
             console.log('loadStart', arguments);
@@ -637,6 +645,9 @@
     });
 
     document.querySelector('#btn-upload').addEventListener('click', function () {
+
+        var validation_ok = true;
+
         var payload = {
             'imageFileIds'   : [],
             'nodeTitles'     : [],
@@ -653,10 +664,17 @@
         document.querySelectorAll('input#nodeTitle'     ).forEach(function (i) {
             payload.nodeTitles.push(i.value)
         });
-        document.querySelectorAll('input#nodeScale'     ).forEach(function (i) {
-            // todo Validation
+        document.querySelectorAll('input#nodeScale'     ).forEach(function (i, k) {
             const val = parseFloat(i.value);
-            payload.nodeScales.push(val)
+            // Validation
+            i.classList.remove('uk-form-danger');
+            if (isNaN(val)) {
+                promptError(`The scale value of the node ${k + 1} is invalid.`);
+                i.classList.add('uk-form-danger');
+                validation_ok = false;
+            }
+
+            payload.nodeScales.push(val);
         });
         document.querySelectorAll('input#nodeId'        ).forEach(function (i) {
             payload.nodeIds.push(i.value)
@@ -668,15 +686,16 @@
             payload.nodeSources.push(i.value)
         });
         document.querySelectorAll('input#nodeConnections').forEach(function (i) {
-            var ok = true;
             const arr = [];
             // Validation:
+            i.classList.remove('uk-form-danger');
             i.value.split(',').forEach(function (j) {
                 const conn_id = trim(j);
                 if (conn_id === "") return;
                 if (payload.nodeIds.indexOf(conn_id) === -1) {
-                    ok = false;
-                    console.warn(`id= ${j} not exists`);
+                    promptError(`The node id of "${j}" not exists.`);
+                    i.classList.add('uk-form-danger');
+                    validation_ok = false;
                 }
                 arr.push(conn_id);
             });
@@ -685,6 +704,10 @@
         document.querySelectorAll('textarea#nodeDesc').forEach(function (i) {
             payload.nodeDescritions.push(i.value)
         });
+
+        if (!validation_ok) {
+            return;
+        }
 
         // create a new ecosystem
         var el_granularity = document.querySelectorAll('input.form-granularity-option'); //('input[name=radio1]');
@@ -695,7 +718,7 @@
                 break;
             }
         }
-        const data = {
+        const set_data = {
             name: document.querySelector('input#form-set-name').value,
             granularity: sel_granularity,
             scale_type: document.querySelector('select#form-scale-type')
@@ -706,7 +729,7 @@
         const node_id_map = {};
         const node_id_index = {};
 
-        ajax('POST', 'data/api.php/records/ecosystem', JSON.stringify(data), false, function (resp) {
+        ajax('POST', 'data/api.php/records/ecosystem', JSON.stringify(set_data), false, function (resp) {
 
             var eco_id = resp;
             console.log(eco_id);
@@ -754,6 +777,26 @@
             }
 
             console.log(payload);
+            // Upload success!
+
+            anime({
+                targets: '.uk-card',
+                translateX: 500,
+                opacity: 0,
+                delay: anime.stagger(100), // increase delay by 100ms for each elements.
+                complete: function (_) {
+                    UIkit.notification({
+                        message: 'Upload Successfully!',
+                        status: 'primary',
+                        pos: 'bottom-center'
+                    });
+
+                    alert('Upload Successfully!');
+
+                    window.location.href = 'comparison.html';
+                }
+            })
+
         });
 
     });
