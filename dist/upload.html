@@ -28,9 +28,9 @@
         <a href="comparison.html" class="w3-bar-item w3-button"><b></b> Speculative Explorer </a>
         <!-- Float links to the right. Hide them on small screens -->
         <div class="w3-right w3-hide-small">
+            <div id="btn-upload" class="w3-bar-item w3-button w3-blue">Upload!</div>
             <a href="#about" class="w3-bar-item w3-button">About</a>
         </div>
-        <a href="#" id="btn-upload" class="w3-bar-item w3-right w3-button w3-blue">Upload!</a>
     </div>
 </div>
 
@@ -457,12 +457,10 @@
         const el = document.querySelector(sel);
         anime({
             targets: el,
-            translateX: [0, -400],
+            translateX: [0, -200],
             opacity: {
-                value: 0,
-                duration: 200
+                value: 0
             },
-            duration: 400,
             complete: function (_) {
                 el.parentNode.removeChild(el);
             }
@@ -705,6 +703,11 @@
             payload.nodeDescritions.push(i.value)
         });
 
+        if (payload.nodeConnections.length === 0) {
+            validation_ok = false;
+            promptError('You have not add any image yet.')
+        }
+
         if (!validation_ok) {
             return;
         }
@@ -780,7 +783,7 @@
             // Upload success!
 
             anime({
-                targets: '.uk-card',
+                targets: 'li', //'.uk-card',
                 translateX: 500,
                 opacity: 0,
                 delay: anime.stagger(100), // increase delay by 100ms for each elements.
