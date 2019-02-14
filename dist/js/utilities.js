@@ -19,11 +19,13 @@ function pathJoin(parts, sep){
     return parts.join(separator).replace(replace, separator);
 }
 
-function ajax(method, url, data, ascyn=true, onSuccess, onFail) {
+function ajax(method, url, data, ascyn, onSuccess, onFail) {
     const xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
-            onSuccess.call(xhttp, this.responseText);
+            if (onSuccess) {
+                onSuccess.call(xhttp, this.responseText);
+            }
         }
     };
     xhttp.open(method, url, ascyn);

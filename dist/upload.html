@@ -629,14 +629,18 @@
         });
         document.querySelectorAll('input#nodeConnections').forEach(function (i) {
             var ok = true;
+            const arr = [];
             // Validation:
             i.value.split(',').forEach(function (j) {
-                if (payload.nodeIds.indexOf(trim(j)) === -1) {
+                const conn_id = trim(j);
+                if (conn_id === "") return;
+                if (payload.nodeIds.indexOf(conn_id) === -1) {
                     ok = false;
-                    console.warn(`id= ${i} not exists found`);
+                    console.warn(`id= ${j} not exists`);
                 }
+                arr.push(conn_id);
             });
-            payload.nodeConnections.push(i.value)
+            payload.nodeConnections.push(arr)
         });
         document.querySelectorAll('textarea#nodeDesc').forEach(function (i) {
             payload.nodeDescritions.push(i.value)
@@ -659,7 +663,10 @@
             description: document.querySelector('textarea#form-set-desc').value,
         };
 
-        ajax('POST', 'data/api.php/records/ecosystem', JSON.stringify(data), true, function (resp) {
+        const node_id_map = {};
+        const node_id_index = {};
+
+        ajax('POST', 'data/api.php/records/ecosystem', JSON.stringify(data), false, function (resp) {
 
             var eco_id = resp;
             console.log(eco_id);
@@ -672,16 +679,38 @@
                     type: payload.nodeTypes[i],
                     source: payload.nodeSources[i],
                     description: payload.nodeDescritions[i],
-                    connections: payload.nodeConnections[i],
                     is_dynamic: 0,  //fixme
 
                     fk_ecosystem_id: eco_id,
                     fk_image_id: payload.imageFileIds[i]
                 };
 
-                ajax('POST', 'data/api.php/records/node', JSON.stringify(data), true, function (resp) {
-                    console.log(resp);
-                });
+                const node_id = ajax('POST', 'data/api.php/records/node', JSON.stringify(data), false);
+                node_id_index[ i ] = node_id;
+                if (trim(payload.nodeIds[i]) !== '') {
+                    node_id_map[ payload.nodeIds[i] ] = node_id;
+                }
+            }
+
+            console.log(node_id_index);
+
+            // update each node's connections
+            console.log(payload);
+            for (var i=0; i<payload.nodeIds.length; i++){
+                if ( payload.nodeConnections[i].length > 0) {
+                    // Connections existed
+                    const conn_arr = [];
+
+                    // convert the indexes
+                    payload.nodeConnections[i].forEach(function (conn_idx) {
+                        conn_arr.push(node_id_map[conn_idx]);
+                    });
+
+                    ajax('PUT', 'data/api.php/records/node/'+node_id_index[i],
+                        JSON.stringify({connections: conn_arr.toString()}),
+                        false);
+                }
+
             }
 
             console.log(payload);
