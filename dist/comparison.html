@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Scale Comparison Browser</title>
+
+    <style>
+        .swiper-container {
+            width: 100%;
+            /*margin-left: auto;*/
+            /*margin-right: auto;*/
+        }
+
+        .swiper-container#swiper-container-h {
+            height: 100%;
+            position: fixed;
+        }
+
+        .swiper-slide {
+            text-align: center;
+            font-size: 18px;
+            /*background: #fff;*/
+            overflow: hidden;
+
+            /* Center slide text vertically */
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+        }
+
+        .swiper-slide-h {
+            /*background-color: #dedede;*/
+        }
+
+        .swiper-container-v {
+            height: 100vh;
+        }
+
+        .slide-v-container {
+            /*height: 90%;*/
+            border-width: 5px;
+            border-style: solid;
+            border-color: white;
+            background-color: white;
+            box-shadow: 0 0 10px 0 #8080806e;
+        }
+
+        .slide-img {
+            height: 300px;
+            width: 300px;
+            object-fit: cover
+        }
+
+        @media only screen and (max-width: 640px) {
+            /*600px and down*/
+            .slide-img {
+                height: 45vw;
+                width: 45vw;
+            }
+        }
+        @media only screen and (min-width: 640px) {
+            /*640px and up*/
+            .slide-img {
+                height: 20vw;
+                width: 20vw;
+            }
+        }
+        @media only screen and (min-width: 1024px) {
+            /*1024px and up*/
+            .slide-img {
+                height: 14vw;
+                width: 14vw;
+            }
+        }
+
+    </style>
+
+    <link rel="stylesheet" href="css/swiper.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="css/main.css"/>
+
+</head>
+<body>
+
+<!-- Navbar (sit on top) -->
+<div class="w3-top" style="z-index: 10000">
+    <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+        <a href="#" class="w3-bar-item w3-button"><b></b> Speculative Explorer </a>
+        <!-- Float links to the right. Hide them on small screens -->
+        <div class="w3-right w3-hide-small">
+            <a href="#about" class="w3-bar-item w3-button">About</a>
+        </div>
+        <a href="upload.html" class="w3-bar-item w3-right w3-button">Upload</a>
+    </div>
+</div>
+
+<div>
+
+    <div class='dot-bg'></div>
+
+    <!--Text and note goes here-->
+    <div class="float-text">
+        <h2 class="float-text--header">Powers of Ten</h2>
+        <div class="float-text--content">
+            it is the product fossilized trees in scale 1 and  makes up the base of the ...
+        </div>
+    </div>
+
+    <!--Nav Arrows-->
+    <div class="nav-arrow" id="arrow-right">
+        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"	 viewBox="0 0 41.999 41.999" style="enable-background:new 0 0 41.999 41.999;" xml:space="preserve"><path d="M36.068,20.176l-29-20C6.761-0.035,6.363-0.057,6.035,0.114C5.706,0.287,5.5,0.627,5.5,0.999v40	c0,0.372,0.206,0.713,0.535,0.886c0.146,0.076,0.306,0.114,0.465,0.114c0.199,0,0.397-0.06,0.568-0.177l29-20	c0.271-0.187,0.432-0.494,0.432-0.823S36.338,20.363,36.068,20.176z"/><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+    </div>
+    <div class="nav-arrow" id="arrow-left" style="transform: rotate(180deg);">
+        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"	 viewBox="0 0 41.999 41.999" style="enable-background:new 0 0 41.999 41.999;" xml:space="preserve"><path d="M36.068,20.176l-29-20C6.761-0.035,6.363-0.057,6.035,0.114C5.706,0.287,5.5,0.627,5.5,0.999v40	c0,0.372,0.206,0.713,0.535,0.886c0.146,0.076,0.306,0.114,0.465,0.114c0.199,0,0.397-0.06,0.568-0.177l29-20	c0.271-0.187,0.432-0.494,0.432-0.823S36.338,20.363,36.068,20.176z"></path><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+
+    </div>
+    <div class="nav-arrow" id="arrow-up" style="transform: rotate(-90deg);">
+        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"	 viewBox="0 0 41.999 41.999" style="enable-background:new 0 0 41.999 41.999;" xml:space="preserve"><path d="M36.068,20.176l-29-20C6.761-0.035,6.363-0.057,6.035,0.114C5.706,0.287,5.5,0.627,5.5,0.999v40	c0,0.372,0.206,0.713,0.535,0.886c0.146,0.076,0.306,0.114,0.465,0.114c0.199,0,0.397-0.06,0.568-0.177l29-20	c0.271-0.187,0.432-0.494,0.432-0.823S36.338,20.363,36.068,20.176z"/><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+
+    </div>
+    <div class="nav-arrow" id="arrow-down" style="transform: rotate(90deg)">
+        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"	 viewBox="0 0 41.999 41.999" style="enable-background:new 0 0 41.999 41.999;" xml:space="preserve"><path d="M36.068,20.176l-29-20C6.761-0.035,6.363-0.057,6.035,0.114C5.706,0.287,5.5,0.627,5.5,0.999v40	c0,0.372,0.206,0.713,0.535,0.886c0.146,0.076,0.306,0.114,0.465,0.114c0.199,0,0.397-0.06,0.568-0.177l29-20	c0.271-0.187,0.432-0.494,0.432-0.823S36.338,20.363,36.068,20.176z"/><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+
+    </div>
+
+    <!-- Slider main container -->
+    <div class="swiper-container" id="swiper-container-h">
+        <!-- Additional required wrapper -->
+        <div class="swiper-wrapper">
+            <!-- Slides -->
+            <div class="swiper-slide swiper-slide-h" data-hash="slide1">Slide 1</div>
+            <div class="swiper-slide swiper-slide-h" data-hash="slide2"style="background-color: darkgray">Slide 3</div>
+            <div class="swiper-slide swiper-slide-h">
+                <div class="swiper-container" id="sw3" style="height: 600px;">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/image_set/Powers of Ten/images/-4.jpg" /></div>
+                        <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/image_set/Powers of Ten/images/-3.jpg" /></div>
+                        <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/image_set/Powers of Ten/images/-2.jpg" /></div>
+                        <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/image_set/Powers of Ten/images/-1.jpg" /></div>
+                        <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/image_set/Powers of Ten/images/0.jpg" /></div>
+                        <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/image_set/Powers of Ten/images/1.jpg" /></div>
+                        <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/image_set/Powers of Ten/images/2.jpg" /></div>
+                        <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/image_set/Powers of Ten/images/3.jpg" /></div>
+                        <div class="swiper-slide swiper-slide-v"><img class="slide-v-container" src="res/image_set/Powers of Ten/images/4.jpg" /></div>
+                    </div>
+                    <!-- Add Pagination -->
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+            <div class="swiper-slide swiper-slide-h">Slide 2</div>
+            <div class="swiper-slide swiper-slide-h">
+                <span id="move">See it moves</span>
+            </div>
+            <div class="swiper-slide swiper-slide-h">
+                <div style="
+                position: relative;
+                width: 50%;
+                height: 50%;
+                background-color: wheat;
+                border-color: black;
+            "><button onclick="alert('yo')">hey</button></div>
+            </div>
+            <div class="swiper-slide swiper-slide-h">
+                <div class="swiper-wrapper" id="sw2">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide swiper-slide-v">
+                            <div class="slide-v-container">Vertical Slide 1</div>
+                        </div>
+                        <div class="swiper-slide swiper-slide-v">
+                            <div class="slide-v-container">Vertical Slide 1</div>
+                        </div>
+                        <div class="swiper-slide swiper-slide-v">
+                            <div class="slide-v-container">Vertical Slide 1</div>
+                        </div>
+                        <div class="swiper-slide swiper-slide-v">
+                            <div class="slide-v-container">Vertical Slide 1</div>
+                        </div>
+                        <div class="swiper-slide swiper-slide-v">
+                            <div class="slide-v-container">Vertical Slide 1</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-slide swiper-slide-h">Slide 2</div>
+            <div class="swiper-slide swiper-slide-h">Slide 2</div>
+            <div class="swiper-slide swiper-slide-h">Slide 2</div>
+            <div class="swiper-slide swiper-slide-h">Slide 2</div>
+        </div>
+
+        <!-- If we need scrollbar -->
+        <div class="swiper-scrollbar"></div>
+    </div>
+
+
+</div>
+
+
+<script src="https://unpkg.com/animejs@3.0.0/lib/anime.min.js"></script>
+<script src="js/utilities.js"></script>
+<script src="js/swiper.js"></script>
+
+<script>
+
+
+    function loadImgData(setPath, imageSetData) {
+        var ecosysContainer = document.querySelector('div#swiper-container-h').querySelector('.swiper-wrapper');
+
+        // Remove the demo data filled
+        while(ecosysContainer.firstChild){
+            ecosysContainer.removeChild(ecosysContainer.firstChild);
+        }
+
+        for (var setIdx = 0; setIdx < imageSetData.length; setIdx++) {
+            var ecoInnerSlideList = '';
+            for (var i=0; i<imageSetData[setIdx].imageList.length; i++) {
+                var imgPath = imageSetData[setIdx].imageList[i];
+                if (typeof(imgPath) === "object")
+                    imgPath = imgPath.filename;
+                imgPath = pathJoin([setPath, imageSetData[setIdx].path, imgPath]);
+                ecoInnerSlideList +=
+                    '<div class="swiper-slide swiper-slide-v">' +
+                    '   <div class="slide-v-container">' +
+                    '       <img class="slide-img" src="'+ imgPath +'"  alt=""/>' +
+                    '   </div>' +
+                    '</div>';
+            }
+
+            const slideId = 'slide-' + setIdx;
+            appendDom(ecosysContainer,
+                '<div class="swiper-slide swiper-slide-h" data-hash="' + slideId + '">' +
+                '    <div class="swiper-container swiper-container-v" id="'+slideId+'">' +
+                '        <div class="swiper-wrapper">' +
+                            ecoInnerSlideList +
+                // '            <div class="swiper-slide swiper-slide-v">' +
+                // '               <img class="slide-v-container" src="res/image_set/Powers of Ten/images/-4.jpg" />' +
+                // '            </div>' +
+                '        </div>' +
+                // '        <!-- Add Pagination -->' +
+                // '        <div class="swiper-pagination"></div>' +
+                '    </div>' +
+                '</div>');
+        }
+
+    }
+
+    const el_fText_title = document.querySelector('.float-text--header');
+    const el_fText_content = document.querySelector('.float-text--content');
+    function setCaption(title, content) {
+        el_fText_title.innerHTML = title;
+        el_fText_content.innerHTML = content;
+    }
+
+    const imageSetData = JSON.parse(ajax('GET', 'res/test_data/imageset.json', null, false)).imageset;
+    const _testImgSet = imageSetData.concat(imageSetData).concat(imageSetData);
+
+    lastActiveSlideId = null;
+
+    loadImgData('res/image_set', _testImgSet);
+
+    const arrowAct = {
+        state: 'hidden',  //hidden, shown, animating
+        el: {
+            up   : document.querySelector('#arrow-up'),
+            down : document.querySelector('#arrow-down'),
+            left : document.querySelector('#arrow-left'),
+            right: document.querySelector('#arrow-right'),
+        },
+        width: document.querySelector('.nav-arrow').getBoundingClientRect().width,
+        height: document.querySelector('.nav-arrow').getBoundingClientRect().height,
+        hide: function () {
+            // this.el.up   .style.display = 'none';
+            // this.el.down .style.display = 'none';
+            // this.el.left .style.display = 'none';
+            // this.el.right.style.display = 'none';
+            if (this.state !== 'hidden') {
+                this.anim.out();
+            }
+        },
+        show: function (el) {
+            // this.el.up   .style.display = 'block';
+            // this.el.down .style.display = 'block';
+            // this.el.left .style.display = 'block';
+            // this.el.right.style.display = 'block';
+            if (el) {
+                // re-position the arrows
+                const rct = el.getBoundingClientRect();
+                this.el.up   .style.left = px_(rct.left + rct.width / 2 - this.width  /2);
+                this.el.up   .style.top = px_(rct.top                   - this.height /2);
+                this.el.down .style.left = px_(rct.left + rct.width / 2 - this.width  /2);
+                this.el.down .style.top = px_(rct.bottom                - this.height /2);
+                this.el.left .style.left = px_(rct.left                 - this.width  /2);
+                this.el.left .style.top = px_(rct.top + rct.height / 2  - this.height /2);
+                this.el.right.style.left = px_(rct.right                - this.width  /2);
+                this.el.right.style.top = px_(rct.top + rct.height / 2  - this.height /2);
+            }
+            if (this.state !== 'shown') {
+                this.anim.in();
+            }
+        },
+        anim: {
+            in: function () {
+                arrowActAnim.restart();
+            },
+            out: function () {
+                arrowActAnim.seek(arrowActAnim.duration - 1);
+                arrowActAnim.reverse();
+                arrowActAnim.play();
+            }
+        }
+    };
+    arrowActAnim = anime({
+        targets: [arrowAct.el.up, arrowAct.el.down, arrowAct.el.left, arrowAct.el.right],
+        translateX: [20, 0],  // Since we've already rotated them, we can simple translate by X.
+        opacity: [0, 1],
+        duration: 400,
+        easing: 'easeInBack',
+        autoplay: false,
+        update: function (anim) {
+            // State machine
+            if (anim.progress === 0) arrowAct.state = 'hidden';
+            else if (anim.progress === 1) arrowAct.state = 'shown';
+            else arrowAct.state = 'animating';
+        }
+    });
+    arrowAct.hide();
+
+    var ecoSlides = [];
+    for (var i = 0; i < _testImgSet.length; i++) {
+        const sp = new Swiper('#slide-'+i, {
+            direction: 'vertical',
+            effect: 'coverflow',
+            slidesPerView: 2,
+            // grabCursor: true,
+            centeredSlides: true,
+            initialSlide: parseInt(_testImgSet[i].imageList.length / 2 + (Math.random()-0.5)*6),
+            spaceBetween: 5,
+            slideToClickedSlide: true,
+            coverflowEffect: {
+                rotate: 25,
+                stretch: 90,
+                depth: 600,
+                modifier: 1,
+                slideShadows : false,
+            },
+            on: {
+                progress: function (p) {
+                    allow_nav_arrow = false;
+                },
+                slideChange: function () {
+                    if ( ecoSwiper !== undefined ) {
+
+                        // Change other eco-systems' images
+                        // todo Keep in the same scale
+                        if (this.isActive) {
+
+                            // left-right animation
+                            anime({
+                                targets: '.swiper-slide-h:not(.swiper-slide-active)',
+                                autoplay: true,
+                                rotateX: [0, 30, 0],
+                                duration: 600,
+                                easing: 'easeOutSine',
+                                delay: function (el, i, l) {
+                                    return Math.abs(i - ecoSwiper.realIndex) * 100;
+                                },
+                            });
+
+                            const _slideIncr = this.realIndex - this.previousIndex;
+                            for (var i = 0; i < ecoSlides.length; i++) {
+                                if ( ecoSlides[i] === this ) continue;
+                                ecoSlides[i].slideTo(ecoSlides[i].realIndex + _slideIncr);
+                            }
+                        }
+                    }
+                },
+                transitionEnd: function () {
+                    allow_nav_arrow = true;
+
+                    if (lastActiveSlideId === null) return;
+                    /*// Text animation
+                    anime({
+                        targets: ['.float-text--header', '.float-text--content'],
+                        opacity: [0, 1],
+                        delay: anime.stagger(100),
+                        autoplay: true
+                    });*/
+                    const el = _testImgSet[ecoSwiper.realIndex].imageList[this.realIndex];
+                    var title = '{Image Set Title}'; var content = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged'.substring(Math.random()*200);
+                    if (typeof(el) === "object") {
+                        title = el.name;
+                        if (el.notes !== '') {
+                            content = el.notes;
+                        }
+                    }
+                    setCaption(title, content);
+
+                },
+                init: function () {
+                    this.allowTouchMove = false;
+                    this.coverflowEffect.transitToTranslate(0);
+                    this.el.style.opacity = 1;
+                }
+            },
+            touchStart: function (evt) {}
+        });
+
+        sp.anim = {
+            collapse: function () {
+                anime({
+                    targets: sp,
+                    ttTranslateValue: 0,
+                    elasticity: 200,
+                    duration: 600,
+                    easing: 'easeInBack',
+                    autoplay: true,
+                    update: function () {
+                        sp.coverflowEffect.updateTtTranslate();
+                    }
+                });
+            },
+            expand: function () {
+                anime({
+                    targets: sp,
+                    ttTranslateValue: 1,
+                    elasticity: 200,
+                    duration: 450,
+                    easing: 'easeInOutSine',
+                    autoplay: true,
+                    update: function() {
+                        sp.coverflowEffect.updateTtTranslate();
+                    }
+                });
+            }
+        };
+
+        ecoSlides.push(sp);
+    }
+
+    // init the swiper
+    var ecoSwiper = new Swiper('#swiper-container-h', {
+        speed: 400,
+        initialSlide: 1,
+        centeredSlides: true,
+        slideToClickedSlide: true, //click on any slide will produce transition to this slide
+        keyboard: {
+            enabled: true,
+        },
+        mousewheel: {
+            invert: false,
+            releaseOnEdges: true
+        },
+        hashNavigation: {
+            watchState: true,
+        },
+        scrollbar: {
+            el: '.swiper-scrollbar',
+            draggable: true,
+        },
+        // Responsive breakpoints
+        slidesPerView: 6,
+        spaceBetween: 20,
+        breakpoints: {
+            1024: {
+                slidesPerView: 4,
+                spaceBetween: 20,
+            },
+            640: {
+                slidesPerView: 2,
+                spaceBetween: 15,
+            }
+        },
+        on: {
+            progress: function (progress) {
+                console.log('on "progress":' + progress);
+                if (this.canPlayLRAnim === true) {
+                    if (lastActiveSlideId === null) {return}
+                    const swiper = this;
+                    // left-right animation -- collapse
+                    anime({
+                        targets: '.swiper-slide-h',
+                        autoplay: true,
+                        translateX: 0,
+                        scale: 1,
+                        duration: 100,
+                        easing: 'easeInOutSine',
+                        delay: function(el, i, l) {
+                            return Math.abs(i-swiper.realIndex) * 100;
+                        },
+                    });
+                    // hide the arrows
+                    allow_nav_arrow = false;
+                    this.canPlayLRAnim = false;
+                }
+            },
+            transitionEnd: function() {
+                console.log('on transitionEnd: realIndex=' + this.realIndex + ' lastActiveSlideId='+lastActiveSlideId);
+                if (lastActiveSlideId === null) {return}
+
+                allow_nav_arrow = true;
+                this.canPlayLRAnim = true;
+                const swiper = this;
+                // left-right animation -- expand
+                anime({
+                    targets: '.swiper-slide-h',
+                    autoplay: true,
+                    translateX: function (el, i, l) {
+                        return Math.sign(i - swiper.realIndex) * (30);
+                    },
+                    scale: function (el, i, l) {
+                        return (1 - Math.abs(i - swiper.realIndex) * 0.1);
+                    },
+                    opacity: function (el, i, l) {
+                        if (i === swiper.realIndex) return 1;
+                        return .6
+                    },
+                    duration: 500,
+                    easing: 'easeInOutSine',
+                    delay: function(el, i, l) {
+                        return Math.abs(i-swiper.realIndex) * 100;
+                    },
+                });
+
+                if (lastActiveSlideId !== this.realIndex) {
+                    // actually move changed slides
+
+                    // Deactivate the current (previous) ecosys
+                    ecoSlides[lastActiveSlideId].allowTouchMove = false;
+                    ecoSlides[lastActiveSlideId].anim.collapse();
+                    ecoSlides[lastActiveSlideId].isActive = false;
+
+                    // Activate the current
+                    ecoSlides[this.realIndex].allowTouchMove = true;
+                    ecoSlides[this.realIndex].anim.expand();
+                    ecoSlides[this.realIndex].isActive = true;
+
+                    // Text animation
+                    anime({
+                        targets: ['.float-text--header', '.float-text--content'],
+                        translateX: [-100, 0],
+                        opacity: [0, 1],
+                        delay: anime.stagger(100),
+                        autoplay: true
+                    });
+                    const el = _testImgSet[this.realIndex].imageList[ecoSlides[lastActiveSlideId].realIndex];
+                    var title = '{Image Set Title}';
+                    var content = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged';
+                    if (typeof(el) === "object") {
+                        title = el.name;
+                        if (el.notes !== '') {
+                            content = el.notes;
+                        }
+                    }
+                    setCaption(title, content);
+                }
+
+                lastActiveSlideId = this.realIndex;
+            },
+            init: function() {
+                const startSlide = this.realIndex || this.params.initialSlide;
+                console.log('on init: "startSlide" = ' + startSlide);
+
+                ecoSlides[startSlide].allowTouchMove = true;
+                ecoSlides[this.realIndex].anim.expand();
+
+                lastActiveSlideId = startSlide;
+            }
+        }
+    });
+
+    const el_fText = document.querySelector('.float-text');
+    const el_dotBg = document.querySelector('div.dot-bg');
+
+    var allow_nav_arrow = true;
+    var lastMouseOverElement = null;
+    window.addEventListener('mousemove', function(evt) {
+        const halfH = document.documentElement.clientHeight /2;
+        const halfW = document.documentElement.clientWidth /2;
+
+        var pdx = 1 - evt.clientX / halfW;
+        var pdy = 1 - evt.clientY / halfH;
+
+        // console.log( evt.clientX + "," + evt.clientY
+        //     + " | " + dx + "," + dy
+        //     + " | " + pdx + "," + pdy);
+
+        el_dotBg.style.transform =
+            // ' rotateX('+pdx*10+'deg) rotateY('+pdy*10+'deg)' +
+            ' skew('+-pdy*5+'deg,'+-pdx*5+'deg)' +
+            ' translateX('+pdx*5+'px) translateY('+pdy*5+'px)';
+
+        // Dynamic effects on the text
+        const sz = el_fText.getBoundingClientRect();
+        pdx = (sz.x + sz.width / 2 - event.clientX) / document.documentElement.clientWidth;
+        pdy = (sz.y + sz.height / 2 - event.clientY) / document.documentElement.clientHeight;
+        el_fText.style.transform =
+            ' rotateX('+pdy*15+'deg) rotateY('+pdx*15+'deg)' +
+            ' skew(-10deg)';
+
+        // Nav-arrows monitor
+        const activeSlide = document.querySelector('' +
+            '.swiper-slide-h.swiper-slide-active ' +
+            '.swiper-slide-v.swiper-slide-active ' +
+            '.slide-img');
+        const elementMouseIsOver = document.elementFromPoint(evt.clientX, evt.clientY);
+        if (elementMouseIsOver !== lastMouseOverElement) {
+
+            if (lastMouseOverElement === activeSlide) {
+                // console.log('move outside');
+                document.body.style.cursor = null;
+                arrowAct.hide();
+            }
+            if (allow_nav_arrow && elementMouseIsOver === activeSlide) {
+                // console.log('inside');
+                document.body.style.cursor = 'pointer';
+                arrowAct.show(activeSlide);
+            }
+
+            lastMouseOverElement = elementMouseIsOver;
+        }
+
+    });
+
+    window.addEventListener('click', function (evt) {
+        // Nav-arrows monitor
+        const activeSlide = document.querySelector('' +
+            '.swiper-slide-h.swiper-slide-active ' +
+            '.swiper-slide-v.swiper-slide-active ' +
+            '.slide-img');
+        if (activeSlide === document.elementFromPoint(evt.clientX, evt.clientY)) {
+            console.log('clicked on active slide');
+
+            // todo Activate mode ecosystem mode
+
+            anime({
+                targets: '.swiper-slide-h.swiper-slide:not(.swiper-slide-active)',
+                rotate: anime.stagger([-360, 360]),
+                opacity: 0,
+                duration: 2000,
+                autoplay: true
+            });
+            anime({
+                targets: '.swiper-slide-v.swiper-slide:not(.swiper-slide-active)',
+                translateY: anime.stagger(30, {easing: 'easeOutQuad'}),
+                duration: 2000,
+                autoplay: true
+            });
+            anime({
+                targets: el_dotBg,
+                rotate: [-360, 235],
+                scale: [1, 5],
+                duration: 1000,
+                autoplay: true,
+                complete: function (anim) {
+                    window.location.href = 'ecosystem.html#' + _testImgSet[ecoSwiper.realIndex].imageList[ecoSlides[ecoSwiper.realIndex].realIndex].scale_id;
+                }
+            });
+            anime({
+                targets: document.body,
+                opacity: 0,
+                duration: 3000
+            })
+
+        }
+    });
+
+
+</script>
+
+</body>
+</html>

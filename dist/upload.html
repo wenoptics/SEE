@@ -25,12 +25,12 @@
 <!-- Navbar (sit on top) -->
 <div class="w3-top" style="z-index: 10000">
     <div class="w3-bar w3-white w3-wide w3-padding w3-card">
-        <a href="#" class="w3-bar-item w3-button"><b></b> Speculative Explorer </a>
+        <a href="/comparison.html" class="w3-bar-item w3-button"><b></b> Speculative Explorer </a>
         <!-- Float links to the right. Hide them on small screens -->
-        <button id="btn-upload" class="w3-right uk-button uk-button-primary">Upload!</button>
         <div class="w3-right w3-hide-small">
             <a href="#about" class="w3-bar-item w3-button">About</a>
         </div>
+        <a href="#" id="btn-upload" class="w3-bar-item w3-right w3-button w3-blue">Upload!</a>
     </div>
 </div>
 
@@ -43,11 +43,11 @@
 
         <div class="uk-card uk-card-body uk-margin-small" style="text-align: center">
             <h3 class="uk-card-title">
-                Upload New Eco-System
+                Upload a New EcoSystem
             </h3>
         </div>
 
-        <div class="uk-card uk-card-default uk-card-body">
+        <div id="set-meta-card" class="uk-card uk-card-default uk-card-body">
 
             <div class="uk-card-header">
                 <h3 class="uk-card-title">
@@ -431,6 +431,7 @@
 <!-- UIkit JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/js/uikit.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/js/uikit-icons.min.js"></script>
+<script src="https://unpkg.com/animejs@3.0.0/lib/anime.min.js"></script>
 <script src="js/utilities.js"></script>
 
 <script>
@@ -454,7 +455,15 @@
 
     function removeNode(sel) {
         const el = document.querySelector(sel);
-        el.parentNode.removeChild(el);
+        anime({
+            targets: el,
+            translateX: [0, -200],
+            opacity: 0,
+            duration: 500,
+            complete: function (_) {
+                el.parentNode.removeChild(el);
+            }
+        });
     }
 
     function addImageNode(imageUrl, resolution, imageSize, imageId) {
@@ -532,7 +541,27 @@
             <!--</li>-->`;
 
         el_image_node_container.appendChild(newNode);
+
+        // Scroll to bottom
+        window.scrollTo(0, document.body.scrollHeight);
+
+        // Show the new node
+        anime({
+            targets: newNode,
+            translateX: [-200, 0]
+        });
     }
+
+    // Zoom out animation
+    anime({
+        targets: '#set-meta-card',
+        scale: {
+            value: [1.2, 1],
+            duration: 2000
+        },
+        translateX: [-200, 0],
+        opacity: [0, 1]
+    });
 
     var barUploadProgress = document.getElementById('js-progressbar');
 
@@ -563,7 +592,11 @@
         loadStart: function (e) {
             console.log('loadStart', arguments);
 
-            barUploadProgress.removeAttribute('hidden');
+            // barUploadProgress.removeAttribute('hidden');
+            anime({
+                targets: barUploadProgress,
+                opacity: 1,
+            });
             barUploadProgress.max = e.total;
             barUploadProgress.value = e.loaded;
         },
@@ -586,7 +619,11 @@
             console.log('completeAll', arguments);
 
             setTimeout(function () {
-                barUploadProgress.setAttribute('hidden', 'hidden');
+                // barUploadProgress.setAttribute('hidden', 'hidden');
+                anime({
+                    targets: barUploadProgress,
+                    opacity: 0,
+                });
             }, 1000);
 
             // Insert an image node

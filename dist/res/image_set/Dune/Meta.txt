@@ -1,0 +1,303 @@
+10^9 DNA Molecule
+
+Scale ID: 36
+Scale: -9
+Name: DNA Molecule
+Source: Text
+Type: Fiction
+Dynamic: Yes
+Connections: 35, 34, 33, 32 ,31, 30, 29, 28, 27,
+Notes: Genetic factors and variations are an essential social and political tool in Dune, with groups such as the Bene Gesserit modifying and breeding humans for specific traits in political leaders. Gene expression at this scale play an essential, ever changing role within the body as the building codes/determinants for life.
+
+
+10^-8 DNA Strand
+
+Scale ID: 35
+Scale: -8
+Name: DNA strand
+Source: Text
+Type: Fiction
+Dynamic: Yes
+Connections: 36, 34, 33, 32, 31, 30, 29, 28, 27
+Notes: The DNA continues at this stage to determine all of the internal processes of the human body in Dune.
+
+
+10^-7 Chromatin
+
+Scale ID: 34
+Scale: -7
+Name: Chromatin 
+Source: Text
+Type: Fiction
+Dynamic: Yes
+Connections: 35, 33, 32, 31, 30, 29, 28, 27
+Notes:  DNA determines the functionings of an organism, in this case the entirety of the human body. 
+
+
+10^-6 Cell Nucleus
+
+Scale ID: 33
+Scale: -6
+Name: Cell Nucleus
+Source: Text
+Type: Fiction
+Dynamic: Yes
+Connections:  34, 32
+Notes: The nucleus interacts with its surrounding scales only.
+
+
+10^-5 Melange moving through cell
+
+Scale ID: 32
+Scale: -5
+Name: Melange in Cytoplasm
+Source: Text
+Type: Fiction
+Dynamic: Yes
+Connections: 33, 31, 28, 27
+Notes: Melange connects the cell surface, altering the processes of the cell via protein cascades. The effects of the melange are found throughout the body, particularly within the mind, creating a heightened sense of foresight.
+
+
+10^-4 Brain/Nerve Cell
+
+Scale ID: 31
+Scale: -4
+Name: Brain Cell
+Source: Text
+Type: Fiction
+Dynamic: Yes
+Connections: 32, 30, 29, 28
+Notes: Brain cells have active influence the processes of the mind and body.
+
+
+10^-3 Skull
+
+Scale ID: 30
+Scale: -3
+Name: Skull
+Source: Text
+Type: Fiction
+Dynamic: No
+Connections: 31, 29
+Notes: N/A
+
+
+10^-2 Skin
+
+Scale ID: 29
+Scale: -2
+Name: Skin
+Source: Text
+Type: Fiction
+Dynamic: No
+Connections: 30, 28, 27
+Notes: The skin of Arrakis populations is particularly wrinkled due to lack of water within the ecological system -- revert to scale 21.
+
+
+10^-1 Head
+
+Scale ID: 28
+Scale: -1
+Name: Head
+Source: Text
+Type: Fiction
+Dynamic: Yes
+Connections: 31, 29, 27, 24
+Notes: For this scale, the active processes of thinking, personality and action-formation occur. The processes that go on in the mind affect not only an individual's body, but the surrounding environment.
+
+
+10^0 Human Body
+
+Scale ID: 27
+Scale: 0
+Name: Paul/Fremen
+Source: Text
+Type: Fiction
+Dynamic: Yes
+Connections: 26, 24, 21, 19 
+Notes: Individuals in the Arrakis system take part in both the commercial and geological processes of the planet. As individuals, humans are important terraformers on Arrakis and interplanetary actors in commerce.
+
+
+10^1  Paul on Worm
+
+Scale ID: 26
+Scale: 1
+Name: Sandworm Rider
+Source: Text
+Type: Fiction
+Dynamic: Yes
+Connections: 27, 25
+Notes: The sandworm and human interaction at this scale is representative of the human use of the sandworm for transport across the deserts of Arrakis.
+
+10^2 Field
+
+Scale ID: 25
+Name: Sandworm
+Source:Text
+Type: Fiction
+Dynamic: Yes
+Connections: 27, 24, 23, 22, 21, 20, 19
+Notes: This scale represents the impacts of the sandworms, who shift the sands and physical geology of Arrakis while also playing an important role in Fremen culture through the transport of individuals and the creation of spice. Its spice production ties the sandworm to the commerce of the planet.
+
+
+10^3 Arrakeen & Galactic Settlements
+
+Scale ID: 24
+Scale: 3
+Name: Arrakeen & Galactic Settlements
+Source: Text
+Type: Fiction
+Dynamic: Yes
+Connections: 34, 27, 25, 23, 22, 19 
+Notes: At this settlement scale, the social and political interactions of populations on Arrakis have a direct impact on the availability of water for particular peoples and the social constructs of the feudal system in place. The interconnections here go both inwards and outwards, as society and its forces take place and affect both individuals and their larger environments.These social settlements are fueled by the spice and the commerce it brings.
+
+
+10^4 Fremen Culture
+
+Scale ID: 23
+Scale: 4
+Name: Fremen Society
+Source:  Dune
+Type: Fiction
+Dynamic: Yes
+Connections: 19, 20, 22, 24, 27
+Notes: Fremen society is best connected to this level, one above Arrakeen and the Galactic Settlements to depict the freedom of the Fremen on Arrakis. Only their people can move across the landscapes and survive in the deep deserts of the south. Their water discipline has trained their bodies for the harshness of life on Arrakis. The Fremen culture is also closely related to spice and its social and commercial significance which they manipulate to protect their greatest project: transforming the face of the planet. Under the guidance of the Planetologist Keyes the ecological Fremen have undertaken a centuries long project to manually terraform the planet into a paradise.
+
+
+10^5 Melange
+
+Scale ID: 22
+Scale: 5
+Name: Melange
+Source:  Dune
+Type: Fiction
+Dynamic: Yes
+Connections: 19, 21, 23, 24, 25, 27, 28, 32
+Notes: Melange plays a vital role in the novel Dune from the biological level to the Empire’s commerce and galactic transportation. 
+
+
+10^6 Geologic Landscapes 
+
+Scale ID: 21
+Scale: 6
+Name:
+Source:  Dune
+Type: Fiction
+Dynamic: Yes
+Connections: 20, 22, 23, 24, 25, 27, 28
+Notes: The harsh desert geology has many affects on the biosphere of Arrakis, connecting from the body system level, through living and commerce
+
+
+10^7 Arrakis
+
+Scale ID: 20
+Scale: 7
+Name: Arrakis
+Source:  Dune
+Type: Fiction
+Dynamic: No
+Connections: 19, 21, 23, 24
+Notes: Arrakis as a planet plays into the Fremen identity, especially their religious history as a migrating people.
+
+
+10^8 Arrakis & Moons (Commerce)
+
+Scale ID: 19
+Scale: 8
+Name: Arrakis & Moons
+Source:  Dune
+Type: Fiction
+Dynamic: Yes
+Connections: 18, 20, 21, 22, 23, 24, 27
+Notes: Arrakis has two moons, Kelln and Arvont; A guild transport ship is also included at this scale symbolizing intergalactic commerce
+Commerce here can be connected to several scales:
+
+
+The human body for slave trafficking within the empire
+The commercial relationships that tie the empire together, held in the grasp of the Shipping Guild who controls movement of spice from Arrakis and is also dependent on it
+This dependence was exploited by the Fremen who sought to limit travel around the planet and satellite activity that might reveal their plans
+
+
+10^9 2 Moons’ Orbits
+
+Scale ID: 18
+Scale: 9 
+Name: 2 Moons’ Orbits
+Source:  Dune
+Type: Fiction
+Dynamic: No
+Connections: 17, 19, 21, 23
+Notes: Gravity of Moons affects loose sand on Arrakis especially in the deep sand seas. The figures on the moons are also important to Fremen society.
+
+
+10^10 Arrakis & Menaris Orbit
+
+Scale ID: 17
+Scale: 10 
+Name: Arrakis & Menaris Orbit 
+Source:  The Dune Encyclopedia
+Type: Fiction
+Dynamic: No
+Connections: 16, 18
+Notes: Gravity is main connection
+
+
+10^11 Inner Solar System
+
+Scale ID: 16
+Scale: 11 
+Name: Inner Solar System 1 
+Source:  The Dune Encyclopedia
+Type: Fiction
+Dynamic: No
+Connections: 15, 17
+Notes: Gravity is main connection
+
+
+10^12 Inner Solar System
+
+Scale ID: 15
+Scale: 12 
+Name: Inner Solar System 2 
+Source:  The Dune Encyclopedia
+Type: Fiction
+Dynamic: No
+Connections: 14, 16
+Notes: Gravity is main connection;
+
+
+10^13 Canopus System	
+
+Scale ID: 14
+Scale: 13 
+Name: Canopus System
+Source:  The Dune Encyclopedia
+Type: Fiction
+Dynamic: No
+Connections: 13, 15, 16, 17, 18, 19, 20
+Notes: Gravity is main connection; Canopus (sun) also provides solar radiation (heat and light) to Arrakis and other planets
+Visible objects include: Canopus and the outer planets Extaris, Ven, and Revona
+
+
+10^14 Solar System Dust	
+
+Scale ID: 13
+Scale: 14 
+Name: Solar System Dust 
+Source:  The Dune Encyclopedia
+Type: Fiction
+Dynamic: No
+Connections: 12, 14
+Notes: Dust field mentioned in “The Dune Encyclopedia”
+
+
+10^21 Starspen
+
+Scale ID: 6
+Scale: 21 
+Name: Starspen 
+Source:  The Dune Encyclopedia
+Type: Fiction
+Dynamic: Yes
+Connections: 5, 7, 19, 24
+Notes: Gravity; Maximum possible reach of Corrino Empire

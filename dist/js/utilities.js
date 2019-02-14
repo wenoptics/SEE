@@ -24,7 +24,7 @@ function ajax(method, url, data, ascyn, onSuccess, onFail) {
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
             if (onSuccess) {
-                onSuccess.call(xhttp, this.responseText);
+                onSuccess.call(this, this.responseText);
             }
         }
     };

@@ -1,0 +1,48 @@
+Name:Purified sand
+Work: Nausicaa
+Scale: -1
+Connections: (0,1)Type: fiction
+Dynamic: no
+notes: it is the product  fossilized trees in scale 1 and  makes up the base of the cavern that contains the aquifer. “The Trees of the toxic jungle must have evolved to purify the earth of all the pollution that us humans have made. They absorb the pollution so it becomes  inert and die, fossilize and they turn into purified sand”
+
+name:Aquifer
+Work: Nausicaa
+Scale:100
+Connections:(-1,1,2,3).
+Type: fiction
+Dynamic: no(just provides the base of everything doesn’t interact past that)
+Notes: This is what the toxic jungle grows on top of and free of poisons and pollution. The fossilized trees immediately above the aquifer purify the water that is in the aquifer.before it flows into it.“ What a magnificent tree… its dead but water is still flowing through it”- Nausicaa  “The Trees of the wasteland purify the water”
+
+Name: Fossilized trees under the Forest
+Work: Nausicaa
+Scale: 1
+Connections:(-1,0,2,3,4) 
+Dynamic:yes
+Notes: the fossilized trees create the cavern and help purify the water that the people on the surface use. “ The trees of the wasteland purify the water” this is very important in Nausicaa for the humans that are still living. Since they draw it from their wells “This sand looks like the sand from the bottom of our well,looks like these trees must die and fossilize then turn into sand”. The trees are also what the toxic jungle turns into eventually. The jungle which transpires to create the clouds that are poisonous, and carry the spores of the plants that spread the. And are slowly spreading around the world. 
+
+Name: Forest floor;sand
+Work: Nausicaa
+Scale:2
+Connections:3,4,
+Type: fiction
+Dynamic:yes
+notes:”All the poison is in the soil even the the top-soil of our valley is polluted...but I don’t understand who could have polluted the entire earth”
+“The Trees of the toxic jungle must have evolved to purify the earth of all the pollution that us humans have made. They absorb the pollution so it becomes  inert and die, fossilize and they turn into purified sand”- Nausicaa The sand on the forest floor is the polluted soil that covers the planet in this story. This sand is processed by the trees which will eventually turn into the the fossilized trees one which the new growth of the forest grows. 
+
+Name: Just above the toxic jungle
+Work: Nausicaa
+Scale: 3
+Connections:(-1,0,1,2,4)
+Type: fiction
+Dynamic: yes
+Notes: The water comes through this initial level and flows down through the fossilized level becoming purified. 1, The trees and eventually die and become fossilized and become the level underneath the jungle, 2/-1the trees of the toxic jungle sit on the old trees slowly crumble into purified sand. In the areas where this has yet to take place the trees take up all the toxins from soil and the air and sequester them. 4 The plants of the toxic jungle I assume function as all other plants and transpire in order to help maintain a functional temperature . In doing this on a large scale they would help create the clouds of that level.  “The trees of the toxic jungle must have evolved to purify the earth of all the pollution that us humans. have made. They absorb  the pollution so it becomes inert and die, fossilize and then turn into purified sand.”  a half scale below this contains the majority of the biodiversity of this world. The Insects of all sizes and plants that perpetuate the growth of the forest using wind dispersal. Releasing spores everyday in the afternoon. “the michigo palms are releasing their afternoon spores”.Later in the movie the wise Obaba describes why the toxic jungle hasn’t spread to the valley of the wind yet “we have the wind from the sea to protect us from the jungles poisons. We know the poisons from the jungle can not reach us here.”
+
+Name: Toxic Clouds above the toxic jungle
+Work: Nausicaa
+Scale: 4
+Connections: (1,3)
+Type: fiction
+Dynamic: yes
+Notes:This scale connected the toxic jungle at the third level because it is the result  of transpiration and evaporation. In the movie it is part of a storm since they are not under the storm it is unclear if it is raining. With the assumption that it is raining then it is providing the moisture for the plant life underneath it and in turn being purified and moving through the fossilized trees below it and entering the aquifer, or it is being transpired and re-released back into the atmosphere and starting the cycle over again. According to the film the primary method of seed dispersal is via wind, because most of the plants use spores to propagate. Since this is the primary propagation method for these plants then the clouds will contain some of the spores from the plants and will be aiding in the spread of the toxic jungle. “The air beneath the clouds must be charged with poisonous gasses”
+
+

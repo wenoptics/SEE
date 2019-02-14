@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Eco-System Mode</title>
+
+    <link rel="stylesheet" href="css/swiper.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="css/main.css">
+
+    <style>
+        .swiper-container {
+            width: 100%;
+            height: 300px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .swiper-slide {
+            background-size: cover;
+            background-position: center;
+        }
+        .gallery-top {
+            height: 45%;
+            width: 65vw;
+            /*make it horizontally center*/
+            left: 50%;
+            /*and lower a little bit*/
+            top: 55%;
+            box-shadow: 0px -8px 18px 4px #77777759;
+        }
+        .gallery-thumbs {
+            position: absolute;
+            bottom: 0;
+            height: 15%;
+            box-sizing: border-box;
+            padding: 10px 0;
+            cursor: grab;
+        }
+        .gallery-thumbs .swiper-slide {
+            width: 25%;
+            height: 100%;
+            opacity: 0.4;
+            transition: opacity 0.5s;
+        }
+        .gallery-thumbs .swiper-slide:hover {
+            opacity: .9;
+        }
+
+        .swiper-button-white {
+            cursor: pointer;
+            transition: transform 0.5s;
+        }
+        .swiper-button-white:hover {
+            transform: scale(1.2, 1.2);
+        }
+
+        canvas#drawing {
+            height: 100%;
+            width: 100%;
+            position: absolute;
+        }
+        .float-text {
+            position: absolute;
+            top: 5vh;
+            left: 20vw;
+            width: 60vw;
+            z-index: 10000;
+        }
+        .float-text--content {
+            height: 15vh;
+        }
+        @media only screen and (min-width: 1024px) {
+            /*1024px and up (large screen)*/
+            .gallery-top {
+                top: 40%;
+                /*make it lefty*/
+                left: 65%;
+                height: 55%;
+                width: 50%;
+            }
+            .gallery-thumbs {
+                /*make them larger*/
+                height: 20%;
+            }
+            .float-text {
+                top: 17vh;
+                left: 4vw;
+                width: 30vw;
+            }
+            .float-text--content {
+                height: 30vh;
+            }
+        }
+    </style>
+
+</head>
+<body>
+
+<!-- Navbar (sit on top) -->
+<div class="w3-top" style="z-index: 10000">
+    <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+        <a href="/comparison.html" class="w3-bar-item w3-button"><b></b> Speculative Explorer </a>
+        <!-- Float links to the right. Hide them on small screens -->
+        <div class="w3-right w3-hide-small">
+            <a href="#about" class="w3-bar-item w3-button">About</a>
+        </div>
+        <a href="upload.html" class="w3-bar-item w3-right w3-button">Upload</a>
+    </div>
+</div>
+
+<!-- Swiper -->
+<div class="swiper-container gallery-top center">
+    <div class="swiper-wrapper" id="data-eco-container">
+        <div class="swiper-slide ecosystem-slide" style="background-image:url('res/image_set/Powers of Ten/images/1.jpg')"></div>
+    </div>
+    <!-- Add Arrows -->
+    <div class="swiper-button-next swiper-button-white"></div>
+    <div class="swiper-button-prev swiper-button-white"></div>
+</div>
+
+<div class="swiper-container gallery-thumbs">
+    <div class="swiper-wrapper" id="data-thumbs-container">
+        <div class="swiper-slide connection-thumbnail" style="background-image:url('res/image_set/Powers of Ten/images/0.jpg')"></div>
+        <div class="swiper-slide connection-thumbnail" style="background-image:url('res/image_set/Powers of Ten/images/1.jpg')"></div>
+        <div class="swiper-slide connection-thumbnail" style="background-image:url('res/image_set/Powers of Ten/images/2.jpg')"></div>
+        <div class="swiper-slide connection-thumbnail" style="background-image:url('res/image_set/Powers of Ten/images/3.jpg')"></div>
+        <div class="swiper-slide connection-thumbnail" style="background-image:url('res/image_set/Powers of Ten/images/4.jpg')"></div>
+        <div class="swiper-slide connection-thumbnail" style="background-image:url('res/image_set/Powers of Ten/images/5.jpg')"></div>
+        <div class="swiper-slide connection-thumbnail" style="background-image:url('res/image_set/Powers of Ten/images/6.jpg')"></div>
+        <div class="swiper-slide connection-thumbnail" style="background-image:url('res/image_set/Powers of Ten/images/7.jpg')"></div>
+        <div class="swiper-slide connection-thumbnail" style="background-image:url('res/image_set/Powers of Ten/images/8.jpg')"></div>
+        <div class="swiper-slide connection-thumbnail" style="background-image:url('res/image_set/Powers of Ten/images/9.jpg')"></div>
+    </div>
+</div>
+
+<div>
+
+    <div class='dot-bg'></div>
+    <canvas id="drawing"></canvas>
+
+    <div class="float-text">
+        <span class="float-text--header-btn">Change Ecosystem</span>
+        <h2 class="float-text--header">Powers of Ten</h2>
+        <div class="float-text--content">
+            it is the product fossilized trees in scale 1 and  makes up the base of the ...
+        </div>
+    </div>
+
+</div>
+
+<script src="https://unpkg.com/animejs@3.0.0/lib/anime.min.js"></script>
+<script src="js/swiper.js"></script>
+<script src="js/utilities.js"></script>
+<script>
+    const el_thumbsContainer = document.querySelector('#data-thumbs-container');
+    const el_ecoContainer = document.querySelector('#data-eco-container');
+    const el_dotBg = document.querySelector('div.dot-bg');
+    const el_fText = document.querySelector('.float-text');
+    const el_gTop = document.querySelector('.gallery-top');
+    const el_canvas = document.querySelector('canvas#drawing');
+    const el_fText_title = document.querySelector('.float-text--header');
+    const el_fText_content = document.querySelector('.float-text--content');
+</script>
+<script>
+
+    // Load ecosystem data
+    const setPath = 'res/image_set';
+    const imageSetData = JSON.parse(ajax('GET', 'res/test_data/imageset.json', null, false)).imageset;
+    const currentEcosystem = imageSetData[ 1 ];
+    const errorImageUrl = 'res/error-image.jpg';
+
+    anime({
+        targets: el_dotBg,
+        rotate: [45, 0],
+        scale: [3, 1],
+        duration: 2000,
+        autoplay: true
+    });
+
+    const swiperConnectionThumbs = new Swiper('.gallery-thumbs', {
+        spaceBetween: 15,
+        slidesPerView: 5,
+        freeMode: true,
+        watchSlidesVisibility: true,
+        watchSlidesProgress: true,
+        centeredSlides: true,
+        grabCursor: true,
+        breakpoints: {
+            1024: {
+                slidesPerView: 4,
+                spaceBetween: 10,
+            },
+            640: {
+                slidesPerView: 3,
+                spaceBetween: 5,
+            }
+        }
+    });
+
+    const swiperMain = new Swiper('.gallery-top', {
+        spaceBetween: 10,
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        hashNavigation: {
+            watchState: true,
+        },
+        on: {
+            init: function () {
+                updateViewNode(currentEcosystem, currentEcosystem.imageList[this.realIndex])
+            },
+            transitionEnd: function () {
+                updateViewNode(currentEcosystem, currentEcosystem.imageList[this.realIndex])
+            }
+        }
+    });
+
+    function updateViewNode(ecosystemData, nodeData) {
+        // console.log('called updateViewNode(ecosystemData, nodeData)', ecosystemData, nodeData);
+
+        var content = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged';
+        if (nodeData.notes !== '') {
+            content = el.notes;
+        }
+        content = '<strong>' + nodeData.name + '</strong><p>' + content;
+        setCaption(ecosystemData.name, content);
+
+        // Load connections of this image node
+        loadConnectionData(ecosystemData, nodeData);
+    }
+
+    function loadEcosystem(ecosystemData) {
+        // Remove the previous data
+        while(el_ecoContainer.firstChild) {
+            el_ecoContainer.removeChild(el_ecoContainer.firstChild);
+        }
+
+        // Make the thumbnail DOMs first
+        var ecoInnerSlideList = '', i;
+        for (i = 0; i < ecosystemData.imageList.length; i++) {
+            ecoInnerSlideList += '<div class="swiper-slide ecosystem-slide"></div> \n';
+        }
+        el_ecoContainer.innerHTML = ecoInnerSlideList;
+        swiperMain.update();
+
+        // The original hash-navigation is kinda break after page load, maybe due to dynamic load. This is a fix
+        if(window.location.hash) {
+            // hash found
+            const hash = window.location.hash.substring(1);
+            const nodeIdxFromHash = getImageIndexById(currentEcosystem, hash);
+            if (nodeIdxFromHash !== null) {
+                swiperMain.slideTo(nodeIdxFromHash);
+            }
+        } else {
+            // No hash found
+        }
+
+        // ... And fill the background images data
+        const _el_slides = el_ecoContainer.querySelectorAll('.ecosystem-slide');
+        for (i = 0; i < _el_slides.length; i++) {
+            const _imgNode = ecosystemData.imageList[i];
+            const imgPath = pathJoin([setPath, ecosystemData.path, _imgNode.filename]);
+            _el_slides[i].style.backgroundImage = "url('"+imgPath+"')";
+            // For hash-navigation
+            _el_slides[i].dataset.hash = _imgNode.scale_id;
+        }
+    }
+    function loadConnectionData(ecosystemData, nodeData) {
+        console.log('loadConnectionData called');
+
+        // Remove the previous data
+        while(el_thumbsContainer.firstChild) {
+            el_thumbsContainer.removeChild(el_thumbsContainer.firstChild);
+        }
+
+        var connectionIdList = nodeData.connections;
+        if (typeof connectionIdList === "string") {
+            connectionIdList = connectionIdList.split(',');
+        }
+
+        // Make the thumbnail DOMs first
+        var ecoInnerSlideList = '', i;
+        for (i = 0; i < connectionIdList.length; i++) {
+            ecoInnerSlideList += '<div class="swiper-slide connection-thumbnail"></div> \n';
+        }
+        el_thumbsContainer.innerHTML = ecoInnerSlideList;
+        swiperConnectionThumbs.update();
+
+        // ... And fill the background images data
+        const _el_slides = el_thumbsContainer.querySelectorAll('.connection-thumbnail');
+        for (i = 0; i < _el_slides.length; i++) {
+            const _imgIdx = getImageIndexById(ecosystemData, connectionIdList[i]);
+            const _imgNode = ecosystemData.imageList[_imgIdx];
+            const imgPath = _imgNode ? pathJoin([setPath, ecosystemData.path, _imgNode.filename]) : errorImageUrl;
+            _el_slides[i].style.backgroundImage = "url('"+imgPath+"')";
+
+            // When click on the connection image
+            _el_slides[i].dataset.realIndex = _imgIdx;
+            _el_slides[i].addEventListener('click', function () {
+                // find the index for this image
+                swiperMain.slideTo(this.dataset.realIndex);
+            })
+        }
+
+        anime({
+            targets: [el_canvas, el_thumbsContainer],
+            scaleX: [1.1, 1],
+            opacity: [0.7, 1],
+            autoplay: true
+        });
+
+        var _slideTo = 0;
+        // if (swiperConnectionThumbs.slides.length > 2) {
+        //     _slideTo = parseInt(swiperConnectionThumbs.slides.length / 2);
+        // }
+        swiperConnectionThumbs.slideTo(_slideTo, 100);
+    }
+
+    loadEcosystem(currentEcosystem);
+
+    function setCaption(title, content) {
+        el_fText_title.innerHTML = title;
+        el_fText_content.innerHTML = content;
+    }
+
+    // Draw on canvas
+    const g = el_canvas.getContext('2d');
+    function updateCanvasSize() {
+        el_canvas.width  = window.innerWidth;
+        el_canvas.height = window.innerHeight;
+        canvasClearAll();
+    }
+    function canvasClearAll() {
+        g.clearRect(0, 0, el_canvas.width, el_canvas.height);
+    }
+
+    window.addEventListener('resize', updateCanvasSize);
+    updateCanvasSize();
+
+    function arrowArc(g, strokeSize, x1, y1, x2, y2) {
+        if (strokeSize <= 0) {
+            return;
+        }
+
+        g.strokeStyle = '#8f8f8f';
+        g.beginPath();
+        g.lineWidth = strokeSize;
+
+        var midY = (y1 + y2) / 2;
+        var sign = (y2 > y1 ? 1 : -1);
+        // y2 -= strokeSize / 2;
+
+        var s1 = sign * 4;
+        var s2 = sign * 5 ;
+        g.moveTo(x1, y1);
+        // Draw a little short straight line here
+        g.lineTo(x1, y1+s1);
+        // Draw bezier
+        g.bezierCurveTo(x1, midY - s2, x2, midY - s2,    x2, y2-s2);
+        g.lineTo(x2, y2);
+        g.stroke();
+
+    }
+
+    var strokeWidth = 5;
+
+    function update_drawing(time) {
+
+        var x1 = el_gTop.getBoundingClientRect().x + el_gTop.getBoundingClientRect().width / 2;
+        const y1 = el_gTop.getBoundingClientRect().bottom;
+        const el_ends = document.querySelectorAll('.connection-thumbnail');
+        const step = Math.max(strokeWidth-1, 1);
+        x1 -= (el_ends.length / 2)*step;
+
+        canvasClearAll();
+
+        for (var i = 0; i < el_ends.length; i++) {
+            x1 += step;
+            const x2 = el_ends[i].getBoundingClientRect().x + el_ends[i].getBoundingClientRect().width / 2;
+            const y2 = el_ends[i].getBoundingClientRect().top;
+
+            const dist = Math.abs(x2 - document.body.clientWidth / 2);
+            const vdist = document.body.clientWidth * 0.2;
+            var sWidth = vdist / Math.max(vdist, dist);
+            // Make it minimum to 1
+            sWidth = Math.max(1, strokeWidth * sWidth);
+
+            arrowArc(g, sWidth, x1, y1, x2, y2);
+        }
+
+        window.requestAnimationFrame(update_drawing);
+    }
+
+    window.requestAnimationFrame(update_drawing);
+
+    document.body.onmousemove = function(evt) {
+        const halfH = document.documentElement.clientHeight /2;
+        const halfW = document.documentElement.clientWidth /2;
+
+        var pdx = 1 - evt.clientX / halfW;
+        var pdy = 1 - evt.clientY / halfH;
+
+        // console.log( evt.clientX + "," + evt.clientY
+        //     + " | " + dx + "," + dy
+        //     + " | " + pdx + "," + pdy);
+
+        el_dotBg.style.transform =
+            ' rotateX('+pdx*5+'deg) rotateY('+pdy*5+'deg)' +
+            // ' skew('+-pdy*5+'deg,'+-pdx*5+'deg)' +
+            ' translateX('+pdx*5+'px) translateY('+pdy*5+'px)';
+
+        // Dynamic effects on the text
+        const sz = el_fText.getBoundingClientRect();
+        pdx = (sz.x + sz.width / 2 - event.clientX) / document.documentElement.clientWidth;
+        pdy = (sz.y + sz.height / 2 - event.clientY) / document.documentElement.clientHeight;
+        el_fText.style.transform =
+            ' rotateX('+pdy*15+'deg) rotateY('+pdx*15+'deg)' +
+            ' skew(-10deg)';
+
+        // Dynamic effects on the main image
+        const sz2 = el_gTop.getBoundingClientRect();
+        pdx = (sz2.x + sz2.width / 2 - event.clientX) / document.documentElement.clientWidth;
+        pdy = (sz2.y + sz2.height / 2 - event.clientY) / document.documentElement.clientHeight;
+        const maxBlur = 18;
+        var blur = -(Math.abs(pdx) + Math.abs(pdy)) * maxBlur / 2 + maxBlur;
+        el_gTop.style['box-shadow'] = 8*pdx+'px '+8*pdy+'px '+blur+'px 4px #77777759';
+    };
+
+
+</script>
+
+</body>
+</html>
