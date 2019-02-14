@@ -457,9 +457,12 @@
         const el = document.querySelector(sel);
         anime({
             targets: el,
-            translateX: [0, -200],
-            opacity: 0,
-            duration: 500,
+            translateX: [0, -400],
+            opacity: {
+                value: 0,
+                duration: 200
+            },
+            duration: 400,
             complete: function (_) {
                 el.parentNode.removeChild(el);
             }
