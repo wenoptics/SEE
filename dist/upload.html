@@ -67,13 +67,13 @@
                     </div>
 
                     <div class="uk-margin">
-                        <label class="uk-form-label" for="form-horizontal-select">Scale Type</label>
+                        <label class="uk-form-label" for="form-scale-type">Scale Type</label>
                         <div class="uk-form-controls">
-                            <select class="uk-select" id="form-horizontal-select">
-                                <option>Space (meters)</option>
-                                <option>Time (seconds)</option>
-                                <option>Intensity (percentage)</option>
-                                <option>Generic (digits)</option>
+                            <select class="uk-select" id="form-scale-type">
+                                <option data-val="space">Space (meters)</option>
+                                <option data-val="time">Time (seconds)</option>
+                                <option data-val="intensity">Intensity (percentage)</option>
+                                <option data-val="generic">Generic (digits)</option>
                             </select>
                         </div>
                     </div>
@@ -81,9 +81,9 @@
                     <div class="uk-margin">
                         <div class="uk-form-label">Granularity</div>
                         <div class="uk-form-controls uk-form-controls-text">
-                            <label><input class="uk-radio" type="radio" name="radio1"> Powers of 10</label>
-                            <label><input class="uk-radio uk-margin-left" type="radio" name="radio1"> Powers of 2</label>
-                            <label><input class="uk-radio uk-margin-left" type="radio" name="radio1"> Linear</label>
+                            <label><input class="form-granularity-option uk-radio" type="radio" name="granularity-p10" data-val="10"> Powers of 10</label>
+                            <label><input class="form-granularity-option uk-radio uk-margin-left" type="radio" name="granularity-p2" data-val="2"> Powers of 2</label>
+                            <label><input class="form-granularity-option uk-radio uk-margin-left" type="radio" name="granularity-l" data-val="linear"> Linear</label>
                         </div>
                     </div>
 
@@ -438,6 +438,10 @@
 </script>
 <script>
 
+    function trim(s) {
+        return s.replace(/^\s+|\s+$/g, '');
+    }
+
     function fileSizeHuman(s) {
         if (s < 1024) {
             return Math.round(s) + ' B';
@@ -459,73 +463,73 @@
         newNode.setAttribute('id', 'node-'+uid);
 
         newNode.innerHTML = `<!--<li id="node-${uid}">-->
-<div class="uk-card uk-card-hover uk-card-default uk-card-body">
-<div class="uk-child-width-expand@s" uk-grid>
-    <div class="uk-grid-item-match uk-grid-small">
+            <div class="uk-card uk-card-hover uk-card-default uk-card-body">
+            <div class="uk-child-width-expand@s" uk-grid>
+                <div class="uk-grid-item-match uk-grid-small">
 
-        <div class="uk-width-auto uk-text-middle">
-            <a class="uk-margin-top uk-sortable-handle uk-margin-small-right" uk-icon="icon: table"></a>
-        </div>
-
-        <div class="uk-width-expand">
-            <article class="uk-comment">
-                <header class="uk-comment-header uk-grid-medium uk-flex-middle" uk-grid>
-                    <div class="uk-width-auto">
-                        <img id="uploadImage" class="uk-comment-avatar" src="${imageUrl}" width="80" height="80" alt="" data-image-id="${imageId}">
+                    <div class="uk-width-auto uk-text-middle">
+                        <a class="uk-margin-top uk-sortable-handle uk-margin-small-right" uk-icon="icon: table"></a>
                     </div>
+
                     <div class="uk-width-expand">
-                        <input id="nodeTitle" class="uk-comment-title uk-input uk-form-blank uk-padding-remove-left"
-                               type="text" placeholder="Node Title">
-                        <ul class="uk-comment-meta uk-subnav uk-subnav-divider uk-margin-remove-top">
-                            <li>640 x 480</li>
-                            <li>${fileSizeHuman(imageSize)}</li>
-                        </ul>
-                    </div>
-                </header>
-                <div class="uk-comment-body">
+                        <article class="uk-comment">
+                            <header class="uk-comment-header uk-grid-medium uk-flex-middle" uk-grid>
+                                <div class="uk-width-auto">
+                                    <img id="uploadImage" class="uk-comment-avatar" src="${imageUrl}" width="80" height="80" alt="" data-image-id="${imageId}">
+                                </div>
+                                <div class="uk-width-expand">
+                                    <input id="nodeTitle" class="uk-comment-title uk-input uk-form-blank uk-padding-remove-left"
+                                           type="text" placeholder="Node Title">
+                                    <ul class="uk-comment-meta uk-subnav uk-subnav-divider uk-margin-remove-top">
+                                        <li>640 x 480</li>
+                                        <li>${fileSizeHuman(imageSize)}</li>
+                                    </ul>
+                                </div>
+                            </header>
+                            <div class="uk-comment-body">
 
-                    <div class="uk-grid uk-child-width-expand@m">
-                        <div>
-                            <div class="uk-inline" style="display: unset">
-                                <span class="uk-form-icon uk-form-icon-flip">%</span>
-                                <input id="nodeScale" class="uk-input uk-form-small" placeholder="Scale">
+                                <div class="uk-grid uk-child-width-expand@m">
+                                    <div>
+                                        <div class="uk-inline" style="display: unset">
+                                            <span class="uk-form-icon uk-form-icon-flip">%</span>
+                                            <input id="nodeScale" class="uk-input uk-form-small" placeholder="Scale">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <input id="nodeId" class="uk-input uk-form-small uk-magin-right" placeholder="Node ID">
+                                    </div>
+                                    <div>
+                                        <input id="nodeType" class="uk-input uk-form-small" placeholder="Type" value="Fiction">
+                                    </div>
+                                    <div>
+                                        <input id="nodeSource" class="uk-input uk-form-small uk-magin-right" placeholder="Source" value="Text">
+                                    </div>
+                                    <div>
+                                        <label class="uk-text-right">
+                                            <input id="nodeIsDynamic" class="uk-checkbox uk-margin-small-right" type="checkbox" checked>
+                                            Dynamic
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <p><input id="nodeConnections" class="uk-input uk-form-small uk-magin-right"
+                                          placeholder="Connection node to this image, enter node-id, seperated by comma. e.g. 21,23,25"></p>
+
+                                <p><textarea id="nodeDesc" class="uk-textarea uk-form-blank" rows="5" style="border-left: dashed 1px #e5e5e5;"
+                                             placeholder="Write Description, and tell people about this image"></textarea></p>
                             </div>
-                        </div>
-                        <div>
-                            <input id="nodeId" class="uk-input uk-form-small uk-magin-right" placeholder="Node ID">
-                        </div>
-                        <div>
-                            <input id="nodeType" class="uk-input uk-form-small" placeholder="Type" value="Fiction">
-                        </div>
-                        <div>
-                            <input id="nodeSource" class="uk-input uk-form-small uk-magin-right" placeholder="Source" value="Text">
-                        </div>
-                        <div>
-                            <label class="uk-text-right">
-                                <input id="nodeIsDynamic" class="uk-checkbox uk-margin-small-right" type="checkbox" checked>
-                                Dynamic
-                            </label>
-                        </div>
+                        </article>
                     </div>
 
-                    <p><input id="nodeConnections" class="uk-input uk-form-small uk-magin-right"
-                              placeholder="Connection node to this image, enter node-id, seperated by comma. e.g. 21,23,25"></p>
+                    <div class="uk-width-auto">
+                        <div uk-icon="icon: trash" class="uk-align-right uk-margin-top" onclick="removeNode('#node-${uid}')" style="cursor: pointer"></div>
+                    </div>
 
-                    <p><textarea id="nodeDesc" class="uk-textarea uk-form-blank" rows="5" style="border-left: dashed 1px #e5e5e5;"
-                                 placeholder="Write Description, and tell people about this image"></textarea></p>
                 </div>
-            </article>
-        </div>
+            </div>
 
-        <div class="uk-width-auto">
-            <div uk-icon="icon: trash" class="uk-align-right uk-margin-top" onclick="removeNode('#node-${uid}')" style="cursor: pointer"></div>
-        </div>
-
-    </div>
-</div>
-
-</div>
-<!--</li>-->`;
+            </div>
+            <!--</li>-->`;
 
         el_image_node_container.appendChild(newNode);
     }
@@ -587,7 +591,7 @@
 
             // Insert an image node
             const ret = JSON.parse(arguments[0].response);
-            addImageNode(ret.images[0], ret.imgRes[0], ret.fileSize[0]);
+            addImageNode(ret.images[0], ret.imgRes[0], ret.fileSize[0], ret.id[0]);
         }
 
     });
@@ -610,7 +614,9 @@
             payload.nodeTitles.push(i.value)
         });
         document.querySelectorAll('input#nodeScale'     ).forEach(function (i) {
-            payload.nodeScales.push(i.value)
+            // todo Validation
+            const val = parseFloat(i.value);
+            payload.nodeScales.push(val)
         });
         document.querySelectorAll('input#nodeId'        ).forEach(function (i) {
             payload.nodeIds.push(i.value)
@@ -622,13 +628,65 @@
             payload.nodeSources.push(i.value)
         });
         document.querySelectorAll('input#nodeConnections').forEach(function (i) {
+            var ok = true;
+            // Validation:
+            i.value.split(',').forEach(function (j) {
+                if (payload.nodeIds.indexOf(trim(j)) === -1) {
+                    ok = false;
+                    console.warn(`id= ${i} not exists found`);
+                }
+            });
             payload.nodeConnections.push(i.value)
         });
         document.querySelectorAll('textarea#nodeDesc').forEach(function (i) {
             payload.nodeDescritions.push(i.value)
         });
 
-        console.log(payload);
+        // create a new ecosystem
+        var el_granularity = document.querySelectorAll('input.form-granularity-option'); //('input[name=radio1]');
+        var sel_granularity;
+        for (var ix=0; ix<el_granularity.length; ix++ ) {
+            if (el_granularity[ix].checked) {
+                sel_granularity = el_granularity[ix].dataset['val'];
+                break;
+            }
+        }
+        const data = {
+            name: document.querySelector('input#form-set-name').value,
+            granularity: sel_granularity,
+            scale_type: document.querySelector('select#form-scale-type')
+                .selectedOptions[0].dataset['val'],
+            description: document.querySelector('textarea#form-set-desc').value,
+        };
+
+        ajax('POST', 'data/api.php/records/ecosystem', JSON.stringify(data), true, function (resp) {
+
+            var eco_id = resp;
+            console.log(eco_id);
+            // todo Do validation of eco_id
+
+            // create each image nodes
+            for (var i=0; i<payload.nodeIds.length; i++){
+                const data = {
+                    scale: payload.nodeScales[i],
+                    type: payload.nodeTypes[i],
+                    source: payload.nodeSources[i],
+                    description: payload.nodeDescritions[i],
+                    connections: payload.nodeConnections[i],
+                    is_dynamic: 0,  //fixme
+
+                    fk_ecosystem_id: eco_id,
+                    fk_image_id: payload.imageFileIds[i]
+                };
+
+                ajax('POST', 'data/api.php/records/node', JSON.stringify(data), true, function (resp) {
+                    console.log(resp);
+                });
+            }
+
+            console.log(payload);
+        });
+
     });
 
 </script>

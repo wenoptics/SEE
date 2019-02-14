@@ -19,15 +19,15 @@ function pathJoin(parts, sep){
     return parts.join(separator).replace(replace, separator);
 }
 
-function ajax(method, url, ascyn, onSuccess, onFail) {
+function ajax(method, url, data, ascyn=true, onSuccess, onFail) {
     const xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
-            onSuccess.call(this.responseText);
+            onSuccess.call(xhttp, this.responseText);
         }
     };
     xhttp.open(method, url, ascyn);
-    xhttp.send();
+    xhttp.send(data);
     if (ascyn === false) {
         return xhttp.responseText;
     }
