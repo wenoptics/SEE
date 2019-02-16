@@ -25,12 +25,14 @@
 <!-- Navbar (sit on top) -->
 <div class="w3-top" style="z-index: 10000">
     <div class="w3-bar w3-white w3-wide w3-padding w3-card">
-        <a href="comparison.html" class="w3-bar-item w3-button"><b></b> Speculative Explorer </a>
+        <div class="w3-hide-small">
+            <a href="comparison.html" class="w3-bar-item w3-button"><b></b> Speculative Explorer </a>
+        </div>
         <!-- Float links to the right. Hide them on small screens -->
         <div class="w3-right w3-hide-small">
-            <div id="btn-upload" class="w3-bar-item w3-button w3-blue">Upload!</div>
             <a href="#about" class="w3-bar-item w3-button">About</a>
         </div>
+        <div id="btn-upload" class="w3-bar-item w3-right w3-button w3-blue">Upload!</div>
     </div>
 </div>
 
@@ -439,10 +441,6 @@
 </script>
 <script>
 
-    function trim(s) {
-        return s.replace(/^\s+|\s+$/g, '');
-    }
-
     function fileSizeHuman(s) {
         if (s < 1024) {
             return Math.round(s) + ' B';
@@ -674,13 +672,13 @@
 
             payload.nodeScales.push(val);
         });
-        document.querySelectorAll('input#nodeId'        ).forEach(function (i) {
+        document.querySelectorAll('input#nodeId'         ).forEach(function (i) {
             payload.nodeIds.push(i.value)
         });
-        document.querySelectorAll('input#nodeType'      ).forEach(function (i) {
+        document.querySelectorAll('input#nodeType'       ).forEach(function (i) {
             payload.nodeTypes.push(i.value)
         });
-        document.querySelectorAll('input#nodeSource'    ).forEach(function (i) {
+        document.querySelectorAll('input#nodeSource'     ).forEach(function (i) {
             payload.nodeSources.push(i.value)
         });
         document.querySelectorAll('input#nodeConnections').forEach(function (i) {

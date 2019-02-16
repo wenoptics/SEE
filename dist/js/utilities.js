@@ -35,6 +35,11 @@ function ajax(method, url, data, ascyn, onSuccess, onFail) {
     }
 }
 
+function trim(s) {
+    /// perform a string blank strip
+    return s.replace(/^\s+|\s+$/g, '');
+}
+
 // Helper function to auto append 'px'
 function px_(s) {
     return s + 'px';
