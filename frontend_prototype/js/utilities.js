@@ -23,7 +23,9 @@ function ajax(method, url, ascyn, onSuccess, onFail) {
     const xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
-            onSuccess.call(this.responseText);
+            if (onSuccess) {
+                onSuccess.call(this.responseText);
+            }
         }
     };
     xhttp.open(method, url, ascyn);

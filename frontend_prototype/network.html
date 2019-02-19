@@ -1,0 +1,105 @@
+<html>
+<head>
+    <style>
+        html, body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<div id="graph"></div>
+
+<script src="//unpkg.com/force-graph"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/89/three.min.js"></script>
+<script src="js/utilities.js"></script>
+<script>
+    const imageSetData = JSON.parse(ajax('GET', 'res/test_data/imageset.json', false)).imageset;
+
+    var node_id_map = {};
+    const ecosystem_data = imageSetData[1];
+    const image_base_url = 'res/image_set/';
+
+    // Build nodes
+    var image_nodes = [];
+    for (var i in ecosystem_data.imageList) {
+        var node = ecosystem_data.imageList[i];
+        var img = new Image();
+        img.src = image_base_url+ecosystem_data.path+node.filename;
+        var nd = {id: node.scale_id, img: img};
+        image_nodes.push(nd);
+        node_id_map[ node.scale_id ] = nd;
+    }
+
+    // Build connections
+    var image_conns = [];
+    for (var i in ecosystem_data.imageList) {
+        var node = ecosystem_data.imageList[i];
+        var conn = node.connections.split(',');
+        for (var j in conn) {
+            var target_id = parseInt(conn[j]);
+            console.log('connecting: ' + node.scale_id + ' and ' + target_id);
+            if (node_id_map[target_id]) {
+                image_conns.push({
+                    source: node_id_map[ node.scale_id ],
+                    target: node_id_map[ target_id ]
+                });
+            }
+        }
+    }
+
+    var highlightNodes = [];
+    var highlightLink = null;
+    const img_w = 100/4, img_h = 60/4;
+    const img_highlight_mul = 1.1;
+
+    const gData = {
+        nodes: image_nodes,
+        links: image_conns
+    };
+    console.log(gData);
+
+    const el_graph = document.getElementById('graph');
+    const Graph = ForceGraph()(el_graph)
+        .graphData(gData)
+        .nodeRelSize(Math.min(img_w, img_h) / 2)
+        .nodeCanvasObject((node, ctx) => {
+            var img = node.img;
+            var x = node.x;
+            var y = node.y;
+
+            if (highlightNodes.indexOf(node) !== -1) { // draw highlight
+                console.log(highlightNodes);
+                ctx.beginPath();
+                ctx.rect(
+                    x - img_w*img_highlight_mul / 2,
+                    y - img_h*img_highlight_mul / 2,
+                    img_w*img_highlight_mul,
+                    img_h*img_highlight_mul);
+                ctx.fillStyle = '#0097ff';
+                ctx.fill();
+            }
+            ctx.drawImage(img, x - img_w / 2, y - img_h / 2, img_w, img_h);
+
+        })
+        .onNodeHover(node => {
+            highlightNodes = node ? [node] : [];
+            el_graph.style.cursor = node ? 'pointer' : null
+        })
+        .onLinkHover(link => {
+            highlightLink = link;
+            highlightNodes = link ? [link.source, link.target] : [];
+        })
+        .linkWidth(link => link === highlightLink ? 5 : 1)
+        .linkDirectionalParticles(4)
+        .linkDirectionalParticleWidth(link => link === highlightLink ? 4 : 0)
+        .onNodeClick(node => {
+            // Center/zoom on node
+            Graph.centerAt(node.x, node.y, 1000);
+            Graph.zoom(25, 1500);
+        });
+
+</script>
+
+</body>
+</html>

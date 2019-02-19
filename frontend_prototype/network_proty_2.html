@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Network View - SEE</title>
+</head>
+<body>
+
+<script>
+    "use strict";
+
+    /**
+     *  Copyright (c) 2016, Helikar Lab.
+     *  All rights reserved.
+     *
+     *  This source code is licensed under the GPLv3 License.
+     *  Author: David Tichy
+     */
+    function LayoutForce(nodes, edges) {
+        var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+        var edgeDistance = 150,
+            edgeStrength = 1,
+            friction = 0.9,
+            charge = -300,
+            gravity = 0.4,
+            theta2 = .64,
+            size = [1000, 600],
+            chargeDistance2 = Infinity;
+        var alpha,
+            distances = [],
+            strengths = [],
+            charges = [];
+
+        function accumulate(quad, alpha, charges) {
+            var cx = 0,
+                cy = 0;
+            quad.charge = 0;
+
+            if (!quad.leaf) {
+                var _nodes = quad.nodes;
+                var c,
+                    n = _nodes.length;
+
+                for (var i = 0; i < n; i++) {
+                    c = _nodes[i];
+                    if (c == null) continue;
+                    accumulate(c, alpha, charges);
+                    quad.charge += c.charge;
+                    cx += c.charge * c.cx;
+                    cy += c.charge * c.cy;
+                }
+            }
+
+            if (quad.point) {
+                if (!quad.leaf) {
+                    quad.point.x += Math.random() - 0.5;
+                    quad.point.y += Math.random() - 0.5;
+                }
+
+                var k = alpha * charges[quad.point.index];
+                quad.charge += quad.pointCharge = k;
+                cx += k * quad.point.x;
+                cy += k * quad.point.y;
+            }
+
+            quad.cx = cx / quad.charge;
+            quad.cy = cy / quad.charge;
+        }
+
+        function repulse(node) {
+            return function (quad, x1, _, x2) {
+                if (quad.point !== node) {
+                    var dx = quad.cx - node.x;
+                    var dy = quad.cy - node.y;
+                    var dw = x2 - x1;
+                    var dn = dx * dx + dy * dy;
+
+                    if (dw * dw / theta2 < dn) {
+                        if (dn < chargeDistance2) {
+                            var k = quad.charge / dn;
+                            node.px -= dx * k;
+                            node.py -= dy * k;
+                        }
+
+                        return true;
+                    }
+
+                    if (quad.point && dn && dn < chargeDistance2) {
+                        var _k = quad.pointCharge / dn;
+
+                        node.px -= dx * _k;
+                        node.py -= dy * _k;
+                    }
+                }
+
+                return !quad.charge;
+            };
+        }
+
+        function step() {
+            if ((alpha *= .99) < .05) {
+                alpha = 0;
+                return true;
+            }
+
+            var q, o, s, t, l, k, x, y;
+            var n = nodes.length;
+            var m = edges.length;
+
+            for (var i = 0; i < m; i++) {
+                o = edges[i];
+                s = o.source;
+                t = o.target;
+                x = t.x - s.x;
+                y = t.y - s.y;
+
+                if (l = x * x + y * y) {
+                    l = alpha * strengths[i] * ((l = Math.sqrt(l)) - distances[i]) / l;
+                    x *= l;
+                    y *= l;
+                    t.x -= x * (k = s.weight / (t.weight + s.weight));
+                    t.y -= y * k;
+                    s.x += x * (k = 1 - k);
+                    s.y += y * k;
+                }
+            }
+
+            if (k = alpha * gravity) {
+                x = size[0] / 2;
+                y = size[1] / 2;
+
+                for (var _i = 0; _i < n; _i++) {
+                    o = nodes[_i];
+                    o.x += (x - o.x) * k;
+                    o.y += (y - o.y) * k;
+                }
+            }
+
+            if (charge) {
+                accumulate(q = ccNetViz_quadtree(nodes), alpha, charges);
+
+                for (var _i2 = 0; _i2 < n; _i2++) {
+                    var _o = nodes[_i2];
+                    !_o.fixed && q.visit(repulse(_o));
+                }
+            }
+
+            var rnd = function rnd(min, max) {
+                return Math.random() * (max - min) + min;
+            };
+
+            for (var _i3 = 0; _i3 < n; _i3++) {
+                o = nodes[_i3];
+
+                if (o.fixed || o.fixed2) {
+                    o.x = o.px;
+                    o.y = o.py;
+                } else {
+                    o.x -= (o.px - (o.px = o.x)) * friction;
+                    o.y -= (o.py - (o.py = o.y)) * friction;
+
+                    if (options && options.minX !== undefined) {
+                        if (o.x < options.minX || o.x > options.maxX) {
+                            o.x = rnd(options.minX, options.maxX);
+                        }
+
+                        if (o.y < options.minY || o.y > options.maxY) {
+                            o.y = rnd(options.minY, options.maxY);
+                        }
+                    }
+                }
+            }
+        }
+
+        this.apply = function () {
+            var n = nodes.length;
+            var d = Math.sqrt(n);
+            var s = 0.3 / d;
+
+            for (var i = 0; i < n; i++) {
+                var o = nodes[i];
+                o.weight = 0;
+                o.x = o.x !== undefined ? o.x : s + i % d / d;
+                o.y = o.y !== undefined ? o.y : s + Math.floor(i / d) / d;
+                o.px = o.x;
+                o.py = o.y;
+                charges[i] = charge;
+            }
+
+            for (var _i4 = 0; _i4 < edges.length; _i4++) {
+                var _o2 = edges[_i4];
+                _o2.source.weight++;
+                _o2.target.weight++;
+                distances[_i4] = edgeDistance;
+                strengths[_i4] = edgeStrength;
+            }
+
+            alpha = 0.1;
+
+            while (!step()) {
+            }
+
+            return true;
+        };
+    }
+
+    /**
+     *  Copyright (c) 2016, Helikar Lab.
+     *  All rights reserved.
+     *
+     *  This source code is licensed under the GPLv3 License.
+     *  Author: David Tichy
+     */
+    function ccNetViz_quadtree(points) {
+        var d, xs, ys, i, n, x1_, y1_, x2_, y2_;
+        x2_ = y2_ = -(x1_ = y1_ = Infinity);
+        xs = [], ys = [];
+        n = points.length;
+
+        for (i = 0; i < n; ++i) {
+            d = points[i];
+            if (d.x < x1_) x1_ = d.x;
+            if (d.y < y1_) y1_ = d.y;
+            if (d.x > x2_) x2_ = d.x;
+            if (d.y > y2_) y2_ = d.y;
+            xs.push(d.x);
+            ys.push(d.y);
+        }
+
+        var dx = x2_ - x1_;
+        var dy = y2_ - y1_;
+        dx > dy ? y2_ = y1_ + dx : x2_ = x1_ + dy;
+
+        function create() {
+            return {
+                leaf: true,
+                nodes: [],
+                point: null,
+                x: null,
+                y: null
+            };
+        }
+
+        function visit(f, node, x1, y1, x2, y2) {
+            if (!f(node, x1, y1, x2, y2)) {
+                var sx = (x1 + x2) * 0.5;
+                var sy = (y1 + y2) * 0.5;
+                var children = node.nodes;
+                if (children[0]) visit(f, children[0], x1, y1, sx, sy);
+                if (children[1]) visit(f, children[1], sx, y1, x2, sy);
+                if (children[2]) visit(f, children[2], x1, sy, sx, y2);
+                if (children[3]) visit(f, children[3], sx, sy, x2, y2);
+            }
+        }
+
+        function insert(n, d, x, y, x1, y1, x2, y2) {
+            if (n.leaf) {
+                var nx = n.x;
+                var ny = n.y;
+
+                if (nx !== null) {
+                    if (nx === x && ny === y) {
+                        insertChild(n, d, x, y, x1, y1, x2, y2);
+                    } else {
+                        var nPoint = n.point;
+                        n.x = n.y = n.point = null;
+                        insertChild(n, nPoint, nx, ny, x1, y1, x2, y2);
+                        insertChild(n, d, x, y, x1, y1, x2, y2);
+                    }
+                } else {
+                    n.x = x, n.y = y, n.point = d;
+                }
+            } else {
+                insertChild(n, d, x, y, x1, y1, x2, y2);
+            }
+        }
+
+        function insertChild(n, d, x, y, x1, y1, x2, y2) {
+            var xm = (x1 + x2) * 0.5;
+            var ym = (y1 + y2) * 0.5;
+            var right = x >= xm;
+            var below = y >= ym;
+            var i = below << 1 | right;
+            n.leaf = false;
+            n = n.nodes[i] || (n.nodes[i] = create());
+            right ? x1 = xm : x2 = xm;
+            below ? y1 = ym : y2 = ym;
+            insert(n, d, x, y, x1, y1, x2, y2);
+        }
+
+        function findNode(root, x, y, x0, y0, x3, y3) {
+            var minDistance2 = Infinity;
+            var closestPoint;
+
+            (function find(node, x1, y1, x2, y2) {
+                if (x1 > x3 || y1 > y3 || x2 < x0 || y2 < y0) return;
+
+                if (point = node.point) {
+                    var _point;
+
+                    var _dx = x - node.x;
+
+                    var _dy = y - node.y;
+
+                    var distance2 = _dx * _dx + _dy * _dy;
+
+                    if (distance2 < minDistance2) {
+                        var distance = Math.sqrt(minDistance2 = distance2);
+                        x0 = x - distance, y0 = y - distance;
+                        x3 = x + distance, y3 = y + distance;
+                        closestPoint = _point;
+                    }
+                }
+
+                var children = node.nodes;
+                var xm = (x1 + x2) * .5;
+                var ym = (y1 + y2) * .5;
+                var right = x >= xm;
+                var below = y >= ym;
+
+                for (var _i = below << 1 | right, j = _i + 4; _i < j; ++_i) {
+                    if (node = children[_i & 3]) switch (_i & 3) {
+                        case 0:
+                            find(node, x1, y1, xm, ym);
+                            break;
+
+                        case 1:
+                            find(node, xm, y1, x2, ym);
+                            break;
+
+                        case 2:
+                            find(node, x1, ym, xm, y2);
+                            break;
+
+                        case 3:
+                            find(node, xm, ym, x2, y2);
+                            break;
+                    }
+                }
+            })(root, x0, y0, x3, y3);
+
+            return closestPoint;
+        }
+
+        var root = create();
+
+        root.visit = function (f) {
+            return visit(f, root, x1_, y1_, x2_, y2_);
+        };
+
+        root.find = function (x, y) {
+            return findNode(root, x, y, x1_, y1_, x2_, y2_);
+        };
+
+        for (i = 0; i < n; i++) {
+            insert(root, points[i], xs[i], ys[i], x1_, y1_, x2_, y2_);
+        }
+
+        --i;
+        xs = ys = points = d = null;
+        return root;
+    }
+</script>
+<script>
+    function ImageNode(img_src, center_x, center_y) {
+        this.cx = center_x;
+        this.cy = center_y;
+        this.image = new Image();
+        this.image.src = img_src;
+
+        var node = this;
+
+        /*this.image.addEventListener('load', function () {
+            console.log('image completed');
+            node.bottom = node.cy + this.height / 2;
+            node.top    = node.cy - this.height / 2;
+            node.left   = node.cx - this.width / 2;
+            node.right  = node.cx + this.width / 2;
+
+            node.drawX = node.left;
+            node.drawY = node.top;
+        });*/
+
+        this.loc = {
+            get bottom() { return node.cy + node.image.height / 2},
+            get top   () { return node.cy - node.image.height / 2},
+            get left  () { return node.cx - node.image.width / 2},
+            get right () { return node.cx + node.image.width / 2},
+
+            get drawX () { return node.loc.left},
+            get drawY () { return node.loc.top},
+        }
+    }
+
+</script>
+
+
+<script>
+    // the following globals are available
+    // w, h, cw, ch,  width height centerWidth centerHeight of canvas
+    // canvas, ctx, mouse, globalTime
+    const image = new Image;
+    image.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/KTZ_2TE10U_Aynabulak.jpg/800px-KTZ_2TE10U_Aynabulak.jpg";
+    const node1 = new ImageNode("res/image_set/Powers of Ten/images/0.jpg", 300, 100);
+    const node2 = new ImageNode("res/image_set/Powers of Ten/images/1.jpg", 1000, 800);
+    const node3 = new ImageNode("res/image_set/Powers of Ten/images/2.jpg", 1500, 400);
+    const node4 = new ImageNode("res/image_set/Powers of Ten/images/3.jpg", 500, 600);
+    const node5 = new ImageNode("res/image_set/Powers of Ten/images/4.jpg", 1000, 900);
+
+    // try to layout
+    nodes = [
+        node1,
+        node2,
+        node3,
+        node4,
+        node5
+    ];
+    edges = [
+        {
+            source: 0,
+            target: 1
+        },{
+            source: 1,
+            target: 0
+        },{
+            source: 0,
+            target: 4
+        },{
+            source: 4,
+            target: 3
+        },
+    ];
+
+    //tanslate indexes into node objects
+    for (var i = 0; i < edges.length; i++) {
+        var e = edges[i];
+        if (typeof e.source == 'number') e.source = nodes[e.source];
+        if (typeof e.target == 'number') e.target = nodes[e.target];
+    }
+    new LayoutForce(nodes, edges).apply();
+
+    for (var i in nodes) {
+        nodes[i].cx = nodes[i].x;
+        nodes[i].cy = nodes[i].y;
+    }
+
+    console.log('nodes', nodes);
+    console.log('edges', edges);
+
+    const font = {
+        font : "28px Arial",
+        textAlign : "center",
+        textBaseline : "middle",
+    };
+
+    function setStyle(ctx, style){
+        Object.keys(style).forEach(key => ctx[key] = style[key]);
+    }
+    // Handle all key input
+    const keys = {  // key input object
+        ArrowLeft: false,  // only add key names you want to listen to
+        ArrowRight: false,
+        keyEvent(event) {
+            if (keys[event.code] !== undefined) {  // are we interested in this key
+                keys[event.code] = event.type === "keydown";
+            }
+        }
+    };
+    // add key listeners
+    document.addEventListener("keydown", keys.keyEvent);
+    document.addEventListener("keyup", keys.keyEvent);
+
+
+    const view = (()=>{
+        const matrix = [1,0,0,1,0,0]; // current view transform
+        const invMatrix = [1,0,0,1,0,0]; // current inverse view transform
+        var m = matrix;  // alias
+        var im = invMatrix; // alias
+        var rotate = 0;  // current x axis direction in radians
+        var scale = 1;   // current scale
+        const pos = {      // current position of origin
+            x: 0,
+            y: 0,
+        };
+        var dirty = true;
+        return {
+            apply(ctx){
+                if(dirty){ this.update() }
+                var m = matrix;
+                ctx.setTransform(m[0],m[1],m[2],m[3],m[4],m[5]);
+            },
+            update(){ // call to update transforms
+                var xdx = Math.cos(rotate) * scale;
+                var xdy = Math.sin(rotate) * scale;
+                m[0] = xdx;
+                m[1] = xdy;
+                m[2] = -xdy;
+                m[3] = xdx;
+                m[4] = pos.x;
+                m[5] = pos.y;
+                // calculate the inverse transformation
+                cross = m[0] * m[3] - m[1] * m[2];
+                im[0] =  m[3] / cross;
+                im[1] = -m[1] / cross;
+                im[2] = -m[2] / cross;
+                im[3] =  m[0] / cross;
+                dirty = false;
+            },
+            toWorld(x,y,point = {}){  // convert screen to world coords
+                var xx, yy;
+                if(dirty){ this.update() }
+                xx = x - matrix[4];
+                yy = y - matrix[5];
+                point.x =  xx * im[0] + yy * im[2];
+                point.y = xx * im[1] + yy * im[3];
+                return point;
+            },
+            toScreen(x,y,point = {}){  // convert world coords to  coords
+                if(dirty){ this.update() }
+                point.x =  x * m[0] + y * m[2] + m[4];
+                point.y = x * m[1] + y * m[3] + m[5];
+                return point;
+            },
+            movePos(x,y){
+                pos.x += x;
+                pos.y += y;
+                dirty = true;
+            },
+            setPos(x,y){
+                pos.x = x;
+                pos.y = y;
+                dirty = true;
+            },
+            setScale(sc){
+                scale = sc;
+                dirty = true;
+            },
+            scaleScale(sc){
+                scale *= sc;
+                dirty = true;
+            },
+            scaleAt(x,y,sc){
+                if(dirty){ this.update() }
+                scale *= sc;
+                pos.x = x - (x - pos.x) * sc;
+                pos.y = y - (y - pos.y) * sc;
+                dirty = true;
+            }
+        };
+    })();
+
+    function onResize(){
+        setStyle(ctx,font);
+
+    }
+
+    const drag = {
+        dragging: false,
+        lastX: 0,
+        lastY: 0,
+        update() {
+            var dx, dy;
+            if (mouse.w) {
+                if (mouse.w < 0) {
+                    mouse.w += 10;
+                    view.scaleAt(mouse.x, mouse.y, 1 / 1.02);
+                    if (mouse.w > 0) {
+                        mouse.w = 0;
+                    }
+                } else if (mouse.w > 0) {
+                    mouse.w -= 10;
+                    view.scaleAt(mouse.x, mouse.y, 1.02);
+                    if (mouse.w < 0) {
+                        mouse.w = 0;
+                    }
+                }
+            }
+            if (mouse.buttonRaw) {
+                if (!this.dragging) {
+                    this.dragging = true;
+                    this.lastX = mouse.x;
+                    this.lastY = mouse.y;
+                } else {
+                    if (mouse.buttonRaw & 1) {
+                        dx = mouse.x - this.lastX;
+                        dy = mouse.y - this.lastY;
+                        this.lastX = mouse.x;
+                        this.lastY = mouse.y;
+                        view.movePos(dx, dy);
+                    }
+                }
+            } else {
+                if (this.dragging) {
+                    this.dragging = false;
+                }
+            }
+        }
+    };
+
+    function display() { // call once per frame
+        ctx.setTransform(1, 0, 0, 1, 0, 0); // reset transform
+        ctx.globalAlpha = 1; // reset alpha
+        ctx.clearRect(0, 0, w, h);
+        if(keys.ArrowLeft ){ mouse.w += 10 }
+        if(keys.ArrowRight){ mouse.w -= 10 }
+        drag.update();
+        if(image.complete){
+            view.apply(ctx);
+            ctx.drawImage(image,0,0);
+            ctx.drawImage(node1.image, node1.loc.drawX, node1.loc.drawY);
+            ctx.drawImage(node2.image, node2.loc.drawX, node2.loc.drawY);
+            ctx.drawImage(node3.image, node3.loc.drawX, node3.loc.drawY);
+            ctx.drawImage(node4.image, node4.loc.drawX, node4.loc.drawY);
+            ctx.drawImage(node5.image, node5.loc.drawX, node5.loc.drawY);
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.fillText("Click drag to pan. Wheel to zoom or left/right arrow.", cw, 20);
+        }else{
+            ctx.fillText("Loading Image...",cw,ch)
+        }
+    }
+
+
+
+
+    /******************************************************************************
+     The code from here down is generic full page mouse and canvas boiler plate
+     code. As I do many examples which all require the same mouse and canvas
+     functionality I have created this code to keep a consistent interface. The
+     Code may or may not be part of the answer.
+     This code may or may not have ES6 only sections so will require a transpiler
+     such as babel.js to run on legacy browsers.
+     *****************************************************************************/
+// V2.0 ES6 version for Stackoverflow and Groover QuickRun
+    var w, h, cw, ch, canvas, ctx, mouse, globalTime = 0;
+    // You can declare onResize (Note the capital R) as a callback that is also
+    // called once at start up. Warning on first call canvas may not be at full
+    // size.
+
+    (function () {
+        const RESIZE_DEBOUNCE_TIME = 100;
+        var resizeTimeoutHandle;
+        var firstRun = true;
+        function createCanvas () {
+            var c,cs;
+            cs = (c = document.createElement("canvas")).style;
+            cs.position = "absolute";
+            cs.top = cs.left = "0px";
+            cs.zIndex = 10;
+            document.body.appendChild(c);
+            return c;
+        }
+        function resizeCanvas () {
+            if (canvas === undefined) { canvas = createCanvas() }
+            canvas.width = innerWidth;
+            canvas.height = innerHeight;
+            ctx = canvas.getContext("2d");
+            if (typeof setGlobals === "function") { setGlobals() }
+            if (typeof onResize === "function") {
+                clearTimeout(resizeTimeoutHandle);
+                if (firstRun) { onResize() }
+                else { resizeTimeoutHandle = setTimeout(onResize, RESIZE_DEBOUNCE_TIME) }
+                firstRun = false;
+            }
+        }
+        function setGlobals () {
+            cw = (w = canvas.width) / 2;
+            ch = (h = canvas.height) / 2;
+        }
+        mouse = (function () {
+            function preventDefault(e) { e.preventDefault() }
+            var m; // alias for mouse
+            var mouse = {
+                x : 0, y : 0, w : 0, // mouse position and wheel
+                alt : false, shift : false, ctrl : false, // mouse modifiers
+                buttonRaw : 0,
+                over : false,                        // true if mouse over the element
+                buttonOnMasks : [0b1, 0b10, 0b100],  // mouse button on masks
+                buttonOffMasks : [0b110, 0b101, 0b011], // mouse button off masks
+                active : false,
+                bounds : null,
+                eventNames : "mousemove,mousedown,mouseup,mouseout,mouseover,mousewheel,DOMMouseScroll".split(","),
+                event(e) {
+                    var t = e.type;
+                    m.bounds = m.element.getBoundingClientRect();
+                    m.x = e.pageX - m.bounds.left - scrollX;
+                    m.y = e.pageY - m.bounds.top - scrollY;
+                    m.alt = e.altKey;
+                    m.shift = e.shiftKey;
+                    m.ctrl = e.ctrlKey;
+                    if (t === "mousedown") { m.buttonRaw |= m.buttonOnMasks[e.which - 1] }
+                    else if (t === "mouseup") { m.buttonRaw &= m.buttonOffMasks[e.which - 1] }
+                    else if (t === "mouseout") { m.over = false }
+                    else if (t === "mouseover") { m.over = true }
+                    else if (t === "mousewheel") {
+                        m.w = e.wheelDelta;
+                        e.preventDefault();
+                    }
+                    else if (t === "DOMMouseScroll") {
+                        m.w = -e.detail;
+                        e.preventDefault();
+                    }
+                },
+                start(element) {
+                    m.element = element === undefined ? document : element;
+                    m.eventNames.forEach(name =>  document.addEventListener(name, mouse.event) );
+                    document.addEventListener("contextmenu", preventDefault, false);
+                    m.active = true;
+                },
+            };
+            m = mouse;
+            return mouse;
+        })();
+        function update(timer) { // Main update loop
+            globalTime = timer;
+            display();           // call demo code
+            requestAnimationFrame(update)
+        }
+        setTimeout(function(){
+            canvas = createCanvas();
+            mouse.start(canvas, true);
+            resizeCanvas();
+            window.addEventListener("resize", resizeCanvas);
+            requestAnimationFrame(update);
+        },0);
+    })();
+
+
+    /** SimpleFullCanvasMouse.js end **/
+</script>
+</body>
+</html>
