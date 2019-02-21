@@ -51,11 +51,10 @@
         }
     }
 
-    function addLink(node, connection) {
-        if (node.links.indexOf(connection) >= 0) {
-            null;
-        }else{
-            node.links.push(connection);
+    function addLink(node, link) {
+        if (node.links.indexOf(link) < 0) {
+            // Such link is not existed
+            node.links.push(link);
         }
     }
 
