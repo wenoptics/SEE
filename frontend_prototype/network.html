@@ -120,7 +120,8 @@
             highlightLinks = link ? [link] : [];
             highlightNodes = link ? [link.source, link.target] : [];
         })
-        .linkWidth(link => highlightLinks.indexOf(link)>=0 ? 5 : 1)
+        // fixme [look] the size of the particle and the linkwidth is not constant (after scale)
+        .linkWidth(link => highlightLinks.indexOf(link)>=0 ? 8 : 4)
         .linkDirectionalParticles(4)
         .linkDirectionalParticleWidth(link => highlightLinks.indexOf(link)>=0 ? 4 : 0)
         .onNodeClick(node => {
