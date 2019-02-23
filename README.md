@@ -16,6 +16,7 @@ Repository of the Speculative Scale Explorer
   - [ ] |-- The `network view`
   - [x] |---- `Feb-21-2019` network visualization
   - [ ] |---- node meta data
+  - [ ] |---- `[TBD]` Side scale ruler
   
   ## Todos
   

@@ -1,8 +1,37 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="css/main.css">
+    <title>Network View</title>
+
     <style>
         html, body {
             margin: 0;
+        }
+
+        .float-text {
+            position: absolute;
+            top: 5vh;
+            left: 20vw;
+            width: 60vw;
+            z-index: 10000;
+        }
+        .float-text--content {
+            height: 15vh;
+        }
+        @media only screen and (min-width: 1024px) {
+            /*1024px and up (large screen)*/
+            .float-text {
+                top: 17vh;
+                left: 4vw;
+                width: 30vw;
+            }
+            .float-text--content {
+                height: 30vh;
+            }
         }
     </style>
 </head>
@@ -10,9 +39,27 @@
 
 <div id="graph"></div>
 
-<script src="//unpkg.com/force-graph"></script>
+
+<div class='dot-bg'></div>
+<div class="float-text">
+    <!--<span class="float-text&#45;&#45;header-btn">Change Ecosystem</span>-->
+    <h2 class="float-text--header">Powers of Ten</h2>
+    <div class="float-text--content">
+        it is the product fossilized trees in scale 1 and  makes up the base of the ...
+    </div>
+</div>
+
+<script src="https://unpkg.com/animejs@3.0.0/lib/anime.min.js"></script>
+<script src="modules/force-graph/dist/force-graph.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/89/three.min.js"></script>
 <script src="js/utilities.js"></script>
+
+<script>
+    const el_fText = document.querySelector('.float-text');
+    const el_fText_title = document.querySelector('.float-text--header');
+    const el_fText_content = document.querySelector('.float-text--content');
+    const el_dotBg = document.querySelector('div.dot-bg');
+</script>
 <script>
     const imageSetData = JSON.parse(ajax('GET', 'res/test_data/imageset.json', false)).imageset;
 
@@ -26,7 +73,7 @@
         var node = ecosystem_data.imageList[i];
         var img = new Image();
         img.src = image_base_url+ecosystem_data.path+node.filename;
-        var nd = {id: node.scale_id, img: img, links: []};
+        var nd = {id: node.scale_id, img: img, links: [], meta: node};
         image_nodes.push(nd);
         node_id_map[ node.scale_id ] = nd;
     }
@@ -58,8 +105,14 @@
         }
     }
 
+    function setCaption(title, content) {
+        el_fText_title.innerHTML = title;
+        el_fText_content.innerHTML = content;
+    }
+
     var highlightNodes = [];
     var currentHighlighted = null;
+    var lastHighlighted = null;
     var highlightLinks = [];
     const img_w = 100/4, img_h = 60/4;
     const img_highlight_mul = 1.1;
@@ -81,13 +134,16 @@
 
             if (highlightNodes.indexOf(node) !== -1) { // draw highlight
                 // console.log(highlightNodes);
+
+                var mul = img_highlight_mul; //node === currentHighlighted ? img_highlight_mul+0.1 : img_highlight_mul;
+                var colr = node === currentHighlighted ? '#0097ffee' : '#0097ff77';
+
                 ctx.beginPath();
                 ctx.rect(
-                    x - img_w*img_highlight_mul / 2,
-                    y - img_h*img_highlight_mul / 2,
-                    img_w*img_highlight_mul,
-                    img_h*img_highlight_mul);
-                ctx.fillStyle = '#0097ff';
+                    x - img_w * mul / 2,
+                    y - img_h * mul / 2,
+                    img_w * mul, img_h * mul);
+                ctx.fillStyle = colr;
                 ctx.fill();
             }
             ctx.drawImage(img, x - img_w / 2, y - img_h / 2, img_w, img_h);
@@ -107,6 +163,21 @@
 
                     el_graph.style.cursor = 'pointer';
                     console.log('highlighted note', node);
+
+                    if (lastHighlighted !== node) {
+                        lastHighlighted = node;
+                        // Text animation
+                        anime({
+                            targets: ['.float-text--header', '.float-text--content'],
+                            translateX: [-100, 0],
+                            opacity: [0, 1],
+                            delay: anime.stagger(100),
+                            autoplay: true
+                        });
+                        var title = '{Image Set Title}';
+                        var content = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged';
+                        setCaption(node.meta.name, node.meta.notes || content);
+                    }
                 }
             } else {
                 highlightNodes = [];
@@ -121,14 +192,43 @@
             highlightNodes = link ? [link.source, link.target] : [];
         })
         // fixme [look] the size of the particle and the linkwidth is not constant (after scale)
-        .linkWidth(link => highlightLinks.indexOf(link)>=0 ? 8 : 4)
+        .linkWidth(link => highlightLinks.indexOf(link) >= 0 ? 8 : 3)
+        .linkCurvature(0.1)
         .linkDirectionalParticles(4)
-        .linkDirectionalParticleWidth(link => highlightLinks.indexOf(link)>=0 ? 4 : 0)
+        .linkDirectionalParticleWidth(link => highlightLinks.indexOf(link) >= 0 ? 4 : 0)
+        .zoomLimits([0.1, 20])
         .onNodeClick(node => {
             // Center/zoom on node
-            Graph.centerAt(node.x, node.y, 1000);
-            Graph.zoom(25, 1500);
+            Graph.centerAt(node.x, node.y, 500);
+            Graph.zoom(20, 1500);
         });
+
+
+    document.body.addEventListener('mousemove', function (evt) {
+        const halfH = document.documentElement.clientHeight /2;
+        const halfW = document.documentElement.clientWidth /2;
+
+        var pdx = 1 - evt.clientX / halfW;
+        var pdy = 1 - evt.clientY / halfH;
+
+        // console.log( evt.clientX + "," + evt.clientY
+        //     + " | " + dx + "," + dy
+        //     + " | " + pdx + "," + pdy);
+
+        el_dotBg.style.transform =
+            ' rotateX('+pdx*5+'deg) rotateY('+pdy*5+'deg)' +
+            // ' skew('+-pdy*5+'deg,'+-pdx*5+'deg)' +
+            ' translateX('+pdx*5+'px) translateY('+pdy*5+'px)';
+
+        // Dynamic effects on the text
+        const sz = el_fText.getBoundingClientRect();
+        pdx = (sz.x + sz.width / 2 - event.clientX) / document.documentElement.clientWidth;
+        pdy = (sz.y + sz.height / 2 - event.clientY) / document.documentElement.clientHeight;
+        el_fText.style.transform =
+            ' rotateX('+pdy*15+'deg) rotateY('+pdx*15+'deg)' +
+            ' skew(-10deg)';
+
+    })
 
 </script>
 
