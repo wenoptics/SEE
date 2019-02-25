@@ -22,6 +22,9 @@
         .float-text--content {
             height: 15vh;
         }
+        #graph {
+            cursor: grab;
+        }
         @media only screen and (min-width: 1024px) {
             /*1024px and up (large screen)*/
             .float-text {
@@ -37,8 +40,19 @@
 </head>
 <body>
 
-<div id="graph"></div>
+<!-- Navbar (sit on top) -->
+<div class="w3-top" style="z-index: 10000">
+    <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+        <a href="comparison.html" class="w3-bar-item w3-button"><b></b> Speculative Explorer </a>
+        <!-- Float links to the right. Hide them on small screens -->
+        <div class="w3-right w3-hide-small">
+            <a href="upload.html" class="w3-bar-item w3-button">Upload</a>
+            <a href="#about" class="w3-bar-item w3-button">About</a>
+        </div>
+    </div>
+</div>
 
+<div id="graph"></div>
 
 <div class='dot-bg'></div>
 <div class="float-text">
@@ -59,6 +73,8 @@
     const el_fText_title = document.querySelector('.float-text--header');
     const el_fText_content = document.querySelector('.float-text--content');
     const el_dotBg = document.querySelector('div.dot-bg');
+    const el_graph = document.getElementById('graph');
+    const el_body = document.body;
 </script>
 <script>
     const imageSetData = JSON.parse(ajax('GET', 'res/test_data/imageset.json', false)).imageset;
@@ -123,7 +139,6 @@
     };
     console.log(gData);
 
-    const el_graph = document.getElementById('graph');
     const Graph = ForceGraph()(el_graph)
         .graphData(gData)
         .nodeRelSize(Math.min(img_w, img_h) / 2)
