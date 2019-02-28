@@ -167,6 +167,7 @@
     // Load ecosystem data
     const setPath = 'res/image_set';
     const imageSetData = JSON.parse(ajax('GET', 'res/test_data/imageset.json', null, false)).imageset;
+    'api.php/records/node?filter=fk_ecosystem_id,eq,6';
     const currentEcosystem = imageSetData[ 1 ];
     const errorImageUrl = 'res/error-image.jpg';
 
