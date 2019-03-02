@@ -110,9 +110,21 @@
 
     <!--Text and note goes here-->
     <div class="float-text">
-        <h2 class="float-text--header">Powers of Ten</h2>
+        <span class="float-text--header-btn">Change Ecosystem</span>
+        <h2 class="float-text--header" id="content-ecosystem-name">Powers of Ten</h2>
         <div class="float-text--content">
-            it is the product fossilized trees in scale 1 and  makes up the base of the ...
+            <h3 class="float-text--content-title">
+                <span id="content-node-name">Node Name</span>
+                <span class="w3-right">
+                <span style="font-weight: 200">×10</span>
+                <span style="font-size: 0.9em; position: relative; top: -0.5em; left: -0.2em;">
+                    5
+                </span>
+            </span>
+            </h3>
+            <hr style="margin: 0" />
+            <p id="content-node-description">
+                it is the product fossilized trees in scale 1 and  makes up the base of the ...</p>
         </div>
     </div>
 
@@ -210,6 +222,17 @@
 <script src="js/swiper.js"></script>
 
 <script>
+    const el_text_ecosystem_name = document.querySelector('#content-ecosystem-name');
+    const el_text_node_name = document.querySelector('#content-node-name');
+    const el_text_node_desc = document.querySelector('#content-node-description');
+    function setCaption(title, subtitle, content) {
+        el_text_ecosystem_name.innerHTML = title;
+        el_text_node_name.innerHTML = subtitle;
+        el_text_node_desc.innerHTML = content;
+    }
+</script>
+
+<script>
 
 
     function loadImgData(setPath, imageSetData) {
@@ -251,13 +274,6 @@
                 '</div>');
         }
 
-    }
-
-    const el_fText_title = document.querySelector('.float-text--header');
-    const el_fText_content = document.querySelector('.float-text--content');
-    function setCaption(title, content) {
-        el_fText_title.innerHTML = title;
-        el_fText_content.innerHTML = content;
     }
 
     const imageSetData = JSON.parse(ajax('GET', 'res/test_data/imageset.json', null, false)).imageset;
@@ -402,7 +418,7 @@
                             content = el.notes;
                         }
                     }
-                    setCaption(title, content);
+                    setCaption(title, 'Node Title', content);
 
                 },
                 init: function () {
@@ -560,7 +576,7 @@
                             content = el.notes;
                         }
                     }
-                    setCaption(title, content);
+                    setCaption(title, 'Node Title', content);
                 }
 
                 lastActiveSlideId = this.realIndex;
