@@ -57,9 +57,32 @@
 <div class='dot-bg'></div>
 <div class="float-text">
     <!--<span class="float-text&#45;&#45;header-btn">Change Ecosystem</span>-->
-    <h2 class="float-text--header">Powers of Ten</h2>
+    <!--<div class="float-text&#45;&#45;super" style="position: relative;-->
+        <!--background-color: #ffffffd9;-->
+        <!--padding-top: 10px;-->
+        <!--padding-left: 20px;-->
+        <!--width: 30vh;-->
+        <!--height: 18vh;-->
+        <!--top: 10vh;-->
+        <!--left: -20px;-->
+        <!--border-style: solid;-->
+        <!--border-color: #00000033;">-->
+        <!--<h2>Power of 10</h2>-->
+    <!--</div>-->
+    <h2 class="float-text--header" id="content-ecosystem-name">Powers of Ten</h2>
     <div class="float-text--content">
-        it is the product fossilized trees in scale 1 and  makes up the base of the ...
+        <h3 class="float-text--content-title">
+            <span id="content-node-name">Node Name</span>
+            <span class="w3-right">
+                <span style="font-weight: 200">×10</span>
+                <span style="font-size: 0.9em; position: relative; top: -0.5em; left: -0.2em;">
+                    5
+                </span>
+            </span>
+        </h3>
+        <hr style="margin: 0" />
+        <p id="content-node-description">
+            it is the product fossilized trees in scale 1 and  makes up the base of the ...</p>
     </div>
 </div>
 
@@ -70,8 +93,9 @@
 
 <script>
     const el_fText = document.querySelector('.float-text');
-    const el_fText_title = document.querySelector('.float-text--header');
-    const el_fText_content = document.querySelector('.float-text--content');
+    const el_text_ecosystem_name = document.querySelector('#content-ecosystem-name');
+    const el_text_node_name = document.querySelector('#content-node-name');
+    const el_text_node_desc = document.querySelector('#content-node-description');
     const el_dotBg = document.querySelector('div.dot-bg');
     const el_graph = document.getElementById('graph');
     const el_body = document.body;
@@ -121,9 +145,10 @@
         }
     }
 
-    function setCaption(title, content) {
-        el_fText_title.innerHTML = title;
-        el_fText_content.innerHTML = content;
+    function setCaption(title, subtitle, content) {
+        el_text_ecosystem_name.innerHTML = title;
+        el_text_node_name.innerHTML = subtitle;
+        el_text_node_desc.innerHTML = content;
     }
 
     var highlightNodes = [];
@@ -191,7 +216,7 @@
                         });
                         var title = '{Image Set Title}';
                         var content = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged';
-                        setCaption(node.meta.name, node.meta.notes || content);
+                        setCaption('Power of Ten', node.meta.name, node.meta.notes || content);
                     }
                 }
             } else {
