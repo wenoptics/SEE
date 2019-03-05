@@ -245,11 +245,9 @@
 
         for (var setIdx = 0; setIdx < imageSetData.length; setIdx++) {
             var ecoInnerSlideList = '';
-            for (var i=0; i<imageSetData[setIdx].imageList.length; i++) {
-                var imgPath = imageSetData[setIdx].imageList[i];
-                if (typeof(imgPath) === "object")
-                    imgPath = imgPath.filename;
-                imgPath = pathJoin([setPath, imageSetData[setIdx].path, imgPath]);
+            for (var i=0; i<imageSetData[setIdx].nodeList.length; i++) {
+                var imgPath = imageSetData[setIdx].nodeList[i];
+                imgPath = 'data/ImageSecure/image.php?id=' + imgPath.fk_image_id;
                 ecoInnerSlideList +=
                     '<div class="swiper-slide swiper-slide-v">' +
                     '   <div class="slide-v-container">' +
@@ -276,12 +274,19 @@
 
     }
 
-    const imageSetData = JSON.parse(ajax('GET', 'res/test_data/imageset.json', null, false)).imageset;
-    const _testImgSet = imageSetData.concat(imageSetData).concat(imageSetData);
+    // Fetch the ecosystem data
+    var data_ecosystem = JSON.parse(ajax('GET', 'data/api.php/records/ecosystem', null, false)).records;
+    for (var i = 0; i < data_ecosystem.length; i++) {
+        const eco_id = data_ecosystem[i].id;
+        // Fetch every image node:
+        data_ecosystem[i].nodeList = JSON.parse(ajax('GET',
+            'data/api.php/records/node?filter=fk_ecosystem_id,eq,'+eco_id, null, false)).records;
+    }
+    data_ecosystem = data_ecosystem.concat(data_ecosystem).concat(data_ecosystem);
 
     lastActiveSlideId = null;
 
-    loadImgData('res/image_set', _testImgSet);
+    loadImgData('res/image_set', data_ecosystem);
 
     const arrowAct = {
         state: 'hidden',  //hidden, shown, animating
@@ -351,14 +356,14 @@
     arrowAct.hide();
 
     var ecoSlides = [];
-    for (var i = 0; i < _testImgSet.length; i++) {
+    for (var i = 0; i < data_ecosystem.length; i++) {
         const sp = new Swiper('#slide-'+i, {
             direction: 'vertical',
             effect: 'coverflow',
             slidesPerView: 2,
             // grabCursor: true,
             centeredSlides: true,
-            initialSlide: parseInt(_testImgSet[i].imageList.length / 2 + (Math.random()-0.5)*6),
+            initialSlide: parseInt(data_ecosystem[i].nodeList.length / 2 + (Math.random()-0.5)*6),
             spaceBetween: 5,
             slideToClickedSlide: true,
             coverflowEffect: {
@@ -410,12 +415,14 @@
                         delay: anime.stagger(100),
                         autoplay: true
                     });*/
-                    const el = _testImgSet[ecoSwiper.realIndex].imageList[this.realIndex];
-                    var title = '{Image Set Title}'; var content = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged'.substring(Math.random()*200);
-                    if (typeof(el) === "object") {
-                        title = el.name;
-                        if (el.notes !== '') {
-                            content = el.notes;
+                    const data_node = data_ecosystem[ecoSwiper.realIndex].nodeList[this.realIndex];
+                    const data_eco = data_ecosystem[ecoSwiper.realIndex];
+                    var title = data_eco.name;
+                    var content = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged'.substring(Math.random()*200);
+                    if (typeof(data_node) === "object") {
+                        title = data_node.name;
+                        if (data_eco.description !== '') {
+                            content = data_eco.description;
                         }
                     }
                     setCaption(title, 'Node Title', content);
@@ -567,13 +574,14 @@
                         delay: anime.stagger(100),
                         autoplay: true
                     });
-                    const el = _testImgSet[this.realIndex].imageList[ecoSlides[lastActiveSlideId].realIndex];
-                    var title = '{Image Set Title}';
+                    const data_node = data_ecosystem[this.realIndex].nodeList[ecoSlides[lastActiveSlideId].realIndex];
+                    const data_eco = data_ecosystem[this.realIndex];
+                    var title = data_eco.name;
                     var content = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged';
-                    if (typeof(el) === "object") {
-                        title = el.name;
-                        if (el.notes !== '') {
-                            content = el.notes;
+                    if (typeof(data_node) === "object") {
+                        title = data_node.name;
+                        if (data_eco.description !== '') {
+                            content = data_eco.description;
                         }
                     }
                     setCaption(title, 'Node Title', content);
@@ -677,7 +685,7 @@
                 duration: 1000,
                 autoplay: true,
                 complete: function (anim) {
-                    window.location.href = 'ecosystem.html#' + _testImgSet[ecoSwiper.realIndex].imageList[ecoSlides[ecoSwiper.realIndex].realIndex].scale_id;
+                    window.location.href = 'ecosystem.html#' + data_ecosystem[ecoSwiper.realIndex].nodeList[ecoSlides[ecoSwiper.realIndex].realIndex].scale_id;
                 }
             });
             anime({
