@@ -5552,6 +5552,14 @@ $config = new Config([
     'database' => $db_config['db_name'],
     'address' => $db_config['host'],
     'port' => $db_config['port'],
+    // use authorization middleware to disable certain tables and fields being exposed.
+    'middlewares' => 'cors,authorization',
+    'authorization.tableHandler' => function ($operation, $tableName) {
+        return $tableName != 'user';
+    },
+    'authorization.columnHandler' => function ($operation, $tableName, $columnName) {
+        return !($tableName == 'ecosystem' && $columnName == 'session_id');
+    }
 ]);
 $request = new Request();
 $api = new Api($config);
