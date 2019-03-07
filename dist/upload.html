@@ -83,7 +83,7 @@
                     <div class="uk-margin">
                         <div class="uk-form-label">Granularity</div>
                         <div class="uk-form-controls uk-form-controls-text">
-                            <label><input class="form-granularity-option uk-radio" type="radio" name="granularity" data-val="10"> Powers of 10</label>
+                            <label><input class="form-granularity-option uk-radio" type="radio" name="granularity" data-val="10" checked> Powers of 10</label>
                             <label><input class="form-granularity-option uk-radio uk-margin-left" type="radio" name="granularity" data-val="2"> Powers of 2</label>
                             <label><input class="form-granularity-option uk-radio uk-margin-left" type="radio" name="granularity" data-val="linear"> Linear</label>
                         </div>
@@ -92,7 +92,7 @@
                     <div class="uk-margin">
                         <label class="uk-form-label" for="form-set-desc">Description</label>
                         <div class="uk-form-controls">
-                            <textarea class="uk-textarea" id="form-set-desc" rows="5" placeholder="Set description. Tell people about this set"></textarea>
+                            <textarea class="uk-textarea" id="form-set-desc" rows="5" placeholder="Description of your set of images. What do they depict?"></textarea>
                         </div>
                     </div>
 
@@ -479,73 +479,140 @@
         newNode.setAttribute('id', 'node-'+uid);
 
         newNode.innerHTML = `<!--<li id="node-${uid}">-->
-            <div class="uk-card uk-card-hover uk-card-default uk-card-body">
-            <div class="uk-child-width-expand@s" uk-grid>
-                <div class="uk-grid-item-match uk-grid-small">
+<div class="uk-card uk-card-hover uk-card-default uk-card-body">
+<div class="uk-child-width-expand@s" uk-grid>
+<div class="uk-grid-item-match uk-grid-small">
 
-                    <div class="uk-width-auto uk-text-middle">
-                        <a class="uk-margin-top uk-sortable-handle uk-margin-small-right" uk-icon="icon: table"></a>
-                    </div>
+    <div class="uk-width-auto uk-text-middle">
+        <a class="uk-margin-top uk-sortable-handle uk-margin-small-right" uk-icon="icon: table"></a>
+    </div>
 
-                    <div class="uk-width-expand">
-                        <article class="uk-comment">
-                            <header class="uk-comment-header uk-grid-medium uk-flex-middle" uk-grid>
-                                <div class="uk-width-auto">
-                                    <img id="uploadImage" class="uk-comment-avatar" src="${imageUrl}" width="80" height="80" alt="" data-image-id="${imageId}">
-                                </div>
-                                <div class="uk-width-expand">
-                                    <input id="nodeTitle" class="uk-comment-title uk-input uk-form-blank uk-padding-remove-left"
-                                           type="text" placeholder="Node Title">
-                                    <ul class="uk-comment-meta uk-subnav uk-subnav-divider uk-margin-remove-top">
-                                        <li>640 x 480</li>
-                                        <li>${fileSizeHuman(imageSize)}</li>
-                                    </ul>
-                                </div>
-                            </header>
-                            <div class="uk-comment-body">
-
-                                <div class="uk-grid uk-child-width-expand@m">
-                                    <div>
-                                        <div class="uk-inline" style="display: unset">
-                                            <span class="uk-form-icon uk-form-icon-flip">%</span>
-                                            <input id="nodeScale" class="uk-input uk-form-small" placeholder="Scale">
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <input id="nodeId" class="uk-input uk-form-small uk-magin-right" placeholder="Node ID">
-                                    </div>
-                                    <div>
-                                        <input id="nodeType" class="uk-input uk-form-small" placeholder="Type" value="Fiction">
-                                    </div>
-                                    <div>
-                                        <input id="nodeSource" class="uk-input uk-form-small uk-magin-right" placeholder="Source" value="Text">
-                                    </div>
-                                    <div>
-                                        <label class="uk-text-right">
-                                            <input id="nodeIsDynamic" class="uk-checkbox uk-margin-small-right" type="checkbox" checked>
-                                            Dynamic
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <p><input id="nodeConnections" class="uk-input uk-form-small uk-magin-right"
-                                          placeholder="Connection node to this image, enter node-id, seperated by comma. e.g. 21,23,25"></p>
-
-                                <p><textarea id="nodeDesc" class="uk-textarea uk-form-blank" rows="5" style="border-left: dashed 1px #e5e5e5;"
-                                             placeholder="Write Description, and tell people about this image"></textarea></p>
-                            </div>
-                        </article>
-                    </div>
-
-                    <div class="uk-width-auto">
-                        <div uk-icon="icon: trash" class="uk-align-right uk-margin-top" onclick="removeNode('#node-${uid}')" style="cursor: pointer"></div>
-                    </div>
-
+    <div class="uk-width-expand">
+        <article class="uk-comment">
+            <header class="uk-comment-header uk-grid-medium uk-flex-middle" uk-grid>
+                <div class="uk-width-auto">
+                    <img id="uploadImage" class="uk-comment-avatar" src="${imageUrl}" width="80" height="80" alt="" data-image-id="${imageId}">
                 </div>
-            </div>
+                <div class="uk-width-expand">
+                    <input id="nodeTitle" class="uk-comment-title uk-input uk-form-blank uk-padding-remove-left"
+                           type="text" placeholder="Node Title">
+                    <ul class="uk-comment-meta uk-subnav uk-subnav-divider uk-margin-remove-top">
+                        <li>640 x 480</li>
+                        <li>${fileSizeHuman(imageSize)}</li>
+                    </ul>
+                </div>
+            </header>
+            <div class="uk-comment-body">
 
+                <div class="uk-grid uk-child-width-expand@m">
+                    <div class="uk-margin-small-bottom">
+                        <label class="uk-form-label" for="nodeScale">
+                            Scale:
+                        </label>
+                        <div class="uk-form-controls">
+                            <div class="uk-inline" style="display: unset">
+                                <span class="uk-form-icon uk-form-icon-flip">%</span>
+                                <input id="nodeScale" class="uk-input uk-form" placeholder="<numeric scale>">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="uk-margin-small-bottom">
+                        <label class="uk-form-label" for="nodeId">
+                            Node ID:
+                            <span uk-icon="icon: question; ratio: 0.65"
+                                uk-tooltip="A ID that used to reference this node. Must be unique for each node."></span>
+                        </label>
+                        <div class="uk-form-controls">
+                            <input id="nodeId" class="uk-input uk-form" type="text"
+                                placeholder="...">
+                        </div>
+                    </div>
+
+                    <div class="uk-margin-small-bottom">
+                        <label class="uk-form-label" for="nodeType">
+                            Type:
+                        </label>
+                        <div class="uk-form-controls">
+                            <select class="uk-select" id="nodeType">
+                                <option>Photograph</option>
+                                <option>Artwork</option>
+                                <option>Digitally Generated</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="uk-margin-small-bottom">
+                       <label class="uk-form-label" for="nodeSource">
+                            Source of image:
+                        </label>
+                        <div class="uk-form-controls">
+                            <input id="nodeSource" class="uk-input uk-form" type="text"
+                                placeholder="(optional)">
+                        </div>
+                    </div>
+
+                    <!--<div>-->
+                        <!--<label class="uk-text-right">-->
+                            <!--<input id="nodeIsDynamic" class="uk-checkbox uk-margin-small-right" type="checkbox" checked>-->
+                            <!--Dynamic-->
+                        <!--</label>-->
+                    <!--</div>-->
+                </div>
+
+                <p><div class="uk-grid uk-child-width-expand@m">
+                    <div class="uk-margin-bottom">
+                        <label class="uk-form-label" for="nodeConnections">
+                            Source of image:
+                            <span uk-icon="icon: question; ratio: 0.65"
+                                uk-tooltip="Connection node to this image, enter node-id, seperated by comma. e.g. 21,23,25"></span>
+
+                        </label>
+                        <div class="uk-form-controls">
+                            <input id="nodeConnections" class="uk-input uk-form" type="text"
+                                placeholder="(optional) scales that connect to this one. A list of Node IDs.">
+                        </div>
+                    </div>
+
+                    <div class="uk-margin-bottom uk-width-1-4@m">
+                        <label class="uk-form-label" for="nodeScaleType">
+                            Scale Type:
+                            <span uk-icon="icon: question; ratio: 0.65"
+                                uk-tooltip="?"></span>
+                        </label>
+                        <div class="uk-form-controls">
+                            <select class="uk-select" id="nodeScaleType">
+                                <option>Default</option>
+                                <option>Active Scale</option>
+                                <option>Inert Scale</option>
+                            </select>
+                        </div>
+                    </div>
+                </div></p>
+
+                <p><div>
+                    <label class="uk-form-label" for="nodeDesc">
+                            Image Description:
+                        </label>
+                        <div class="uk-form-controls">
+                            <textarea id="nodeDesc" class="uk-textarea uk-form-blank" rows="5" style="border-left: dashed 1px #e5e5e5;"
+                             placeholder="Short description of the subject matter of this image (what is it?)"></textarea>
+                        </div>
+                </div></p>
             </div>
-            <!--</li>-->`;
+        </article>
+    </div>
+
+    <div class="uk-width-auto">
+        <div uk-icon="icon: trash" class="uk-align-right uk-margin-top" onclick="removeNode('#node-${uid}')" style="cursor: pointer"></div>
+    </div>
+
+</div>
+</div>
+
+</div>
+<!--</li>-->`;
 
         el_image_node_container.appendChild(newNode);
 
