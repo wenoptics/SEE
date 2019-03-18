@@ -495,7 +495,7 @@
                 </div>
                 <div class="uk-width-expand">
                     <input id="nodeTitle" class="uk-comment-title uk-input uk-form-blank uk-padding-remove-left"
-                           type="text" placeholder="Node Title">
+                           type="text" placeholder="Image Title">
                     <ul class="uk-comment-meta uk-subnav uk-subnav-divider uk-margin-remove-top">
                         <li>640 x 480</li>
                         <li>${fileSizeHuman(imageSize)}</li>
@@ -511,8 +511,11 @@
                         </label>
                         <div class="uk-form-controls">
                             <div class="uk-inline" style="display: unset">
-                                <span class="uk-form-icon uk-form-icon-flip">%</span>
-                                <input id="nodeScale" class="uk-input uk-form" placeholder="<numeric scale>">
+                                <span class="uk-form-icon uk-form-icon-flip">
+                                    <span class="scale-preview--type">%</span>
+                                    <span class="scale-preview--value" style="font-size: 0.9em;position: relative;top: -0.5em;left: 0.1em;">?</span>
+                                </span>
+                                <input id="nodeScale" class="uk-input uk-form" placeholder="numeric">
                             </div>
                         </div>
                     </div>
@@ -616,6 +619,11 @@
 
         el_image_node_container.appendChild(newNode);
 
+        newNode.querySelector('input#nodeScale').addEventListener('input', (evt)=>{
+            _updateScalePreviewValue(evt.target);
+        });
+        updateScalePreview();
+
         // Scroll to bottom
         window.scrollTo(0, document.body.scrollHeight);
 
@@ -707,6 +715,65 @@
 
     });
 
+    function _updateScalePreviewValue(el_nodeScale) {
+        const s = document.querySelector('select#form-scale-type').selectedOptions[0].dataset['val'];
+        if (s === 'intensity') {
+            // its a percentage, show nothing
+            el_nodeScale.parentNode.querySelector('.scale-preview--value').innerText = '';
+        } else {
+            const val = trim(el_nodeScale.value);
+            el_nodeScale.parentNode.querySelector('.scale-preview--value').innerText = val.substr(0,2) || '?';
+        }
+    }
+
+    document.querySelector('#form-scale-type').addEventListener('change', function () {
+        updateScalePreview();
+    });
+
+    document.querySelectorAll('.form-granularity-option')
+        .forEach((el) => {
+            el.addEventListener('change', function () {
+                updateScalePreview();
+            })
+        });
+
+    function updateScalePreview() {
+        const g = getGranularity();
+        const s = document.querySelector('select#form-scale-type').selectedOptions[0].dataset['val'];
+
+        var _type = '';
+
+        if (s === 'intensity') {
+            _type = '%';
+        } else {
+            if (g === 'linear') {
+                _type = '';
+            } else {
+                // power of 10 or 2
+                _type = g;
+            }
+        }
+        document.querySelectorAll('.scale-preview--type').forEach((el) => {
+            el.innerText = _type;
+        });
+
+        document.querySelectorAll('input#nodeScale').forEach((el) => {
+            _updateScalePreviewValue(el);
+        });
+    }
+
+    function getGranularity() {
+        var el_granularity = document.querySelectorAll('input.form-granularity-option'); //('input[name=radio1]');
+        var sel_granularity;
+        for (var ix=0; ix<el_granularity.length; ix++ ) {
+            if (el_granularity[ix].checked) {
+                sel_granularity = el_granularity[ix].dataset['val'];
+                break;
+            }
+        }
+        return sel_granularity;
+    }
+
     document.querySelector('#btn-upload').addEventListener('click', function () {
 
         var validation_ok = true;
@@ -778,14 +845,7 @@
         }
 
         // create a new ecosystem
-        var el_granularity = document.querySelectorAll('input.form-granularity-option'); //('input[name=radio1]');
-        var sel_granularity;
-        for (var ix=0; ix<el_granularity.length; ix++ ) {
-            if (el_granularity[ix].checked) {
-                sel_granularity = el_granularity[ix].dataset['val'];
-                break;
-            }
-        }
+        var sel_granularity = getGranularity();
         const set_data = {
             name: document.querySelector('input#form-set-name').value,
             granularity: sel_granularity,
@@ -806,6 +866,7 @@
             // create each image nodes
             for (var i=0; i<payload.nodeIds.length; i++){
                 const data = {
+                    name: payload.nodeTitles[i],
                     scale: payload.nodeScales[i],
                     type: payload.nodeTypes[i],
                     source: payload.nodeSources[i],

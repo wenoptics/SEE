@@ -139,6 +139,8 @@
     <div class='dot-bg'></div>
     <canvas id="drawing"></canvas>
 
+    <div class="mode-widgets"></div>
+
     <div class="float-text">
         <span class="float-text--header-btn">Change Ecosystem</span>
         <h2 class="float-text--header" id="content-ecosystem-name">Powers of Ten</h2>
@@ -178,9 +180,23 @@
 
     // Load ecosystem data
     const setPath = 'res/image_set';
-    const imageSetData = JSON.parse(ajax('GET', 'res/test_data/imageset.json', null, false)).imageset;
-    'api.php/records/node?filter=fk_ecosystem_id,eq,6';
-    const currentEcosystem = imageSetData[ 1 ];
+    var eco_id = getUrlVars()['ecosystem'];
+    // when the param is undefined
+    if (eco_id === undefined) {
+        // Use a default ecosystem
+        const ecoAll = JSON.parse(ajax('GET', 'data/api.php/records/ecosystem', null, false)).records;
+        // Use the first one
+        eco_id = ecoAll[0].id;
+    } else {
+        // leave out the hash
+        eco_id = eco_id.split('#')[0];
+    }
+
+    const currentEcosystem = JSON.parse(ajax('GET',
+        `data/api.php/records/ecosystem/${eco_id}`, null, false));
+    currentEcosystem.nodeList = JSON.parse(ajax('GET',
+        'data/api.php/records/node?filter=fk_ecosystem_id,eq,'+eco_id, null, false)).records;
+
     const errorImageUrl = 'res/error-image.jpg';
 
     anime({
@@ -222,10 +238,10 @@
         },
         on: {
             init: function () {
-                updateViewNode(currentEcosystem, currentEcosystem.imageList[this.realIndex])
+                updateViewNode(currentEcosystem, currentEcosystem.nodeList[this.realIndex])
             },
             transitionEnd: function () {
-                updateViewNode(currentEcosystem, currentEcosystem.imageList[this.realIndex])
+                updateViewNode(currentEcosystem, currentEcosystem.nodeList[this.realIndex])
             }
         }
     });
@@ -234,8 +250,8 @@
         // console.log('called updateViewNode(ecosystemData, nodeData)', ecosystemData, nodeData);
 
         var content = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged';
-        if (nodeData.notes !== '') {
-            content = el.notes;
+        if (nodeData.description !== '') {
+            content = nodeData.description;
         }
         setCaption(ecosystemData.name, nodeData.name, content);
 
@@ -251,7 +267,7 @@
 
         // Make the thumbnail DOMs first
         var ecoInnerSlideList = '', i;
-        for (i = 0; i < ecosystemData.imageList.length; i++) {
+        for (i = 0; i < ecosystemData.nodeList.length; i++) {
             ecoInnerSlideList += '<div class="swiper-slide ecosystem-slide"></div> \n';
         }
         el_ecoContainer.innerHTML = ecoInnerSlideList;
@@ -272,11 +288,11 @@
         // ... And fill the background images data
         const _el_slides = el_ecoContainer.querySelectorAll('.ecosystem-slide');
         for (i = 0; i < _el_slides.length; i++) {
-            const _imgNode = ecosystemData.imageList[i];
-            const imgPath = pathJoin([setPath, ecosystemData.path, _imgNode.filename]);
+            const _imgNode = ecosystemData.nodeList[i];
+            var imgPath = _imgNode ? 'data/ImageSecure/image.php?id=' + _imgNode.fk_image_id : errorImageUrl;
             _el_slides[i].style.backgroundImage = "url('"+imgPath+"')";
             // For hash-navigation
-            _el_slides[i].dataset.hash = _imgNode.scale_id;
+            _el_slides[i].dataset.hash = _imgNode.id;
         }
     }
     function loadConnectionData(ecosystemData, nodeData) {
@@ -290,6 +306,8 @@
         var connectionIdList = nodeData.connections;
         if (typeof connectionIdList === "string") {
             connectionIdList = connectionIdList.split(',');
+        } else if (connectionIdList === null) {
+            connectionIdList = [];
         }
 
         // Make the thumbnail DOMs first
@@ -304,8 +322,8 @@
         const _el_slides = el_thumbsContainer.querySelectorAll('.connection-thumbnail');
         for (i = 0; i < _el_slides.length; i++) {
             const _imgIdx = getImageIndexById(ecosystemData, connectionIdList[i]);
-            const _imgNode = ecosystemData.imageList[_imgIdx];
-            const imgPath = _imgNode ? pathJoin([setPath, ecosystemData.path, _imgNode.filename]) : errorImageUrl;
+            const _imgNode = ecosystemData.nodeList[_imgIdx];
+            var imgPath = _imgNode ? 'data/ImageSecure/image.php?id=' + _imgNode.fk_image_id : errorImageUrl;
             _el_slides[i].style.backgroundImage = "url('"+imgPath+"')";
 
             // When click on the connection image
@@ -334,7 +352,7 @@
 
     function setCaption(title, subtitle, content) {
         el_text_ecosystem_name.innerHTML = title;
-        el_text_node_name.innerHTML = subtitle;
+        el_text_node_name.innerHTML = subtitle || 'NodeTitle';
         el_text_node_desc.innerHTML = content;
     }
 

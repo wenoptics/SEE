@@ -46,8 +46,9 @@ function px_(s) {
 }
 
 function getImageIndexById(ecosystemObj, nid) {
-    for (var i = 0; i < ecosystemObj.imageList.length; i++) {
-        if (ecosystemObj.imageList[i].scale_id === nid) {
+    nid = parseInt(nid);
+    for (var i = 0; i < ecosystemObj.nodeList.length; i++) {
+        if (ecosystemObj.nodeList[i].id === nid) {
             return i;
         }
     }
@@ -58,4 +59,20 @@ function getImageNodeById(ecosystemObj, nid) {
     /// todo Improve by using hashmap
     const i = getImageIndexById(ecosystemObj, nid);
     return i === null ? null : ecosystemObj.imageList[i];
+}
+
+function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    return vars;
+}
+
+function getUrlParam(parameter, defaultvalue){
+    var urlparameter = defaultvalue;
+    if(window.location.href.indexOf(parameter) > -1){
+        urlparameter = getUrlVars()[parameter];
+    }
+    return urlparameter;
 }

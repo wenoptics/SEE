@@ -110,7 +110,6 @@
 
     <!--Text and note goes here-->
     <div class="float-text">
-        <span class="float-text--header-btn">Change Ecosystem</span>
         <h2 class="float-text--header" id="content-ecosystem-name">Powers of Ten</h2>
         <div class="float-text--content">
             <h3 class="float-text--content-title">
@@ -233,7 +232,6 @@
 </script>
 
 <script>
-
 
     function loadImgData(setPath, imageSetData) {
         var ecosysContainer = document.querySelector('div#swiper-container-h').querySelector('.swiper-wrapper');
@@ -663,7 +661,7 @@
         if (activeSlide === document.elementFromPoint(evt.clientX, evt.clientY)) {
             console.log('clicked on active slide');
 
-            // todo Activate mode ecosystem mode
+            // Activate ecosystem mode
 
             anime({
                 targets: '.swiper-slide-h.swiper-slide:not(.swiper-slide-active)',
@@ -685,7 +683,9 @@
                 duration: 1000,
                 autoplay: true,
                 complete: function (anim) {
-                    window.location.href = 'ecosystem.html#' + data_ecosystem[ecoSwiper.realIndex].nodeList[ecoSlides[ecoSwiper.realIndex].realIndex].scale_id;
+                    const nodeId = data_ecosystem[ecoSwiper.realIndex].nodeList[ecoSlides[ecoSwiper.realIndex].realIndex].id;
+                    const ecyId = data_ecosystem[ecoSwiper.realIndex].id;
+                    window.location.href = `ecosystem.html?ecosystem=${ecyId}#${nodeId}`;
                 }
             });
             anime({
