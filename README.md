@@ -13,7 +13,7 @@ Repository of the Speculative Scale Explorer
  
  ## Current Progress 
  
-  - [ ] |-- The `network view`
+  - [x] |-- The `network view`
   - [x] |---- `Feb-21-2019` network visualization
   - [x] |---- node meta data
   - [ ] |---- `[TBD]` Side scale ruler
@@ -23,5 +23,5 @@ Repository of the Speculative Scale Explorer
   
   ## Todos
   
-  - [ ] Ecosystem mode -> comparison mode
-  - [ ] `Change ecosystem` in ecosystem mode
+  - [x] Ecosystem mode -> comparison mode
+  - [x] `Change ecosystem` in ecosystem mode
