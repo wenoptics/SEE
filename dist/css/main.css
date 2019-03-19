@@ -25,6 +25,24 @@ body, html {
     overflow-y: auto;
 }
 
+.mode-btn {
+    position: relative;
+    padding: 10px;
+    /*align to the right*/
+    float: right;
+    left: -2%;
+    background-color: #d0d0d029;
+    transition: background-color 0.5s;
+}
+.mode-btn:hover {
+     background-color: rgba(149, 149, 149, 0.16);
+     cursor: pointer;
+ }
+
+.mode-btn-active {
+    background-color: rgba(88, 88, 88, 0.16);
+}
+
 .float-text--header-btn {
     position: relative;
     padding: 10px;

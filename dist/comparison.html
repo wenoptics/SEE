@@ -108,10 +108,19 @@
 
     <div class='dot-bg'></div>
 
+    <div class="mode-widgets" style="
+    position: absolute; right: 10vw; top: 8vh; transform: skew(-10deg);border-bottom: 4px solid #00000033;z-index: 10000;">
+        <!--todo Optimize for small screen-->
+        <span class="mode-btn" id="btn-mode-network" data-mode="network">Network</span>
+        <span class="mode-btn" id="btn-mode-ecosystem" data-mode="ecosystem">Ecosystem</span>
+        <span class="mode-btn mode-btn-active" id="btn-mode-comparison" data-mode="comparison">Comparison</span>
+        <span style="background-color: #77777785;border-right-width: 6px;" class="mode-btn">Modes:</span>
+    </div>
+
     <!--Text and note goes here-->
     <div class="float-text">
         <h2 class="float-text--header" id="content-ecosystem-name">Powers of Ten</h2>
-        <div class="float-text--content">
+        <div class="float-text--content" style="height: 30vh">
             <h3 class="float-text--content-title">
                 <span id="content-node-name">Node Name</span>
                 <span class="w3-right">
@@ -225,7 +234,7 @@
     const el_text_node_name = document.querySelector('#content-node-name');
     const el_text_node_desc = document.querySelector('#content-node-description');
     function setCaption(title, subtitle, content) {
-        el_text_ecosystem_name.innerHTML = title;
+        el_text_ecosystem_name.innerHTML = title || 'EcosystemTitle';
         el_text_node_name.innerHTML = subtitle;
         el_text_node_desc.innerHTML = content;
     }
@@ -684,8 +693,8 @@
                 autoplay: true,
                 complete: function (anim) {
                     const nodeId = data_ecosystem[ecoSwiper.realIndex].nodeList[ecoSlides[ecoSwiper.realIndex].realIndex].id;
-                    const ecyId = data_ecosystem[ecoSwiper.realIndex].id;
-                    window.location.href = `ecosystem.html?ecosystem=${ecyId}#${nodeId}`;
+                    const ecoId = data_ecosystem[ecoSwiper.realIndex].id;
+                    window.location.href = `ecosystem.html?ecosystem=${ecoId}#${nodeId}`;
                 }
             });
             anime({
@@ -696,6 +705,27 @@
 
         }
     });
+
+    // mode switch
+    function modeBtnListener(evt) {
+        const nodeId = data_ecosystem[ecoSwiper.realIndex].nodeList[ecoSlides[ecoSwiper.realIndex].realIndex].id;
+        const ecoId = data_ecosystem[ecoSwiper.realIndex].id;
+        switch (evt.target.dataset.mode) {
+            case 'network':
+                window.location.href = 'network.html?ecosystem=' + eco_id;
+                break;
+            case 'ecosystem':
+                window.location.href = `ecosystem.html?ecosystem=${ecoId}#${nodeId}`;
+                break;
+            case 'comparison':
+                window.location.href = 'comparison.html?ecosystem=' + eco_id;
+                break;
+        }
+    }
+    document.querySelector('#btn-mode-network').addEventListener('click', modeBtnListener);
+    // document.querySelector('#btn-mode-comparison').addEventListener('click', modeBtnListener);
+    document.querySelector('#btn-mode-ecosystem').addEventListener('click', modeBtnListener);
+
 
 
 </script>

@@ -55,6 +55,15 @@
 <div id="graph"></div>
 
 <div class='dot-bg'></div>
+
+<div class="mode-widgets" style="position: absolute; right: 10vw; top: 8vh; transform: skew(-10deg);border-bottom: 4px solid #00000033">
+    <!--todo Optimize for small screen-->
+    <span class="mode-btn mode-btn-active" id="btn-mode-network" data-mode="network">Network</span>
+    <span class="mode-btn" id="btn-mode-ecosystem" data-mode="ecosystem">Ecosystem</span>
+    <span class="mode-btn" id="btn-mode-comparison" data-mode="comparison">Comparison</span>
+    <span style="background-color: #77777785;border-right-width: 6px;" class="mode-btn">Modes:</span>
+</div>
+
 <div class="float-text">
     <!--<span class="float-text&#45;&#45;header-btn">Change Ecosystem</span>-->
     <h2 class="float-text--header" id="content-ecosystem-name">Powers of Ten</h2>
@@ -233,8 +242,8 @@
 
 
     document.body.addEventListener('mousemove', function (evt) {
-        const halfH = document.documentElement.clientHeight /2;
-        const halfW = document.documentElement.clientWidth /2;
+        const halfH = document.documentElement.clientHeight / 2;
+        const halfW = document.documentElement.clientWidth / 2;
 
         var pdx = 1 - evt.clientX / halfW;
         var pdy = 1 - evt.clientY / halfH;
@@ -244,19 +253,38 @@
         //     + " | " + pdx + "," + pdy);
 
         el_dotBg.style.transform =
-            ' rotateX('+pdx*5+'deg) rotateY('+pdy*5+'deg)' +
+            ' rotateX(' + pdx * 5 + 'deg) rotateY(' + pdy * 5 + 'deg)' +
             // ' skew('+-pdy*5+'deg,'+-pdx*5+'deg)' +
-            ' translateX('+pdx*5+'px) translateY('+pdy*5+'px)';
+            ' translateX(' + pdx * 5 + 'px) translateY(' + pdy * 5 + 'px)';
 
         // Dynamic effects on the text
         const sz = el_fText.getBoundingClientRect();
         pdx = (sz.x + sz.width / 2 - event.clientX) / document.documentElement.clientWidth;
         pdy = (sz.y + sz.height / 2 - event.clientY) / document.documentElement.clientHeight;
         el_fText.style.transform =
-            ' rotateX('+pdy*15+'deg) rotateY('+pdx*15+'deg)' +
+            ' rotateX(' + pdy * 15 + 'deg) rotateY(' + pdx * 15 + 'deg)' +
             ' skew(-10deg)';
 
-    })
+    });
+
+    // mode switch
+    function modeBtnListener(evt) {
+        switch (evt.target.dataset.mode) {
+            case 'network':
+                window.location.href = 'network.html?ecosystem=' + eco_id;
+                break;
+            case 'ecosystem':
+                window.location.href = 'ecosystem.html?ecosystem=' + eco_id;
+                break;
+            case 'comparison':
+                window.location.href = 'comparison.html?ecosystem=' + eco_id;
+                break;
+        }
+    }
+    // document.querySelector('#btn-mode-network').addEventListener('click', modeBtnListener);
+    document.querySelector('#btn-mode-comparison').addEventListener('click', modeBtnListener);
+    document.querySelector('#btn-mode-ecosystem').addEventListener('click', modeBtnListener);
+
 
 </script>
 

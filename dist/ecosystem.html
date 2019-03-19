@@ -73,7 +73,7 @@
         @media only screen and (min-width: 1024px) {
             /*1024px and up (large screen)*/
             .gallery-top {
-                top: 40%;
+                top: 45%;
                 /*make it lefty*/
                 left: 65%;
                 height: 55%;
@@ -139,7 +139,13 @@
     <div class='dot-bg'></div>
     <canvas id="drawing"></canvas>
 
-    <div class="mode-widgets"></div>
+    <div class="mode-widgets" style="position: absolute; right: 10vw; top: 8vh; transform: skew(-10deg);border-bottom: 4px solid #00000033">
+        <!--todo Optimize for small screen-->
+        <span class="mode-btn" id="btn-mode-network" data-mode="network">Network</span>
+        <span class="mode-btn mode-btn-active" id="btn-mode-ecosystem" data-mode="ecosystem">Ecosystem</span>
+        <span class="mode-btn" id="btn-mode-comparison" data-mode="comparison">Comparison</span>
+        <span style="background-color: #77777785;border-right-width: 6px;" class="mode-btn">Modes:</span>
+    </div>
 
     <div class="float-text">
         <span class="float-text--header-btn">Change Ecosystem</span>
@@ -198,6 +204,24 @@
         'data/api.php/records/node?filter=fk_ecosystem_id,eq,'+eco_id, null, false)).records;
 
     const errorImageUrl = 'res/error-image.jpg';
+
+    // mode switch
+    function modeBtnListener(evt) {
+        switch (evt.target.dataset.mode) {
+            case 'network':
+                window.location.href = 'network.html?ecosystem=' + eco_id;
+                break;
+            case 'ecosystem':
+                window.location.href = 'ecosystem.html?ecosystem=' + eco_id;
+                break;
+            case 'comparison':
+                window.location.href = 'comparison.html?ecosystem=' + eco_id;
+                break;
+        }
+    }
+    document.querySelector('#btn-mode-network').addEventListener('click', modeBtnListener);
+    document.querySelector('#btn-mode-comparison').addEventListener('click', modeBtnListener);
+    // document.querySelector('#btn-mode-ecosystem').addEventListener('click', modeBtnListener);
 
     anime({
         targets: el_dotBg,
