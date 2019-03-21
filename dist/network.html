@@ -98,38 +98,53 @@
     const el_body = document.body;
 </script>
 <script>
-    const imageSetData = JSON.parse(ajax('GET', 'res/test_data/imageset.json', null, false)).imageset;
+
+    // Load ecosystem data
+    var eco_id = getUrlVars()['ecosystem'];
+    // when the param is undefined
+    if (eco_id === undefined) {
+        // Use a default ecosystem
+        const ecoAll = JSON.parse(ajax('GET', 'data/api.php/records/ecosystem', null, false)).records;
+        // Use the first one
+        eco_id = ecoAll[0].id;
+    } else {
+        // leave out the hash
+        eco_id = eco_id.split('#')[0];
+    }
+
+    const ecosystem_data = JSON.parse(ajax('GET',
+        `data/api.php/records/ecosystem/${eco_id}`, null, false));
+    ecosystem_data.nodeList = JSON.parse(ajax('GET',
+        'data/api.php/records/node?filter=fk_ecosystem_id,eq,'+eco_id, null, false)).records;
 
     var node_id_map = {};
-    const ecosystem_data = imageSetData[1];
-    const image_base_url = 'res/image_set/';
 
     // Build nodes
     var image_nodes = [];
-    for (var i in ecosystem_data.imageList) {
-        var node = ecosystem_data.imageList[i];
+    for (var i in ecosystem_data.nodeList) {
+        var node = ecosystem_data.nodeList[i];
         var img = new Image();
-        img.src = image_base_url+ecosystem_data.path+node.filename;
-        var nd = {id: node.scale_id, img: img, links: [], meta: node};
+        img.src = 'data/ImageSecure/image.php?id=' + node.fk_image_id;
+        var nd = {id: node.id, img: img, links: [], meta: node};
         image_nodes.push(nd);
-        node_id_map[ node.scale_id ] = nd;
+        node_id_map[ node.id ] = nd;
     }
 
     // Build connections
     var image_conns = [];
-    for (var i in ecosystem_data.imageList) {
-        var node = ecosystem_data.imageList[i];
-        var conn = node.connections.split(',');
+    for (var i in ecosystem_data.nodeList) {
+        var node = ecosystem_data.nodeList[i];
+        var conn = node.connections ? node.connections.split(',') : [];
         for (var j in conn) {
             var target_id = parseInt(conn[j]);
-            console.log('connecting: ' + node.scale_id + ' and ' + target_id);
+            console.log('connecting: ' + node.id + ' and ' + target_id);
             if (node_id_map[target_id]) {
                 var conn = {
-                    source: node_id_map[node.scale_id],
+                    source: node_id_map[node.id],
                     target: node_id_map[target_id]
                 };
                 image_conns.push(conn);
-                addLink(node_id_map[node.scale_id], conn);
+                addLink(node_id_map[node.id], conn);
                 addLink(node_id_map[target_id], conn);
             }
         }

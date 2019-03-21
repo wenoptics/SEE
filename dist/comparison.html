@@ -289,7 +289,7 @@
         data_ecosystem[i].nodeList = JSON.parse(ajax('GET',
             'data/api.php/records/node?filter=fk_ecosystem_id,eq,'+eco_id, null, false)).records;
     }
-    data_ecosystem = data_ecosystem.concat(data_ecosystem).concat(data_ecosystem);
+    // data_ecosystem = data_ecosystem.concat(data_ecosystem).concat(data_ecosystem);
 
     lastActiveSlideId = null;
 
@@ -422,17 +422,17 @@
                         delay: anime.stagger(100),
                         autoplay: true
                     });*/
-                    const data_node = data_ecosystem[ecoSwiper.realIndex].nodeList[this.realIndex];
                     const data_eco = data_ecosystem[ecoSwiper.realIndex];
+                    const data_node = data_eco.nodeList[this.realIndex];
                     var title = data_eco.name;
+                    var subtitle = data_node ? data_node.name : 'node_name';
                     var content = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged'.substring(Math.random()*200);
                     if (typeof(data_node) === "object") {
-                        title = data_node.name;
                         if (data_eco.description !== '') {
                             content = data_eco.description;
                         }
                     }
-                    setCaption(title, 'Node Title', content);
+                    setCaption(title, subtitle || 'node_name', content);
 
                 },
                 init: function () {
@@ -474,6 +474,28 @@
         };
 
         ecoSlides.push(sp);
+    }
+
+    function anim_lr_expend(swiper) {
+        anime({
+            targets: '.swiper-slide-h',
+            autoplay: true,
+            translateX: function (el, i, l) {
+                return Math.sign(i - swiper.realIndex) * (30);
+            },
+            scale: function (el, i, l) {
+                return (1 - Math.abs(i - swiper.realIndex) * 0.1);
+            },
+            opacity: function (el, i, l) {
+                if (i === swiper.realIndex) return 1;
+                return .6
+            },
+            duration: 500,
+            easing: 'easeInOutSine',
+            delay: function(el, i, l) {
+                return Math.abs(i-swiper.realIndex) * 100;
+            },
+        });
     }
 
     // init the swiper
@@ -538,27 +560,9 @@
 
                 allow_nav_arrow = true;
                 this.canPlayLRAnim = true;
-                const swiper = this;
+
                 // left-right animation -- expand
-                anime({
-                    targets: '.swiper-slide-h',
-                    autoplay: true,
-                    translateX: function (el, i, l) {
-                        return Math.sign(i - swiper.realIndex) * (30);
-                    },
-                    scale: function (el, i, l) {
-                        return (1 - Math.abs(i - swiper.realIndex) * 0.1);
-                    },
-                    opacity: function (el, i, l) {
-                        if (i === swiper.realIndex) return 1;
-                        return .6
-                    },
-                    duration: 500,
-                    easing: 'easeInOutSine',
-                    delay: function(el, i, l) {
-                        return Math.abs(i-swiper.realIndex) * 100;
-                    },
-                });
+                anim_lr_expend(this);
 
                 if (lastActiveSlideId !== this.realIndex) {
                     // actually move changed slides
@@ -581,17 +585,24 @@
                         delay: anime.stagger(100),
                         autoplay: true
                     });
-                    const data_node = data_ecosystem[this.realIndex].nodeList[ecoSlides[lastActiveSlideId].realIndex];
                     const data_eco = data_ecosystem[this.realIndex];
+                    const data_node = data_eco.nodeList[ecoSlides[this.realIndex].realIndex];
                     var title = data_eco.name;
+                    var subtitle = data_node ? data_node.name : 'node_name';
                     var content = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged';
                     if (typeof(data_node) === "object") {
-                        title = data_node.name;
                         if (data_eco.description !== '') {
                             content = data_eco.description;
                         }
                     }
-                    setCaption(title, 'Node Title', content);
+
+                    if (data_node === undefined) {
+                        console.log('data_eco', data_eco);
+                        console.log('lastActiveSlideId', lastActiveSlideId);
+                        console.log('this.realIndex', this.realIndex);
+                    }
+
+                    setCaption(title, subtitle || 'node_name', content);
                 }
 
                 lastActiveSlideId = this.realIndex;
