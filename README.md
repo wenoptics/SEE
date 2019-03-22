@@ -27,4 +27,4 @@ Repository of the Speculative Scale Explorer
   - [x] Ecosystem mode -> comparison mode
   - [x] `Change ecosystem` in ecosystem mode
   - [x] Network view loading
-  - [ ] Edit session (ongoing)
+  - [x] Edit session 
