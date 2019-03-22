@@ -154,11 +154,9 @@
             <h3 class="float-text--content-title">
                 <span id="content-node-name">Node Name</span>
                 <span class="w3-right">
-                <span style="font-weight: 200">×10</span>
-                <span style="font-size: 0.9em; position: relative; top: -0.5em; left: -0.2em;">
-                    5
+                    <span style="font-weight: 200" id="content-granularity">×10</span>
+                    <span style="font-size: 0.9em; position: relative; top: -0.5em; left: -0.2em;" id="content-scale">5</span>
                 </span>
-            </span>
             </h3>
             <hr style="margin: 0" />
             <p id="content-node-description">
@@ -181,6 +179,8 @@
     const el_text_ecosystem_name = document.querySelector('#content-ecosystem-name');
     const el_text_node_name = document.querySelector('#content-node-name');
     const el_text_node_desc = document.querySelector('#content-node-description');
+    const el_text_granularity = document.querySelector('#content-granularity');
+    const el_text_scale = document.querySelector('#content-scale');
 </script>
 <script>
 
@@ -205,8 +205,8 @@
     const errorImageUrl = 'res/error-image.jpg';
 
     // mode switch
-    function modeBtnListener(evt) {
-        switch (evt.target.dataset.mode) {
+    function goToView(mode) {
+        switch (mode) {
             case 'network':
                 window.location.href = 'network.html?ecosystem=' + eco_id;
                 break;
@@ -218,9 +218,17 @@
                 break;
         }
     }
+
+    function modeBtnListener(evt) {
+        goToView(evt.target.dataset.mode);
+    }
     document.querySelector('#btn-mode-network').addEventListener('click', modeBtnListener);
     document.querySelector('#btn-mode-comparison').addEventListener('click', modeBtnListener);
     // document.querySelector('#btn-mode-ecosystem').addEventListener('click', modeBtnListener);
+
+    document.querySelector('.float-text--header-btn').addEventListener('click', function () {
+        goToView('comparison');
+    })
 
     anime({
         targets: el_dotBg,
@@ -276,7 +284,7 @@
         if (nodeData.description !== '') {
             content = nodeData.description;
         }
-        setCaption(ecosystemData.name, nodeData.name, content);
+        setCaption(ecosystemData.name, nodeData.name, content, ecosystemData.granularity, nodeData.scale);
 
         // Load connections of this image node
         loadConnectionData(ecosystemData, nodeData);
@@ -373,10 +381,24 @@
 
     loadEcosystem(currentEcosystem);
 
-    function setCaption(title, subtitle, content) {
-        el_text_ecosystem_name.innerHTML = title;
-        el_text_node_name.innerHTML = subtitle || 'NodeTitle';
+    function setCaption(title, subtitle, content, granularity, scale) {
+        el_text_ecosystem_name.innerHTML = title || 'Ecosystem ?';
+        el_text_node_name.innerHTML = subtitle || 'One Node';
         el_text_node_desc.innerHTML = content;
+        switch (granularity) {
+            case undefined:
+            case null:
+                el_text_granularity.innerHTML = 'x10';
+                el_text_scale.innerHTML = '?';
+                break;
+            case 'linear':
+                el_text_granularity.innerHTML = scale;
+                el_text_scale.innerHTML = '';
+                break;
+            default:
+                el_text_granularity.innerHTML = 'x'+granularity;
+                el_text_scale.innerHTML = scale;
+        }
     }
 
     // Draw on canvas
