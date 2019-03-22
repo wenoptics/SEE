@@ -19,6 +19,7 @@ Repository of the Speculative Scale Explorer
   - [ ] |---- `[TBD]` Side scale ruler
   - [x] Display meta data of the ecosystem in the comparison mode
   - [x] Backend feature to support user that upload the ecosystem to re-visited 
+  
   the [editor page](/dist/upload.html) (with `session_id`)
   
   ## Todos
@@ -26,4 +27,4 @@ Repository of the Speculative Scale Explorer
   - [x] Ecosystem mode -> comparison mode
   - [x] `Change ecosystem` in ecosystem mode
   - [x] Network view loading
-  - [ ] Edit session
+  - [ ] Edit session (ongoing)

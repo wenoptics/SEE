@@ -5558,7 +5558,7 @@ $config = new Config([
         return $tableName != 'user';
     },
     'authorization.columnHandler' => function ($operation, $tableName, $columnName) {
-        return !($tableName == 'ecosystem' && $columnName == 'session_id');
+        return !( $tableName == 'ecosystem' && $columnName == 'session_id');
     }
 ]);
 $request = new Request();

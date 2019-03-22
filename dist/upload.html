@@ -44,7 +44,7 @@
     <div id="upload-page-container" class="uk-container uk-container-small" style="margin-top: 10vh">
 
         <div class="uk-card uk-card-body uk-margin-small" style="text-align: center">
-            <h3 class="uk-card-title">
+            <h3 class="uk-card-title" id="page-title">
                 Upload a New EcoSystem
             </h3>
         </div>
@@ -430,6 +430,19 @@
 
 </div>
 
+<div id="popup" class="uk-flex-top" uk-modal>
+    <div class="uk-modal-dialog uk-margin-auto-vertical">
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <div class="uk-modal-header">
+            <h2 class="uk-modal-title" id="popup-title">Upload Successful</h2>
+        </div>
+        <div class="uk-modal-body" id="popup-content"></div>
+        <div class="uk-modal-footer uk-text-right">
+            <button class="uk-button uk-button-default uk-modal-close" type="button" id="popup-button" onclick="">OK</button>
+        </div>
+    </div>
+</div>
+
 <!-- UIkit JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/js/uikit.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/js/uikit-icons.min.js"></script>
@@ -440,6 +453,53 @@
     const el_image_node_container = document.querySelector('#image-node-container');
 </script>
 <script>
+
+    // determine if in edit mode
+    var session_id = getUrlVars()['session_id'];
+    // when the param is undefined
+    if (session_id === undefined) {
+        // Use a new session
+    } else {
+        // leave out the hash
+        session_id = session_id.split('#')[0];
+        // load the session
+        var session_data = JSON.parse(ajax('GET', 'data/session.php?id=' + session_id, null, false));
+        if (session_data && session_data.succ) {
+            console.log('Loading ecosystem', session_data);
+
+            document.querySelector('#btn-upload').innerHTML = 'Modify';
+            document.querySelector('#page-title').innerHTML = 'Welcome back!';
+
+            // Load the seesion here
+            const eco_id = session_data.id;
+            const currentEcosystem = JSON.parse(ajax('GET',
+                `data/api.php/records/ecosystem/${eco_id}`, null, false));
+            currentEcosystem.nodeList = JSON.parse(ajax('GET',
+                'data/api.php/records/node?filter=fk_ecosystem_id,eq,'+eco_id, null, false)).records;
+
+            for (var i = 0; i < currentEcosystem.nodeList.length; i++) {
+                const node = currentEcosystem.nodeList[i];
+                const imgPath = 'data/ImageSecure/image.php?id=' + node.fk_image_id;
+                const el_node = addImageNode(imgPath, 'resolution', 'imageSize', node.fk_image_id);
+
+                // fill in the data
+                el_node.querySelector('input#nodeTitle').value = node.name;
+                el_node.querySelector('input#nodeScale').value = node.scale;
+                el_node.querySelector('input#nodeId').value = node.id;
+                setNodeType(el_node, node.type);
+                el_node.querySelector('input#nodeSource').value = node.source;
+                el_node.querySelector('input#nodeConnections').value = node.connections;
+                el_node.querySelector('textarea#nodeDesc').value = node.description;
+            }
+
+            document.querySelector('input#form-set-name').value = currentEcosystem.name;
+            setGranularity(currentEcosystem.name);
+            setScaleType(currentEcosystem.scale_type);
+            document.querySelector('textarea#form-set-desc').value = currentEcosystem.description;
+
+        }
+    }
+
 
     function fileSizeHuman(s) {
         if (s < 1024) {
@@ -632,6 +692,8 @@
             targets: newNode,
             translateX: [-200, 0]
         });
+
+        return newNode;
     }
 
     // Zoom out animation
@@ -762,6 +824,16 @@
         });
     }
 
+    function setGranularity(granularityValue) {
+        var el_granularity = document.querySelectorAll('input.form-granularity-option'); //('input[name=radio1]');
+        for (var ix=0; ix<el_granularity.length; ix++ ) {
+            if (el_granularity[ix].dataset['val'] === granularityValue) {
+                el_granularity[ix].checked = true;
+                break;
+            }
+        }
+    }
+
     function getGranularity() {
         var el_granularity = document.querySelectorAll('input.form-granularity-option'); //('input[name=radio1]');
         var sel_granularity;
@@ -772,6 +844,24 @@
             }
         }
         return sel_granularity;
+    }
+
+    function setScaleType(value) {
+        const options = document.querySelector('select#form-scale-type').options;
+        for (var i = 0; i < options.length; i++) {
+            if (options[i].dataset['val'] === value) {
+                options[i].selected = true;
+            }
+        }
+    }
+
+    function setNodeType(el, value) {
+        const options = el.querySelector('select#nodeType').options;
+        for (var i = 0; i < options.length; i++) {
+            if (options[i].dataset['val'] === value) {
+                options[i].selected = true;
+            }
+        }
     }
 
     document.querySelector('#btn-upload').addEventListener('click', function () {
@@ -809,7 +899,7 @@
         document.querySelectorAll('input#nodeId'         ).forEach(function (i) {
             payload.nodeIds.push(i.value)
         });
-        document.querySelectorAll('input#nodeType'       ).forEach(function (i) {
+        document.querySelectorAll('select#nodeType'       ).forEach(function (i) {
             payload.nodeTypes.push(i.value)
         });
         document.querySelectorAll('input#nodeSource'     ).forEach(function (i) {
@@ -906,25 +996,39 @@
             }
 
             console.log(payload);
-            // Upload success!
+            const validateHash = JSON.parse(ajax('GET', 'data/createsession.php?id=' + eco_id, null, false));
+            if (validateHash && validateHash.succ) {
+                // Upload success!
 
-            anime({
-                targets: 'li', //'.uk-card',
-                translateX: 500,
-                opacity: 0,
-                delay: anime.stagger(100), // increase delay by 100ms for each elements.
-                complete: function (_) {
-                    UIkit.notification({
-                        message: 'Upload Successfully!',
-                        status: 'primary',
-                        pos: 'bottom-center'
-                    });
+                const recoverSessionUrl = window.location.href + '?session_id=' + validateHash.hash;
 
-                    alert('Upload Successfully!');
+                document.querySelector('#popup-title').innerHTML = 'Congragulations';
+                document.querySelector('#popup-content').innerHTML = 'Upload Successfully! ' +
+                    'Keep this link to come back later for the ecosystem you just created.' +
+                    `<p style="background-color: whitesmoke; font-family: monospace; word-break: break-all; margin-top: 0.8em;">
+                        ${recoverSessionUrl}
+                    </p>`;
+                document.querySelector('#popup-button').onclick = function () {
+                    window.location.href = recoverSessionUrl;
+                };
 
-                    // window.location.href = 'comparison.html';
-                }
-            })
+                // window.location.href = 'comparison.html';
+
+                anime({
+                    targets: 'li', //'.uk-card',
+                    translateX: 500,
+                    opacity: 0,
+                    delay: anime.stagger(100), // increase delay by 100ms for each elements.
+                    complete: function (_) {}
+                });
+
+            } else {
+                document.querySelector('#popup-title').innerHTML = 'We are sorry';
+                document.querySelector('#popup-content').innerHTML = 'Some errors occurred during the upload.';
+                document.querySelector('#popup-button').onclick = null;
+            }
+
+            UIkit.modal('#popup').show();
 
         });
 
