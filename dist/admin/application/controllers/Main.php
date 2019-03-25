@@ -12,13 +12,17 @@ class Main extends CI_Controller {
 		/* ------------------ */
 
 		$this->load->library('grocery_CRUD');
+		$this->load->library('ion_auth');
 
+		if (!$this->ion_auth->logged_in())
+		{
+			redirect('auth/login');
+		}
 	}
 
 	public function index()
 	{
-		echo "<h1>Welcome to the world of Codeigniter</h1>";//Just an example to ensure that we get into the function
-		die();
+		$this->ecosystem();
 	}
 
 

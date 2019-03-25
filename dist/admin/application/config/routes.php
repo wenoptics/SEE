@@ -53,6 +53,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 // A fix for the url bug for the groceryCrud
 $route['admin/index.php/(.*)'] = '$1';
 
-$route['default_controller'] = 'welcome';
+$route['default_controller'] = 'main/ecosystem';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

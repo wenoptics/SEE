@@ -68,7 +68,8 @@
 	<a href='<?php echo site_url('examples/customers_management')?>'>Customers</a> |
 	<a href='<?php echo site_url('examples/orders_management')?>'>Orders</a> |
 	<a href='<?php echo site_url('examples/products_management')?>'>Products</a> |
-	<a href='<?php echo site_url('examples/film_management')?>'>Films</a>
+	<a href='<?php echo site_url('examples/film_management')?>'>Films</a> -
+	<a href='<?php echo site_url('auth/logout')?>'>Log out</a>
 
 </div>
 <!-- End of header-->

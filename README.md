@@ -29,6 +29,7 @@ Repository of the Speculative Scale Explorer
   - [x] Network view loading
   - [x] Edit session 
   - [ ] |--Management system for admin
-  - [ ] |----Authentication
+  - [ ] |----Tweak the management views
+  - [x] |----Authentication
   - [x] |----Custom view to support node visualization
 
