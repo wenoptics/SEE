@@ -624,10 +624,12 @@
                     <!--</div>-->
                 </div>
 
+                <p style="margin-top: 0" class="example-href">See an <a target="_blank" href="res/scale-example-book.pdf"><strong>example</strong></a></p>
+
                 <p><div class="uk-grid uk-child-width-expand@m">
                     <div class="uk-margin-bottom">
                         <label class="uk-form-label" for="nodeConnections">
-                            Source of image:
+                            Connections:
                             <span uk-icon="icon: question; ratio: 0.65"
                                 uk-tooltip="Connection node to this image, enter node-id, seperated by comma. e.g. 21,23,25"></span>
 
@@ -678,6 +680,8 @@
 <!--</li>-->`;
 
         el_image_node_container.appendChild(newNode);
+
+        newNode.querySelector('input#nodeId').value = imageId;
 
         newNode.querySelector('input#nodeScale').addEventListener('input', (evt)=>{
             _updateScalePreviewValue(evt.target);
@@ -815,6 +819,16 @@
                 _type = g;
             }
         }
+        if (g === 10 || g === '10') {
+            document.querySelectorAll('.example-href').forEach((function (el) {
+                el.style.display = 'block';
+            }));
+        } else {
+            document.querySelectorAll('.example-href').forEach((function (el) {
+                el.style.display = 'none';
+            }));
+        }
+
         document.querySelectorAll('.scale-preview--type').forEach((el) => {
             el.innerText = _type;
         });

@@ -28,3 +28,7 @@ Repository of the Speculative Scale Explorer
   - [x] `Change ecosystem` in ecosystem mode
   - [x] Network view loading
   - [x] Edit session 
+  - [ ] |--Management system for admin
+  - [ ] |----Authentication
+  - [x] |----Custom view to support node visualization
+
