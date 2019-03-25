@@ -1,6 +1,6 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Main extends CI_Controller {
+class Management extends CI_Controller {
 
 	function __construct()
 	{
@@ -22,7 +22,8 @@ class Main extends CI_Controller {
 
 	public function index()
 	{
-		$this->ecosystem();
+		header("Location: ".site_url(__CLASS__.'/'.'ecosystem')); /* Redirect browser */
+		die();
 	}
 
 
