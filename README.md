@@ -30,6 +30,7 @@ Repository of the Speculative Scale Explorer
   - [x] Edit session 
   - [ ] |--Management system for admin
   - [ ] |----Tweak the management views
+  - [ ] |------ add ecosystem [action](https://www.grocerycrud.com/documentation/options_functions/add_action)
   - [x] |----Authentication
   - [x] |----Custom view to support node visualization
 

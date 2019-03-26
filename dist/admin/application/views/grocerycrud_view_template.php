@@ -3,6 +3,9 @@
 <head>
 	<meta charset="utf-8" />
 
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
 	<title>SEE - Admin Page</title>
 
 	<?php
@@ -62,25 +65,38 @@
 </head>
 <body>
 <!-- Beginning header -->
-<div>
-	<a href='<?php echo site_url('examples/offices_management')?>'>Offices</a> |
-	<a href='<?php echo site_url('examples/employees_management')?>'>Employees</a> |
-	<a href='<?php echo site_url('examples/customers_management')?>'>Customers</a> |
-	<a href='<?php echo site_url('examples/orders_management')?>'>Orders</a> |
-	<a href='<?php echo site_url('examples/products_management')?>'>Products</a> |
-	<a href='<?php echo site_url('examples/film_management')?>'>Films</a> -
-	<a href='<?php echo site_url('auth/logout')?>'>Log out</a>
 
+<!-- Navbar (sit on top) -->
+<div class="w3-top" style="position: static">
+	<div class="w3-bar w3-white w3-wide w3-padding w3-card">
+		<a href="#" class="w3-bar-item w3-button"><b></b> Speculative Explorer </a>
+		<a href="/admin" class="w3-bar-item w3-button"><b></b> Admin </a>
+		<!-- Float links to the right. Hide them on small screens -->
+		<div class="w3-right w3-hide-small">
+			<a href="<?php echo site_url('auth/logout')?>" class="w3-bar-item w3-button">Log OUT</a>
+		</div>
+	</div>
 </div>
-<!-- End of header-->
-<div style='height:20px;'></div>
 
-<div>
-	<?php echo $output; ?>
+<!-- End of header-->
+
+<div class="w3-container">
+
+	<div class="w3-margin-top">
+
+		<a href='<?php echo site_url('management/ecosystem')?>'>View All Ecosystems</a> |
+		<a href='<?php echo site_url('management/node')?>'>View All Nodes</a>
+
+	</div>
+	<div style='height:20px;'></div>
+
+	<div>
+		<?php echo $output; ?>
+	</div>
 </div>
 
 <!-- Beginning footer -->
-<div>Footer</div>
+<!--<div>Footer</div>-->
 <!-- End of Footer -->
 </body>
 </html>

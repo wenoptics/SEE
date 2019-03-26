@@ -3,8 +3,6 @@
 <title>Login</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<style>
-</style>
 <body>
 
 <!-- Navbar (sit on top) -->
@@ -23,15 +21,8 @@
 
 	<p><?php echo lang('login_subheading');?></p>
 
-	<!-- The Modal -->
-	<div id="infoMessage" class="w3-modal" style="display: <?php echo $message == null?  'none' : 'block'; ?>">
-		<div class="w3-modal-content">
-			<div class="w3-container">
-      			<span onclick="document.getElementById('infoMessage').style.display='none'"
-					class="w3-button w3-display-topright">&times;</span>
-				<p><?php echo $message;?></p>
-			</div>
-		</div>
+	<div class="w3-panel w3-border w3-light-grey w3-round-large" style="display: <?php echo $message == null?  'none' : 'block'; ?>">
+		<p><?php echo $message;?></p>
 	</div>
 
 
