@@ -69,7 +69,7 @@
 <!-- Navbar (sit on top) -->
 <div class="w3-top" style="position: static">
 	<div class="w3-bar w3-white w3-wide w3-padding w3-card">
-		<a href="#" class="w3-bar-item w3-button"><b></b> Speculative Explorer </a>
+		<a href="/" class="w3-bar-item w3-button"><b></b> Speculative Explorer </a>
 		<a href="/admin" class="w3-bar-item w3-button"><b></b> Admin </a>
 		<!-- Float links to the right. Hide them on small screens -->
 		<div class="w3-right w3-hide-small">
