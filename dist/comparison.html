@@ -85,6 +85,8 @@
 
     </style>
 
+    <!-- UIkit CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/css/uikit.min.css" />
     <link rel="stylesheet" href="css/swiper.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="css/main.css"/>
@@ -121,19 +123,57 @@
     </div>
 
     <div class="filter-widgets" style="
-        z-index: 20000; position: absolute; top: 8vh; left: 5vw; transform: skew(-10deg); width: 35vw">
+        z-index: 20000; position: fixed; top: 8vh; left: 5vw; transform: skew(-0deg); width: 35vw">
         <!--todo Optimize for small screen-->
         <div style="border-bottom: 4px solid #00000033; overflow: auto;">
-            <span id="filter-button" onclick="filterAnimation.toggle()" class="mode-btn"
+            <div id="filter-button" onclick="filterAnimation.toggle()" class="mode-btn"
                   style="background-color: #77777785; border-right-width: 6px; margin-right: 3vw">
                 <img id="filter-expand-arrow" style="height: 10px; margin-right: 8px"
-                     src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTYuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjUxMnB4IiBoZWlnaHQ9IjUxMnB4IiB2aWV3Qm94PSIwIDAgMzA2IDMwNiIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMzA2IDMwNjsiIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8Zz4KCTxnIGlkPSJleHBhbmQtbW9yZSI+CgkJPHBvbHlnb24gcG9pbnRzPSIyNzAuMyw1OC42NSAxNTMsMTc1Ljk1IDM1LjcsNTguNjUgMCw5NC4zNSAxNTMsMjQ3LjM1IDMwNiw5NC4zNSAgICIgZmlsbD0iIzAwMDAwMCIvPgoJPC9nPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+Cjwvc3ZnPgo="
-                     alt=""
-                />
+                      src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTYuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjUxMnB4IiBoZWlnaHQ9IjUxMnB4IiB2aWV3Qm94PSIwIDAgMzA2IDMwNiIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMzA2IDMwNjsiIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8Zz4KCTxnIGlkPSJleHBhbmQtbW9yZSI+CgkJPHBvbHlnb24gcG9pbnRzPSIyNzAuMyw1OC42NSAxNTMsMTc1Ljk1IDM1LjcsNTguNjUgMCw5NC4zNSAxNTMsMjQ3LjM1IDMwNiw5NC4zNSAgICIgZmlsbD0iIzAwMDAwMCIvPgoJPC9nPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+Cjwvc3ZnPgo="
+                      alt=""/>
                 Filters
-            </span>
+            </div>
         </div>
-        <div class="float-text--content" id="filter-content-container" style="height: 70vh; top: -3px; left: 0">
+        <div class="float-text--content" id="filter-content-container"
+             style="height: 70vh; top: -3px; left: 0; background-color: #ffffffe6">
+            <div uk-filter="target: .js-filter">
+
+                <p>Enable the ecosystems that you want to compare. Drag to reorder.</p>
+                <hr>
+
+                <ul class="uk-subnav uk-subnav-pill">
+                    <li class="uk-active" uk-filter-control="sort: data-uploaddate"><a href="#">By Name</a></li>
+                    <li uk-filter-control="sort: data-uploaddate; order: desc"><a href="#">Most Recent</a></li>
+                </ul>
+
+                <hr>
+
+                <ul uk-sortable="handle: .uk-sortable-handle"
+                    class="uk-margin-left js-filter uk-list"
+                    id="filter-list-container"
+                    style="overflow-x: hidden">
+
+                    <li class="filter-eco-item"
+                        data-uploaddate="2016-06-01"
+                        data-ecosystem-name="?">
+                        <span class="uk-sortable-handle uk-margin-small-right" uk-icon="icon: table"></span>
+                        <label class="uk-margin-small-right"><input class="uk-checkbox" type="checkbox"></label>
+                        <span>Ecosystem 1</span>
+                    </li>
+                    <li data-uploaddate="2016-12-13">
+                        <span class="uk-sortable-handle uk-margin-small-right" uk-icon="icon: table"></span>
+                        <label><input class="uk-checkbox" type="checkbox"></label>
+                        <span>Ecosystem 2</span>
+                    </li>
+                </ul>
+
+            </div>
+
+            <button class="uk-button uk-button-primary"
+                    style="float: right; margin-top: 20px"
+                    id="filter-apply">
+                Apply
+            </button>
 
         </div>
     </div>
@@ -246,6 +286,9 @@
 
 
 <script src="https://unpkg.com/animejs@3.0.0/lib/anime.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/js/uikit.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/js/uikit-icons.min.js"></script>
+
 <script src="js/utilities.js"></script>
 <script src="js/swiper.js"></script>
 
@@ -278,6 +321,36 @@
 
 <script>
 
+    const LSTORAGE_KEY_FILTER_SETTING = 'filter_settings';
+
+    function loadFilterData(ecosystemData) {
+        const el_filter_list_container = document.querySelector('#filter-list-container');
+
+        // Remove the demo data filled
+        while(el_filter_list_container.firstChild){
+            el_filter_list_container.removeChild(el_filter_list_container.firstChild);
+        }
+
+        // ecosystemData = ecosystemData.filter(e => !e.filter.hide);
+
+        for (var setIdx = 0; setIdx < ecosystemData.length; setIdx++) {
+            const eco = ecosystemData[setIdx];
+            appendDom(el_filter_list_container,
+                `<li class="filter-eco-item"
+                    data-uploaddate="${eco.mod_timestamp}"
+                    data-ecosystem-name="${eco.name}"
+                    data-ecosystem-id="${eco.id}">
+                    <span class="uk-sortable-handle uk-margin-small-right" uk-icon="icon: table"></span>
+                    <label class="uk-margin-small-right">
+                        <input class="uk-checkbox" type="checkbox" ${eco.filter.hide?'':'checked'}>
+                    </label>
+                    <span>${eco.name}</span>
+                </li>`
+            );
+        }
+
+    }
+
     function loadImgData(setPath, imageSetData) {
         var ecosysContainer = document.querySelector('div#swiper-container-h').querySelector('.swiper-wrapper');
 
@@ -286,6 +359,7 @@
             ecosysContainer.removeChild(ecosysContainer.firstChild);
         }
 
+        imageSetData = imageSetData.filter(e => !e.filter.hide);
         for (var setIdx = 0; setIdx < imageSetData.length; setIdx++) {
             var ecoInnerSlideList = '';
             for (var i=0; i<imageSetData[setIdx].nodeList.length; i++) {
@@ -294,7 +368,7 @@
                 ecoInnerSlideList +=
                     '<div class="swiper-slide swiper-slide-v">' +
                     '   <div class="slide-v-container">' +
-                    '       <img class="slide-img" src="'+ imgPath +'"  alt=""/>' +
+                    '       <img class="slide-img" src="'+ imgPath +'" alt=""/>' +
                     '   </div>' +
                     '</div>';
             }
@@ -317,19 +391,385 @@
 
     }
 
-    // Fetch the ecosystem data
-    var data_ecosystem = JSON.parse(ajax('GET', 'data/api.php/records/ecosystem', null, false)).records;
-    for (var i = 0; i < data_ecosystem.length; i++) {
-        const eco_id = data_ecosystem[i].id;
-        // Fetch every image node:
-        data_ecosystem[i].nodeList = JSON.parse(ajax('GET',
-            'data/api.php/records/node?filter=fk_ecosystem_id,eq,'+eco_id, null, false)).records;
+    var ecoSlides, ecoSwiper;
+    function loadSwipers(data_ecosystem) {
+
+        if (ecoSlides) {
+            for (var i = 0; i < ecoSlides.length; i++) {
+                if (ecoSlides[i]) {
+                    ecoSlides[i].removeAllSlides();
+                }
+            }
+        }
+
+        data_ecosystem = data_ecosystem.filter(e => !e.filter.hide);
+
+        ecoSlides = [];
+        for (var i = 0; i < data_ecosystem.length; i++) {
+            const sp = new Swiper('#slide-'+i, {
+                direction: 'vertical',
+                effect: 'coverflow',
+                slidesPerView: 2,
+                // grabCursor: true,
+                centeredSlides: true,
+                initialSlide: parseInt(data_ecosystem[i].nodeList.length / 2 + (Math.random()-0.5)*6),
+                spaceBetween: 5,
+                slideToClickedSlide: true,
+                coverflowEffect: {
+                    rotate: 25,
+                    stretch: 90,
+                    depth: 600,
+                    modifier: 1,
+                    slideShadows : false,
+                },
+                on: {
+                    progress: function (p) {
+                        allow_nav_arrow = false;
+                    },
+                    slideChange: function () {
+                        if ( ecoSwiper !== undefined ) {
+
+                            // Change other eco-systems' images
+                            // todo Keep in the same scale
+                            if (this.isActive) {
+
+                                // left-right animation
+                                anime({
+                                    targets: '.swiper-slide-h:not(.swiper-slide-active)',
+                                    autoplay: true,
+                                    rotateX: [0, 30, 0],
+                                    duration: 600,
+                                    easing: 'easeOutSine',
+                                    delay: function (el, i, l) {
+                                        return Math.abs(i - ecoSwiper.realIndex) * 100;
+                                    },
+                                });
+
+                                const _slideIncr = this.realIndex - this.previousIndex;
+                                for (var i = 0; i < ecoSlides.length; i++) {
+                                    if ( ecoSlides[i] === this ) continue;
+                                    ecoSlides[i].slideTo(ecoSlides[i].realIndex + _slideIncr);
+                                }
+                            }
+                        }
+                    },
+                    transitionEnd: function () {
+                        allow_nav_arrow = true;
+
+                        if (lastActiveSlideId === null) return;
+                        /*// Text animation
+                        anime({
+                            targets: ['.float-text--header', '.float-text--content'],
+                            opacity: [0, 1],
+                            delay: anime.stagger(100),
+                            autoplay: true
+                        });*/
+                        const data_eco = data_ecosystem[ecoSwiper.realIndex];
+                        const data_node = data_eco.nodeList[this.realIndex];
+                        if (data_node === undefined) return;
+                        var title = data_eco.name;
+                        var subtitle = data_node ? data_node.name : 'node_name';
+                        var content = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged'.substring(Math.random()*200);
+                        if (typeof(data_node) === "object") {
+                            if (data_eco.description !== '') {
+                                content = data_eco.description;
+                            }
+                        }
+                        // console.log('1data_node', data_node);
+                        setCaption(title, subtitle, content, data_eco.granularity, data_node.scale);
+
+                    },
+                    init: function () {
+                        this.allowTouchMove = false;
+                        this.coverflowEffect.transitToTranslate(0);
+                        this.el.style.opacity = 1;
+                    }
+                },
+                touchStart: function (evt) {}
+            });
+
+            sp.anim = {
+                collapse: function () {
+                    anime({
+                        targets: sp,
+                        ttTranslateValue: 0,
+                        elasticity: 200,
+                        duration: 600,
+                        easing: 'easeInBack',
+                        autoplay: true,
+                        update: function () {
+                            sp.coverflowEffect.updateTtTranslate();
+                        }
+                    });
+                },
+                expand: function () {
+                    anime({
+                        targets: sp,
+                        ttTranslateValue: 1,
+                        elasticity: 200,
+                        duration: 450,
+                        easing: 'easeInOutSine',
+                        autoplay: true,
+                        update: function() {
+                            sp.coverflowEffect.updateTtTranslate();
+                        }
+                    });
+                }
+            };
+
+            ecoSlides.push(sp);
+        }
+
+        var anim_lr_expend = function (swiper) {
+            anime({
+                targets: '.swiper-slide-h',
+                autoplay: true,
+                translateX: function (el, i, l) {
+                    return Math.sign(i - swiper.realIndex) * (30);
+                },
+                scale: function (el, i, l) {
+                    return (1 - Math.abs(i - swiper.realIndex) * 0.1);
+                },
+                opacity: function (el, i, l) {
+                    if (i === swiper.realIndex) return 1;
+                    return .6
+                },
+                duration: 500,
+                easing: 'easeInOutSine',
+                delay: function (el, i, l) {
+                    return Math.abs(i - swiper.realIndex) * 100;
+                },
+            });
+        };
+
+        // init the swiper
+        if (ecoSwiper) {
+            ecoSwiper.removeAllSlides();
+        }
+
+        ecoSwiper = new Swiper('#swiper-container-h', {
+            speed: 400,
+            initialSlide: 1,
+            centeredSlides: true,
+            slideToClickedSlide: true, //click on any slide will produce transition to this slide
+            keyboard: {
+                enabled: true,
+            },
+            mousewheel: {
+                invert: false,
+                releaseOnEdges: true
+            },
+            hashNavigation: {
+                watchState: true,
+            },
+            scrollbar: {
+                el: '.swiper-scrollbar',
+                draggable: true,
+            },
+            // Responsive breakpoints
+            slidesPerView: 6,
+            spaceBetween: 20,
+            breakpoints: {
+                1024: {
+                    slidesPerView: 4,
+                    spaceBetween: 20,
+                },
+                640: {
+                    slidesPerView: 2,
+                    spaceBetween: 15,
+                }
+            },
+            on: {
+                progress: function (progress) {
+                    console.log('on "progress":' + progress);
+                    if (this.canPlayLRAnim === true) {
+                        if (lastActiveSlideId === null) {return}
+                        const swiper = this;
+                        // left-right animation -- collapse
+                        anime({
+                            targets: '.swiper-slide-h',
+                            autoplay: true,
+                            translateX: 0,
+                            scale: 1,
+                            duration: 100,
+                            easing: 'easeInOutSine',
+                            delay: function(el, i, l) {
+                                return Math.abs(i-swiper.realIndex) * 100;
+                            },
+                        });
+                        // hide the arrows
+                        allow_nav_arrow = false;
+                        this.canPlayLRAnim = false;
+                    }
+                },
+                transitionEnd: function() {
+                    console.log('on transitionEnd: realIndex=' + this.realIndex + ' lastActiveSlideId='+lastActiveSlideId);
+                    if (lastActiveSlideId === null) {return}
+
+                    allow_nav_arrow = true;
+                    this.canPlayLRAnim = true;
+
+                    // left-right animation -- expand
+                    anim_lr_expend(this);
+
+                    if (lastActiveSlideId !== this.realIndex) {
+                        // actually move changed slides
+
+                        // Deactivate the current (previous) ecosys
+                        ecoSlides[lastActiveSlideId].allowTouchMove = false;
+                        ecoSlides[lastActiveSlideId].anim.collapse();
+                        ecoSlides[lastActiveSlideId].isActive = false;
+
+                        // Activate the current
+                        ecoSlides[this.realIndex].allowTouchMove = true;
+                        ecoSlides[this.realIndex].anim.expand();
+                        ecoSlides[this.realIndex].isActive = true;
+
+                        // Text animation
+                        floatTextAnimation.show();
+
+                        const data_eco = data_ecosystem[this.realIndex];
+                        const data_node = data_eco.nodeList[ecoSlides[this.realIndex].realIndex];
+                        var title = data_eco.name;
+                        var subtitle = data_node ? data_node.name : 'node_name';
+                        var content = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged';
+                        if (typeof(data_node) === "object") {
+                            if (data_eco.description !== '') {
+                                content = data_eco.description;
+                            }
+                        }
+
+                        if (data_node === undefined) {
+                            console.log('data_eco', data_eco);
+                            console.log('lastActiveSlideId', lastActiveSlideId);
+                            console.log('this.realIndex', this.realIndex);
+                        }
+
+                        // console.log('2data_node', data_node);
+                        setCaption(title, subtitle, content, data_eco.granularity, data_node.scale);
+                    }
+
+                    lastActiveSlideId = this.realIndex;
+                },
+                init: function() {
+                    const startSlide = this.realIndex || this.params.initialSlide;
+                    console.log('on init: "startSlide" = ' + startSlide);
+
+                    ecoSlides[startSlide].allowTouchMove = true;
+                    ecoSlides[startSlide].anim.expand();
+
+                    lastActiveSlideId = startSlide;
+                }
+            }
+        });
     }
-    // data_ecosystem = data_ecosystem.concat(data_ecosystem).concat(data_ecosystem);
 
-    lastActiveSlideId = null;
+    var data_ecosystem;
+    var filter_persistence;
 
-    loadImgData('res/image_set', data_ecosystem);
+    document.querySelector('button#filter-apply').addEventListener('click', function () {
+
+        filter_persistence = {
+            order: [],
+            hidden: []
+        };
+
+        const items = document.querySelectorAll('li.filter-eco-item');
+        for (var i = 0; i < items.length; i++) {
+            const _id = String(items[i].dataset.ecosystemId);
+            filter_persistence.order.push(_id);
+            if ( ! items[i].querySelector('input').checked) {
+                // fixme A bug that some node cannot be recovered from unchecked
+                filter_persistence.hidden.push(_id);
+            }
+        }
+
+        window.localStorage.setItem(LSTORAGE_KEY_FILTER_SETTING, JSON.stringify(filter_persistence));
+        window.location.reload();
+    });
+
+    var filterAnimation = {
+        el_header: document.querySelector('.filter-widgets'),
+        el_arrow: document.querySelector('#filter-expand-arrow'),
+        el_content: document.querySelector('#filter-content-container'),
+        el_button: document.querySelector('#filter-button'),
+        state: 'expanded',
+        expand: function () {
+            anime.timeline({
+                autoplay: true,
+                duration: 550
+            }).add({
+                targets: this.el_header,
+                width: ['12vw', '35vw'],
+                skew: [-10, 0]
+            }).add({
+                targets: this.el_arrow,
+                rotateZ: [0, 90],
+                duration: 500
+            }, '-=200').add({
+                targets: this.el_content,
+                opacity: [0, 1],
+                scaleY: [0.5, 1],
+                translateY: ['-30%', 0],
+                easing: 'easeOutQuart'
+            }, '-=600');
+            this.state = 'expanded';
+        },
+        collapse: function () {
+            anime.timeline({
+                autoplay: true,
+                duration: 550
+            }).add({
+                targets: this.el_arrow,
+                rotateZ: [90, 0],
+                duration: 500
+            }).add({
+                targets: this.el_content,
+                opacity: [1, 0],
+                duration: 600
+            }, '-=400').add({
+                targets: this.el_header,
+                width: ['35vw', '12vw'],
+                skew: [0, -10],
+                easing: 'easeOutQuart'
+            }, '-=350');
+            this.state = 'collapsed';
+        },
+        toggle: function () {
+            if (this.state === 'collapsed') {
+                this.expand();
+            } else {
+                this.collapse();
+            }
+        }
+    };
+
+
+    const el_fText = document.querySelector('.float-text');
+    const el_dotBg = document.querySelector('div.dot-bg');
+
+    var floatTextAnimation = {
+        targets: ['.float-text--header', '#caption-content'],
+        show: function () {
+            anime({
+                targets: this.targets,
+                translateX: [-100, 0],
+                opacity: [0, 1],
+                delay: anime.stagger(100),
+                autoplay: true
+            });
+        },
+        hide: function () {
+            anime({
+                targets: this.targets,
+                translateX: -100,
+                opacity: 0,
+                delay: anime.stagger(100),
+                autoplay: true
+            });
+        }
+    };
+
 
     const arrowAct = {
         state: 'hidden',  //hidden, shown, animating
@@ -382,7 +822,7 @@
             }
         }
     };
-    arrowActAnim = anime({
+    const arrowActAnim = anime({
         targets: [arrowAct.el.up, arrowAct.el.down, arrowAct.el.left, arrowAct.el.right],
         translateX: [20, 0],  // Since we've already rotated them, we can simple translate by X.
         opacity: [0, 1],
@@ -397,341 +837,6 @@
         }
     });
     arrowAct.hide();
-
-    var ecoSlides = [];
-    for (var i = 0; i < data_ecosystem.length; i++) {
-        const sp = new Swiper('#slide-'+i, {
-            direction: 'vertical',
-            effect: 'coverflow',
-            slidesPerView: 2,
-            // grabCursor: true,
-            centeredSlides: true,
-            initialSlide: parseInt(data_ecosystem[i].nodeList.length / 2 + (Math.random()-0.5)*6),
-            spaceBetween: 5,
-            slideToClickedSlide: true,
-            coverflowEffect: {
-                rotate: 25,
-                stretch: 90,
-                depth: 600,
-                modifier: 1,
-                slideShadows : false,
-            },
-            on: {
-                progress: function (p) {
-                    allow_nav_arrow = false;
-                },
-                slideChange: function () {
-                    if ( ecoSwiper !== undefined ) {
-
-                        // Change other eco-systems' images
-                        // todo Keep in the same scale
-                        if (this.isActive) {
-
-                            // left-right animation
-                            anime({
-                                targets: '.swiper-slide-h:not(.swiper-slide-active)',
-                                autoplay: true,
-                                rotateX: [0, 30, 0],
-                                duration: 600,
-                                easing: 'easeOutSine',
-                                delay: function (el, i, l) {
-                                    return Math.abs(i - ecoSwiper.realIndex) * 100;
-                                },
-                            });
-
-                            const _slideIncr = this.realIndex - this.previousIndex;
-                            for (var i = 0; i < ecoSlides.length; i++) {
-                                if ( ecoSlides[i] === this ) continue;
-                                ecoSlides[i].slideTo(ecoSlides[i].realIndex + _slideIncr);
-                            }
-                        }
-                    }
-                },
-                transitionEnd: function () {
-                    allow_nav_arrow = true;
-
-                    if (lastActiveSlideId === null) return;
-                    /*// Text animation
-                    anime({
-                        targets: ['.float-text--header', '.float-text--content'],
-                        opacity: [0, 1],
-                        delay: anime.stagger(100),
-                        autoplay: true
-                    });*/
-                    const data_eco = data_ecosystem[ecoSwiper.realIndex];
-                    const data_node = data_eco.nodeList[this.realIndex];
-                    var title = data_eco.name;
-                    var subtitle = data_node ? data_node.name : 'node_name';
-                    var content = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged'.substring(Math.random()*200);
-                    if (typeof(data_node) === "object") {
-                        if (data_eco.description !== '') {
-                            content = data_eco.description;
-                        }
-                    }
-                    // console.log('1data_node', data_node);
-                    setCaption(title, subtitle, content, data_eco.granularity, data_node.scale);
-
-                },
-                init: function () {
-                    this.allowTouchMove = false;
-                    this.coverflowEffect.transitToTranslate(0);
-                    this.el.style.opacity = 1;
-                }
-            },
-            touchStart: function (evt) {}
-        });
-
-        sp.anim = {
-            collapse: function () {
-                anime({
-                    targets: sp,
-                    ttTranslateValue: 0,
-                    elasticity: 200,
-                    duration: 600,
-                    easing: 'easeInBack',
-                    autoplay: true,
-                    update: function () {
-                        sp.coverflowEffect.updateTtTranslate();
-                    }
-                });
-            },
-            expand: function () {
-                anime({
-                    targets: sp,
-                    ttTranslateValue: 1,
-                    elasticity: 200,
-                    duration: 450,
-                    easing: 'easeInOutSine',
-                    autoplay: true,
-                    update: function() {
-                        sp.coverflowEffect.updateTtTranslate();
-                    }
-                });
-            }
-        };
-
-        ecoSlides.push(sp);
-    }
-
-    function anim_lr_expend(swiper) {
-        anime({
-            targets: '.swiper-slide-h',
-            autoplay: true,
-            translateX: function (el, i, l) {
-                return Math.sign(i - swiper.realIndex) * (30);
-            },
-            scale: function (el, i, l) {
-                return (1 - Math.abs(i - swiper.realIndex) * 0.1);
-            },
-            opacity: function (el, i, l) {
-                if (i === swiper.realIndex) return 1;
-                return .6
-            },
-            duration: 500,
-            easing: 'easeInOutSine',
-            delay: function(el, i, l) {
-                return Math.abs(i-swiper.realIndex) * 100;
-            },
-        });
-    }
-
-    var floatTextAnimation = {
-        targets: ['.float-text--header', '#caption-content'],
-        show: function () {
-            anime({
-                targets: this.targets,
-                translateX: [-100, 0],
-                opacity: [0, 1],
-                delay: anime.stagger(100),
-                autoplay: true
-            });
-        },
-        hide: function () {
-            anime({
-                targets: this.targets,
-                translateX: -100,
-                opacity: 0,
-                delay: anime.stagger(100),
-                autoplay: true
-            });
-        }
-    };
-
-    var filterAnimation = {
-        el_header: document.querySelector('.filter-widgets'),
-        el_arrow: document.querySelector('#filter-expand-arrow'),
-        el_content: document.querySelector('#filter-content-container'),
-        el_button: document.querySelector('#filter-button'),
-        state: 'expanded',
-        expand: function () {
-            anime.timeline({
-                autoplay: true,
-                duration: 550
-            }).add({
-                targets: this.el_header,
-                width: ['12vw', '35vw']
-            }).add({
-                targets: this.el_arrow,
-                rotateZ: [0, 90],
-                duration: 500
-            }, '-=200').add({
-                targets: this.el_content,
-                opacity: [0, 1],
-                scaleY: [0.5, 1],
-                translateY: ['-30%', 0],
-                easing: 'easeOutQuart'
-            }, '-=600');
-            this.state = 'expanded';
-        },
-        collapse: function () {
-            anime.timeline({
-                autoplay: true,
-                duration: 550
-            }).add({
-                targets: this.el_arrow,
-                rotateZ: [90, 0],
-                duration: 500
-            }).add({
-                targets: this.el_content,
-                scaleY: [1, 0],
-                translateY: [0, '-50%'],
-                opacity: [1, 0]
-            }, '-=400').add({
-                targets: this.el_header,
-                width: ['35vw', '12vw'],
-                easing: 'easeOutQuart'
-            }, '-=350');
-            this.state = 'collapsed';
-        },
-        toggle: function () {
-            if (this.state === 'collapsed') {
-                this.expand();
-            } else {
-                this.collapse();
-            }
-        }
-    };
-
-    // init the swiper
-    var ecoSwiper = new Swiper('#swiper-container-h', {
-        speed: 400,
-        initialSlide: 1,
-        centeredSlides: true,
-        slideToClickedSlide: true, //click on any slide will produce transition to this slide
-        keyboard: {
-            enabled: true,
-        },
-        mousewheel: {
-            invert: false,
-            releaseOnEdges: true
-        },
-        hashNavigation: {
-            watchState: true,
-        },
-        scrollbar: {
-            el: '.swiper-scrollbar',
-            draggable: true,
-        },
-        // Responsive breakpoints
-        slidesPerView: 6,
-        spaceBetween: 20,
-        breakpoints: {
-            1024: {
-                slidesPerView: 4,
-                spaceBetween: 20,
-            },
-            640: {
-                slidesPerView: 2,
-                spaceBetween: 15,
-            }
-        },
-        on: {
-            progress: function (progress) {
-                console.log('on "progress":' + progress);
-                if (this.canPlayLRAnim === true) {
-                    if (lastActiveSlideId === null) {return}
-                    const swiper = this;
-                    // left-right animation -- collapse
-                    anime({
-                        targets: '.swiper-slide-h',
-                        autoplay: true,
-                        translateX: 0,
-                        scale: 1,
-                        duration: 100,
-                        easing: 'easeInOutSine',
-                        delay: function(el, i, l) {
-                            return Math.abs(i-swiper.realIndex) * 100;
-                        },
-                    });
-                    // hide the arrows
-                    allow_nav_arrow = false;
-                    this.canPlayLRAnim = false;
-                }
-            },
-            transitionEnd: function() {
-                console.log('on transitionEnd: realIndex=' + this.realIndex + ' lastActiveSlideId='+lastActiveSlideId);
-                if (lastActiveSlideId === null) {return}
-
-                allow_nav_arrow = true;
-                this.canPlayLRAnim = true;
-
-                // left-right animation -- expand
-                anim_lr_expend(this);
-
-                if (lastActiveSlideId !== this.realIndex) {
-                    // actually move changed slides
-
-                    // Deactivate the current (previous) ecosys
-                    ecoSlides[lastActiveSlideId].allowTouchMove = false;
-                    ecoSlides[lastActiveSlideId].anim.collapse();
-                    ecoSlides[lastActiveSlideId].isActive = false;
-
-                    // Activate the current
-                    ecoSlides[this.realIndex].allowTouchMove = true;
-                    ecoSlides[this.realIndex].anim.expand();
-                    ecoSlides[this.realIndex].isActive = true;
-
-                    // Text animation
-                    floatTextAnimation.show();
-
-                    const data_eco = data_ecosystem[this.realIndex];
-                    const data_node = data_eco.nodeList[ecoSlides[this.realIndex].realIndex];
-                    var title = data_eco.name;
-                    var subtitle = data_node ? data_node.name : 'node_name';
-                    var content = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged';
-                    if (typeof(data_node) === "object") {
-                        if (data_eco.description !== '') {
-                            content = data_eco.description;
-                        }
-                    }
-
-                    if (data_node === undefined) {
-                        console.log('data_eco', data_eco);
-                        console.log('lastActiveSlideId', lastActiveSlideId);
-                        console.log('this.realIndex', this.realIndex);
-                    }
-
-                    // console.log('2data_node', data_node);
-                    setCaption(title, subtitle, content, data_eco.granularity, data_node.scale);
-                }
-
-                lastActiveSlideId = this.realIndex;
-            },
-            init: function() {
-                const startSlide = this.realIndex || this.params.initialSlide;
-                console.log('on init: "startSlide" = ' + startSlide);
-
-                ecoSlides[startSlide].allowTouchMove = true;
-                ecoSlides[this.realIndex].anim.expand();
-
-                lastActiveSlideId = startSlide;
-            }
-        }
-    });
-
-
-    const el_fText = document.querySelector('.float-text');
-    const el_dotBg = document.querySelector('div.dot-bg');
 
     var allow_nav_arrow = true;
     var lastMouseOverElement = null;
@@ -848,7 +953,59 @@
     // document.querySelector('#btn-mode-comparison').addEventListener('click', modeBtnListener);
     document.querySelector('#btn-mode-ecosystem').addEventListener('click', modeBtnListener);
 
+    lastActiveSlideId = null;
 
+    var eco_id_dict = {};
+    var filter_storage_string = window.localStorage.getItem(LSTORAGE_KEY_FILTER_SETTING);
+    if (filter_storage_string === '' || filter_storage_string === null) {
+        filter_persistence = {
+            order: [],
+            hidden: []
+        };
+    } else {
+        filter_persistence = JSON.parse(filter_storage_string);
+    }
+
+    // Fetch the ecosystem data, and read filtered ecosystems from localStorage
+    data_ecosystem_pre = JSON.parse(ajax('GET', 'data/api.php/records/ecosystem', null, false)).records;
+    for (var i = 0; i < data_ecosystem_pre.length; i++) {
+        const eco_id = String(data_ecosystem_pre[i].id);
+
+        // Fetch every image node
+        data_ecosystem_pre[i].nodeList = JSON.parse(ajax('GET',
+            'data/api.php/records/node?filter=fk_ecosystem_id,eq,' + eco_id, null, false)).records;
+
+        // construct the ecosystem id-hashmap
+        eco_id_dict[eco_id] = data_ecosystem_pre[i];
+
+        // load filter state from the localStorage
+        if (filter_persistence.hidden.indexOf(eco_id) >= 0) {
+            // hide this node
+            data_ecosystem_pre[i].filter = {'hide': true}
+        } else {
+            data_ecosystem_pre[i].filter = {'hide': false};
+            if (filter_persistence.order.indexOf(eco_id) <= 0) {
+                // this is a new ecosystem, append it to the 'order' list to show it by default
+                filter_persistence.order.push(eco_id);
+            }
+        }
+
+    }
+
+    if (filter_persistence.order.length === 0) {
+        data_ecosystem = data_ecosystem_pre;
+    } else {
+        // re-order the ecosystem according to the 'order' array
+        data_ecosystem = [];
+        for (i = 0; i < filter_persistence.order.length; i++) {
+            var eco_id = String(filter_persistence.order[i]);
+            data_ecosystem.push(eco_id_dict[eco_id]);
+        }
+    }
+
+    loadFilterData(data_ecosystem);
+    loadImgData('res/image_set', data_ecosystem);
+    loadSwipers(data_ecosystem);
 
 </script>
 
