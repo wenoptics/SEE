@@ -26,21 +26,29 @@ class Management extends CI_Controller {
 		die();
 	}
 
-
 	public function ecosystem()
 	{
 		$crud = new grocery_CRUD();
 		$crud->set_table('ecosystem');
-		$output = $this->grocery_crud->render();
+		$crud->set_subject('Ecosystem');
 
+		$crud->columns('name', 'description', 'scale_type', 'granularity', 'createtimestamp', 'updatetimestamp', 'session_id');
+		$crud->callback_column('name', array($this, '_callback_eco_name'));
+		$crud->callback_column('session_id', array($this, '_callback_eco_session_id'));
+
+		$output = $this->grocery_crud->render();
 		$this->_example_output($output);
 	}
 
-	public function node()
+	public function node($eco_id=null)
 	{
 		$crud = new grocery_CRUD();
 		$crud->set_table('node');
 		$crud->set_subject('Image Node');
+
+		if ($eco_id !== null) {
+			$crud->where('fk_ecosystem_id', $eco_id);
+		}
 
 		// relation to the actual image file
 		//$crud->set_relation('fk_image_id','image','name');
@@ -56,11 +64,22 @@ class Management extends CI_Controller {
 
 	function _callback_fk_image_id($value, $row)
 	{
-		 return "<img width='80' src='/data/ImageSecure/image.php?id=" . $value . "' title='".$value."'/>";
+		 return /** @lang HTML */
+			 "<img width='80' src='/data/ImageSecure/image.php?id=" . $value . "' title='".$value."' alt=''/>";
 		// return "<div class='tooltip'>
 		// 			<img width='80' src='/data/ImageSecure/image.php?id=" . $value . "'/>
 		// 			<span class='tooltiptext'>".$value."</span>
 		// 		</div>";
+	}
+
+	function _callback_eco_session_id($value, $row)
+	{
+		return "<a href='/upload.html?session_id=". $value ."'>". $value ."</a>";
+	}
+
+	function _callback_eco_name($value, $row)
+	{
+		return "<a href='/admin/index.php/management/node/". $row['id'] ."'>". $value ."</a>";
 	}
 
 	function _example_output($output = null)
