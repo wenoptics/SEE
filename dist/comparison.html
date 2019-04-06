@@ -142,7 +142,7 @@
                 <hr>
 
                 <ul class="uk-subnav uk-subnav-pill">
-                    <li class="uk-active" uk-filter-control="sort: data-uploaddate"><a href="#">By Name</a></li>
+                    <li class="uk-active" uk-filter-control="sort: data-ecosystem-name"><a href="#">By Name</a></li>
                     <li uk-filter-control="sort: data-uploaddate; order: desc"><a href="#">Most Recent</a></li>
                 </ul>
 
@@ -160,7 +160,8 @@
                         <label class="uk-margin-small-right"><input class="uk-checkbox" type="checkbox"></label>
                         <span>Ecosystem 1</span>
                     </li>
-                    <li data-uploaddate="2016-12-13">
+                    <li data-uploaddate="2016-12-13"
+                        data-ecosystem-name="?">
                         <span class="uk-sortable-handle uk-margin-small-right" uk-icon="icon: table"></span>
                         <label><input class="uk-checkbox" type="checkbox"></label>
                         <span>Ecosystem 2</span>
@@ -337,7 +338,7 @@
             const eco = ecosystemData[setIdx];
             appendDom(el_filter_list_container,
                 `<li class="filter-eco-item"
-                    data-uploaddate="${eco.mod_timestamp}"
+                    data-uploaddate="${eco.updatetimestamp}"
                     data-ecosystem-name="${eco.name}"
                     data-ecosystem-id="${eco.id}">
                     <span class="uk-sortable-handle uk-margin-small-right" uk-icon="icon: table"></span>
