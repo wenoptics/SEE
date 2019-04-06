@@ -32,7 +32,7 @@
         <div class="w3-right w3-hide-small">
             <a href="#about" class="w3-bar-item w3-button">About</a>
         </div>
-        <div id="btn-upload" class="w3-bar-item w3-right w3-button w3-blue">Upload!</div>
+        <div id="btn-submit" class="w3-bar-item w3-right w3-button w3-blue">Upload!</div>
     </div>
 </div>
 
@@ -455,6 +455,8 @@
 <script>
 
     // determine if in edit mode
+    var mode = 'create';  // either 'create' or 'edit';
+    var eco_id;
     var session_id = getUrlVars()['session_id'];
     // when the param is undefined
     if (session_id === undefined) {
@@ -466,12 +468,13 @@
         var session_data = JSON.parse(ajax('GET', 'data/session.php?id=' + session_id, null, false));
         if (session_data && session_data.succ) {
             console.log('Loading ecosystem', session_data);
+            mode = 'edit';
 
-            document.querySelector('#btn-upload').innerHTML = 'Modify';
+            document.querySelector('#btn-submit').innerHTML = 'Modify';
             document.querySelector('#page-title').innerHTML = 'Welcome back!';
 
             // Load the seesion here
-            const eco_id = session_data.id;
+            eco_id = session_data.id;
             const currentEcosystem = JSON.parse(ajax('GET',
                 `data/api.php/records/ecosystem/${eco_id}`, null, false));
             currentEcosystem.nodeList = JSON.parse(ajax('GET',
@@ -490,6 +493,9 @@
                 el_node.querySelector('input#nodeSource').value = node.source;
                 el_node.querySelector('input#nodeConnections').value = node.connections;
                 el_node.querySelector('textarea#nodeDesc').value = node.description;
+
+                // set the meta data
+                el_node.dataset['node_id'] = node.id;
             }
 
             document.querySelector('input#form-set-name').value = currentEcosystem.name;
@@ -537,7 +543,9 @@
         const uid = el_image_node_container.childElementCount + 1;
         var newNode = document.createElement('li');
         newNode.setAttribute('id', 'node-'+uid);
+        newNode.setAttribute('class', 'node-list-item');
 
+        // language=HTML
         newNode.innerHTML = `<!--<li id="node-${uid}">-->
 <div class="uk-card uk-card-hover uk-card-default uk-card-body">
 <div class="uk-child-width-expand@s" uk-grid>
@@ -878,7 +886,7 @@
         }
     }
 
-    document.querySelector('#btn-upload').addEventListener('click', function () {
+    document.querySelector('#btn-submit').addEventListener('click', function () {
 
         var validation_ok = true;
 
@@ -891,7 +899,12 @@
             'nodeSources'    : [],
             'nodeConnections': [],
             'nodeDescritions': [],
+
+            'nodeElement': [],
         };
+        document.querySelectorAll('li.node-list-item').forEach((i) => {
+            payload.nodeElement.push(i);
+        });
         document.querySelectorAll('img#uploadImage').forEach(function (i) {
             payload.imageFileIds.push(i.dataset.imageId);
         });
@@ -948,7 +961,7 @@
             return;
         }
 
-        // create a new ecosystem
+        // construct ecosystem data
         var sel_granularity = getGranularity();
         const set_data = {
             name: document.querySelector('input#form-set-name').value,
@@ -961,13 +974,22 @@
         const node_id_map = {};
         const node_id_index = {};
 
-        ajax('POST', 'data/api.php/records/ecosystem', JSON.stringify(set_data), false, function (resp) {
+        var submit_method = 'POST';
+        var submit_eco_url = 'data/api.php/records/ecosystem';
+        if (mode === 'edit') {
+            // edit mode
+            submit_method = 'PUT';
+            submit_eco_url += '/' + eco_id;
+        }
+        ajax(submit_method, submit_eco_url, JSON.stringify(set_data), false, function (resp) {
 
-            var eco_id = resp;
-            console.log(eco_id);
-            // todo Do validation of eco_id
+            if (mode === 'create') {
+                eco_id = resp;
+                console.log(eco_id);
+                // todo Do validation of eco_id
+            }
 
-            // create each image nodes
+            // Construct each image nodes
             for (var i=0; i<payload.nodeIds.length; i++){
                 const data = {
                     name: payload.nodeTitles[i],
@@ -981,7 +1003,14 @@
                     fk_image_id: payload.imageFileIds[i]
                 };
 
-                const node_id = ajax('POST', 'data/api.php/records/node', JSON.stringify(data), false);
+                var node_id;
+                if (mode === "create") {
+                    node_id = ajax('POST', 'data/api.php/records/node', JSON.stringify(data), false);
+                } else {
+                    node_id = payload.nodeElement[i].dataset['node_id'];
+                    ajax('PUT', 'data/api.php/records/node/'+node_id, JSON.stringify(data), false);
+                }
+
                 node_id_index[ i ] = node_id;
                 if (trim(payload.nodeIds[i]) !== '') {
                     node_id_map[ payload.nodeIds[i] ] = node_id;
@@ -1006,18 +1035,49 @@
                         JSON.stringify({connections: conn_arr.toString()}),
                         false);
                 }
-
             }
 
             console.log(payload);
-            const validateHash = JSON.parse(ajax('GET', 'data/createsession.php?id=' + eco_id, null, false));
-            if (validateHash && validateHash.succ) {
-                // Upload success!
+            if (mode === "create") {
+                const validateHash = JSON.parse(ajax('GET', 'data/createsession.php?id=' + eco_id, null, false));
+                if (validateHash && validateHash.succ) {
+                    // Upload success!
 
-                const recoverSessionUrl = window.location.href + '?session_id=' + validateHash.hash;
+                    const recoverSessionUrl = setUrlParameter(window.location.href, 'session_id', validateHash.hash);
+
+                    document.querySelector('#popup-title').innerHTML = 'Congragulations';
+                    document.querySelector('#popup-content').innerHTML = 'Upload Successfully! ' +
+                        'Keep this link to come back later for the ecosystem you just created.' +
+                        `<p style="background-color: whitesmoke; font-family: monospace; word-break: break-all; margin-top: 0.8em;">
+                        ${recoverSessionUrl}
+                    </p>`;
+                    document.querySelector('#popup-button').onclick = function () {
+                        window.location.href = recoverSessionUrl;
+                    };
+
+                    // window.location.href = 'comparison.html';
+
+                    anime({
+                        targets: 'li', //'.uk-card',
+                        translateX: 500,
+                        opacity: 0,
+                        delay: anime.stagger(100), // increase delay by 100ms for each elements.
+                        complete: function (_) {}
+                    });
+
+                } else {
+                    document.querySelector('#popup-title').innerHTML = 'We are sorry';
+                    document.querySelector('#popup-content').innerHTML = 'Some errors occurred during the upload.';
+                    document.querySelector('#popup-button').onclick = null;
+                }
+            } else {
+                // edit mode
+                // fixme We should also somehow include the session_id to update the ecosystem data and nodes, for security reasons.
+
+                const recoverSessionUrl = setUrlParameter(window.location.href, 'session_id', session_id);
 
                 document.querySelector('#popup-title').innerHTML = 'Congragulations';
-                document.querySelector('#popup-content').innerHTML = 'Upload Successfully! ' +
+                document.querySelector('#popup-content').innerHTML = 'Modify Successfully! ' +
                     'Keep this link to come back later for the ecosystem you just created.' +
                     `<p style="background-color: whitesmoke; font-family: monospace; word-break: break-all; margin-top: 0.8em;">
                         ${recoverSessionUrl}
@@ -1036,10 +1096,6 @@
                     complete: function (_) {}
                 });
 
-            } else {
-                document.querySelector('#popup-title').innerHTML = 'We are sorry';
-                document.querySelector('#popup-content').innerHTML = 'Some errors occurred during the upload.';
-                document.querySelector('#popup-button').onclick = null;
             }
 
             UIkit.modal('#popup').show();
