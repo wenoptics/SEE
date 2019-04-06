@@ -680,7 +680,6 @@
             const _id = String(items[i].dataset.ecosystemId);
             filter_persistence.order.push(_id);
             if ( ! items[i].querySelector('input').checked) {
-                // fixme A bug that some node cannot be recovered from unchecked
                 filter_persistence.hidden.push(_id);
             }
         }
@@ -985,7 +984,7 @@
             data_ecosystem_pre[i].filter = {'hide': true}
         } else {
             data_ecosystem_pre[i].filter = {'hide': false};
-            if (filter_persistence.order.indexOf(eco_id) <= 0) {
+            if (filter_persistence.order.indexOf(eco_id) < 0) {
                 // this is a new ecosystem, append it to the 'order' list to show it by default
                 filter_persistence.order.push(eco_id);
             }
@@ -1000,7 +999,11 @@
         data_ecosystem = [];
         for (i = 0; i < filter_persistence.order.length; i++) {
             var eco_id = String(filter_persistence.order[i]);
-            data_ecosystem.push(eco_id_dict[eco_id]);
+            if (eco_id_dict[eco_id]) {
+                // make sure that it actually exists
+                //      e.g. the case that an ecosystem has been deleted
+                data_ecosystem.push(eco_id_dict[eco_id]);
+            }
         }
     }
 
