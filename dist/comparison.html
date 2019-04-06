@@ -141,10 +141,24 @@
                 <p>Enable the ecosystems that you want to compare. Drag to reorder.</p>
                 <hr>
 
-                <ul class="uk-subnav uk-subnav-pill">
-                    <li class="uk-active" uk-filter-control="sort: data-ecosystem-name"><a href="#">By Name</a></li>
-                    <li uk-filter-control="sort: data-uploaddate; order: desc"><a href="#">Most Recent</a></li>
-                </ul>
+                <div class="uk-grid-small uk-flex-middle" uk-grid>
+                    <div class="uk-width-expand">
+                        <div class="uk-grid-small uk-grid-divider uk-child-width-auto" uk-grid>
+                            <div>
+                                <ul class="uk-subnav uk-subnav-pill">
+                                    <li id="filter-btn-sel-all"><a href="#">All</a></li>
+                                    <li id="filter-btn-desel-all"><a href="#">None</a></li>
+                                </ul>
+                            </div>
+                            <div>
+                                <ul class="uk-subnav uk-subnav-pill">
+                                    <li uk-filter-control="sort: data-ecosystem-name"><a href="#">By Name</a></li>
+                                    <li uk-filter-control="sort: data-uploaddate; order: desc"><a href="#">Most Recent</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <hr>
 
@@ -686,6 +700,20 @@
 
         window.localStorage.setItem(LSTORAGE_KEY_FILTER_SETTING, JSON.stringify(filter_persistence));
         window.location.reload();
+    });
+
+    function set_all_filter_check_status(status) {
+        const items = document.querySelectorAll('li.filter-eco-item');
+        for (var i = 0; i < items.length; i++) {
+            items[i].querySelector('input').checked = status;
+        }
+    }
+
+    document.querySelector('#filter-btn-sel-all').addEventListener('click', function (el) {
+        set_all_filter_check_status(true);
+    });
+    document.querySelector('#filter-btn-desel-all').addEventListener('click', function (el) {
+        set_all_filter_check_status(false);
     });
 
     var filterAnimation = {
