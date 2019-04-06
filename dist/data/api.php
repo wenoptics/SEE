@@ -5555,11 +5555,31 @@ $config = new Config([
     // use authorization middleware to disable certain tables and fields being exposed.
     'middlewares' => 'cors,authorization',
     'authorization.tableHandler' => function ($operation, $tableName) {
-        return $tableName != 'user';
+        return ! ($tableName == 'user'
+            || $tableName == 'user_groups'
+            || $tableName == 'login_attempts'
+            || $tableName == 'groups');
     },
     'authorization.columnHandler' => function ($operation, $tableName, $columnName) {
+        // Don't expose the session_id
         return !( $tableName == 'ecosystem' && $columnName == 'session_id');
-    }
+    },
+    /*'sanitation.handler' => function ($operation, $tableName, $column, $value)
+    {
+        if ($tableName == "ecosystem") {
+            if ($operation == "create") {
+                if ( $column == "createtimestamp" || $column == "updatetimestamp" ) {
+                    return time();
+                }
+            } elseif ($operation == "update") {
+                if ( $column == "updatetimestamp" ) {
+                    return time();
+                }
+            }
+        }
+        // default
+        return $value;
+    }*/
 ]);
 $request = new Request();
 $api = new Api($config);
