@@ -40,8 +40,7 @@ class Management extends CI_Controller {
 		$this->_example_output($output);
 	}
 
-	public function node($eco_id=null)
-	{
+	public function node_query($eco_id=null) {
 		$crud = new grocery_CRUD();
 		$crud->set_table('node');
 		$crud->set_subject('Image Node');
@@ -49,6 +48,25 @@ class Management extends CI_Controller {
 		if ($eco_id !== null) {
 			$crud->where('fk_ecosystem_id', $eco_id);
 		}
+
+		// relation to the actual image file
+		//$crud->set_relation('fk_image_id','image','name');
+		//$crud->set_relation('fk_image_id','image','original_name');
+
+		$crud->callback_column('fk_image_id', array($this, '_callback_fk_image_id'));
+		$crud->display_as('fk_image_id', 'Image');
+		$crud->display_as('fk_ecosystem_id', 'Ecosystem ID');
+
+		$output = $crud->render();
+		$this->_example_output($output);
+
+	}
+
+	public function node()
+	{
+		$crud = new grocery_CRUD();
+		$crud->set_table('node');
+		$crud->set_subject('Image Node');
 
 		// relation to the actual image file
 		//$crud->set_relation('fk_image_id','image','name');
