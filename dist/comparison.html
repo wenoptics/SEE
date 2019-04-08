@@ -90,6 +90,7 @@
     <link rel="stylesheet" href="css/swiper.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="css/main.css"/>
+    <!--<link rel="stylesheet" href="css/loader.css"/>-->
 
 </head>
 <body>
@@ -162,24 +163,27 @@
 
                 <hr>
 
+                <p id="filter-loading" style="text-align: center">Loading...</p>
+
                 <ul uk-sortable="handle: .uk-sortable-handle"
                     class="uk-margin-left js-filter uk-list"
                     id="filter-list-container"
                     style="overflow-x: hidden">
 
-                    <li class="filter-eco-item"
-                        data-uploaddate="2016-06-01"
-                        data-ecosystem-name="?">
-                        <span class="uk-sortable-handle uk-margin-small-right" uk-icon="icon: table"></span>
-                        <label class="uk-margin-small-right"><input class="uk-checkbox" type="checkbox"></label>
-                        <span>Ecosystem 1</span>
-                    </li>
-                    <li data-uploaddate="2016-12-13"
-                        data-ecosystem-name="?">
-                        <span class="uk-sortable-handle uk-margin-small-right" uk-icon="icon: table"></span>
-                        <label><input class="uk-checkbox" type="checkbox"></label>
-                        <span>Ecosystem 2</span>
-                    </li>
+                    <!--<li class="filter-eco-item"-->
+                        <!--data-uploaddate="2016-06-01"-->
+                        <!--data-ecosystem-name="?">-->
+                        <!--<span class="uk-sortable-handle uk-margin-small-right" uk-icon="icon: table"></span>-->
+                        <!--<label class="uk-margin-small-right"><input class="uk-checkbox" type="checkbox"></label>-->
+                        <!--<span>Ecosystem 1</span>-->
+                    <!--</li>-->
+                    <!--<li data-uploaddate="2016-12-13"-->
+                        <!--data-ecosystem-name="?">-->
+                        <!--<span class="uk-sortable-handle uk-margin-small-right" uk-icon="icon: table"></span>-->
+                        <!--<label><input class="uk-checkbox" type="checkbox"></label>-->
+                        <!--<span>Ecosystem 2</span>-->
+                    <!--</li>-->
+
                 </ul>
 
             </div>
@@ -1035,9 +1039,17 @@
         }
     }
 
+    // Hide the loading state
+    document.querySelector('#filter-loading').style.display = 'None';
+
     loadFilterData(data_ecosystem);
     loadImgData('res/image_set', data_ecosystem);
     loadSwipers(data_ecosystem);
+
+    // Auto hide the filter panel
+    setTimeout(()=>{
+        filterAnimation.collapse();
+    }, 1000);
 
 </script>
 
