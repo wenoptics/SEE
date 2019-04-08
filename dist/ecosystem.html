@@ -139,12 +139,21 @@
     <div class='dot-bg'></div>
     <canvas id="drawing"></canvas>
 
-    <div class="mode-widgets" style="position: absolute; right: 10vw; top: 8vh; transform: skew(-10deg);border-bottom: 4px solid #00000033">
+    <div class="mode-widgets" style="
+        position: fixed; right: 10vw; top: 8vh;
+        transform: skew(-10deg);z-index: 10000;
+        border-bottom: 4px solid #00000033;
+        border-right: 4px solid #00000033;">
+        <!--todo Optimize for small screen-->
+        <div style="background-color: #00000033;
+            padding: 0 10px;
+            font-size: 0.9em;">
+            <span><b>mode: </b></span>
+        </div>
         <!--todo Optimize for small screen-->
         <span class="mode-btn" id="btn-mode-network" data-mode="network">Network</span>
         <span class="mode-btn mode-btn-active" id="btn-mode-ecosystem" data-mode="ecosystem">Ecosystem</span>
         <span class="mode-btn" id="btn-mode-comparison" data-mode="comparison">Comparison</span>
-        <span style="background-color: #77777785;border-right-width: 6px;" class="mode-btn">Modes:</span>
     </div>
 
     <div class="float-text">

@@ -112,13 +112,20 @@
     <div class='dot-bg'></div>
 
     <div class="mode-widgets" style="
-        position: fixed; right: 10vw; top: 8vh; transform: skew(-10deg);z-index: 10000;border-bottom: 4px solid #00000033;">
+        position: fixed; right: 10vw; top: 8vh;
+        transform: skew(-10deg);z-index: 10000;
+        border-bottom: 4px solid #00000033;
+        border-right: 4px solid #00000033;">
         <!--todo Optimize for small screen-->
+        <div style="background-color: #00000033;
+            padding: 0 10px;
+            font-size: 0.9em;">
+            <span><b>mode: </b></span>
+        </div>
         <div>
             <span class="mode-btn" id="btn-mode-network" data-mode="network">Network</span>
             <span class="mode-btn" id="btn-mode-ecosystem" data-mode="ecosystem">Ecosystem</span>
             <span class="mode-btn mode-btn-active" id="btn-mode-comparison" data-mode="comparison">Comparison</span>
-            <span style="background-color: #77777785;border-right-width: 6px;" class="mode-btn">Modes:</span>
         </div>
 
     </div>
@@ -132,27 +139,31 @@
                 <img id="filter-expand-arrow" style="height: 10px; margin-right: 8px"
                       src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTYuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjUxMnB4IiBoZWlnaHQ9IjUxMnB4IiB2aWV3Qm94PSIwIDAgMzA2IDMwNiIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMzA2IDMwNjsiIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8Zz4KCTxnIGlkPSJleHBhbmQtbW9yZSI+CgkJPHBvbHlnb24gcG9pbnRzPSIyNzAuMyw1OC42NSAxNTMsMTc1Ljk1IDM1LjcsNTguNjUgMCw5NC4zNSAxNTMsMjQ3LjM1IDMwNiw5NC4zNSAgICIgZmlsbD0iIzAwMDAwMCIvPgoJPC9nPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+Cjwvc3ZnPgo="
                       alt=""/>
-                Filters
+                Select Ecosystems
             </div>
         </div>
         <div class="float-text--content" id="filter-content-container"
              style="height: 70vh; top: -3px; left: 0; background-color: #ffffffe6">
             <div uk-filter="target: .js-filter">
 
-                <p>Enable the ecosystems that you want to compare. Drag to reorder.</p>
+                <p class="uk-margin-top"> Enable the ecosystems that you want to compare. Drag to reorder.</p>
                 <hr>
 
-                <div class="uk-grid-small uk-flex-middle" uk-grid>
+                <div class="uk-grid-small uk-flex-middle uk-margin-left" uk-grid>
                     <div class="uk-width-expand">
-                        <div class="uk-grid-small uk-grid-divider uk-child-width-auto" uk-grid>
+                        <div class="uk-grid-small uk-flex-middle" uk-grid>
+                            <div class="uk-width-1-6">Select: </div>
                             <div>
-                                <ul class="uk-subnav uk-subnav-pill">
+                                <ul class="uk-subnav uk-subnav-pill" style="display: inline-flex; margin: 0">
                                     <li id="filter-btn-sel-all"><a href="#">All</a></li>
                                     <li id="filter-btn-desel-all"><a href="#">None</a></li>
                                 </ul>
                             </div>
+                        </div>
+                        <div style="margin-top: 15px" class="uk-grid-small uk-flex-middle" uk-grid>
+                            <div class="uk-width-1-6">Sort: </div>
                             <div>
-                                <ul class="uk-subnav uk-subnav-pill">
+                                <ul class="uk-subnav uk-subnav-pill" style="display: inline-flex; margin: 0">
                                     <li uk-filter-control="sort: data-ecosystem-name"><a href="#">By Name</a></li>
                                     <li uk-filter-control="sort: data-uploaddate; order: desc"><a href="#">Most Recent</a></li>
                                 </ul>
@@ -367,6 +378,12 @@
                 </li>`
             );
         }
+
+        // anime({
+        //     targets: '.filter-eco-item',
+        //     translateX: [200, 0],
+        //     delay: anime.stagger(50)
+        // });
 
     }
 
@@ -732,7 +749,7 @@
                 duration: 550
             }).add({
                 targets: this.el_header,
-                width: ['12vw', '35vw'],
+                width: ['18vw', '35vw'],
                 skew: [-10, 0]
             }).add({
                 targets: this.el_arrow,
@@ -761,7 +778,7 @@
                 duration: 600
             }, '-=400').add({
                 targets: this.el_header,
-                width: ['35vw', '12vw'],
+                width: ['35vw', '18vw'],
                 skew: [0, -10],
                 easing: 'easeOutQuart'
             }, '-=350');
