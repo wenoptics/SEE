@@ -19,6 +19,7 @@
 
 <div class="w3-container w3-content w3-margin-top">
 
+	<h1>Login</h1>
 	<p><?php echo lang('login_subheading');?></p>
 
 	<div class="w3-panel w3-border w3-light-grey w3-round-large" style="display: <?php echo $message == null?  'none' : 'block'; ?>">
@@ -31,26 +32,29 @@
 
 		<?php echo form_open("auth/login", array('class'=>'w3-container w3-card-4'));?>
 
-		<p>
-			<?php echo lang('login_identity_label', 'identity');?>
-			<?php echo form_input($identity, '', 'class="w3-input"');?>
-		</p>
+		<div style="padding: 20px;">
 
-		<p>
-			<?php echo lang('login_password_label', 'password');?>
-			<?php echo form_input($password, '','class="w3-input"');?>
-		</p>
+			<p>
+				<?php echo lang('login_identity_label', 'identity');?>
+				<?php echo form_input($identity, '', 'class="w3-input"');?>
+			</p>
 
-		<p>
-			<?php echo lang('login_remember_label', 'remember');?>
-			<?php echo form_checkbox('remember', '1', FALSE, 'id="remember" class="w3-check"');?>
-		</p>
+			<p>
+				<?php echo lang('login_password_label', 'password');?>
+				<?php echo form_input($password, '','class="w3-input"');?>
+			</p>
 
-		<p><?php echo form_submit('submit', lang('login_submit_btn'), 'class="w3-button w3-section w3-light-gray w3-ripple"');?></p>
-		<p><a href="forgot_password"><?php echo lang('login_forgot_password');?></a></p>
+			<p style="text-align: right;">
+				<?php echo lang('login_remember_label', 'remember');?>
+				<?php echo form_checkbox('remember', '1', FALSE, 'id="remember" class="w3-check"');?>
+			</p>
+
+			<p><?php echo form_submit('submit', lang('login_submit_btn'), 'class="w3-button w3-section w3-light-gray w3-ripple"');?></p>
+			<p><a href="forgot_password"><?php echo lang('login_forgot_password');?></a></p>
+
+		</div>
 
 		<?php echo form_close();?>
-
 
 	</div>
 </div>

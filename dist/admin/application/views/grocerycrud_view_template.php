@@ -84,8 +84,17 @@
 
 	<div class="w3-margin-top">
 
-		<a href='<?php echo site_url('management/ecosystem')?>'>View All Ecosystems</a> |
-		<a href='<?php echo site_url('management/node')?>'>View All Nodes</a>
+		<span>
+			<a href='<?php echo site_url('management/ecosystem')?>'>View All Ecosystems</a> |
+			<a href='<?php echo site_url('management/node')?>'>View All Nodes</a>
+		</span>
+
+		<span style="float: right">
+			<a href='<?php echo site_url('auth/')?>'>Manage Users</a> |
+			<a href='<?php echo site_url('auth/create_user')?>'>Create New User</a> |
+			<a href='<?php echo site_url('auth/change_password')?>'>Change Password</a>
+		</span>
+
 
 	</div>
 	<div style='height:20px;'></div>

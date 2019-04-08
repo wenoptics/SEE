@@ -19,7 +19,7 @@
 	</div>
 </div>
 
-<div class="w3-container">
+<div class="w3-container w3-content w3-margin-top">
 
 	<h1><?php echo lang('forgot_password_heading');?></h1>
 	<p><?php echo sprintf(lang('forgot_password_subheading'), $identity_label);?></p>
