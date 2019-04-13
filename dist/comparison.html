@@ -83,6 +83,22 @@
             }
         }
 
+        .label-on-ecosystem {
+            display: block;
+            position: fixed;
+            z-index: 10000;
+            color: white;
+            text-shadow:
+                    #533d4a 1px 1px, #533d4a 2px 2px, #533d4a 3px 3px,
+                    #533d4a 1px 1px, #533d4a 2px 2px, #533d4a 3px 3px;
+        }
+
+        .swiper-slide-h.swiper-slide-active .label-on-ecosystem {
+            display: none;
+        }
+
+
+
     </style>
 
     <!-- UIkit CSS -->
@@ -241,6 +257,11 @@
     <div class="nav-arrow" id="arrow-down" style="transform: rotate(90deg)">
         <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"	 viewBox="0 0 41.999 41.999" style="enable-background:new 0 0 41.999 41.999;" xml:space="preserve"><path d="M36.068,20.176l-29-20C6.761-0.035,6.363-0.057,6.035,0.114C5.706,0.287,5.5,0.627,5.5,0.999v40	c0,0.372,0.206,0.713,0.535,0.886c0.146,0.076,0.306,0.114,0.465,0.114c0.199,0,0.397-0.06,0.568-0.177l29-20	c0.271-0.187,0.432-0.494,0.432-0.823S36.338,20.363,36.068,20.176z"/><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
 
+    </div>
+
+    <div id="fade-edge" style="display: none">
+        <img style="position: absolute; padding: 20px; " id="edge-left" src="res/fade-edge.png">
+        <img style="position: absolute; padding: 20px;  transform: rotate(180deg); " id="edge-right" src="res/fade-edge.png">
     </div>
 
     <!-- Slider main container -->
@@ -412,6 +433,7 @@
             const slideId = 'slide-' + setIdx;
             appendDom(ecosysContainer,
                 '<div class="swiper-slide swiper-slide-h" data-hash="' + slideId + '">' +
+                '   <div class="label-on-ecosystem">' + imageSetData[setIdx].name + '</div>' +
                 '    <div class="swiper-container swiper-container-v" id="'+slideId+'">' +
                 '        <div class="swiper-wrapper">' +
                             ecoInnerSlideList +
@@ -636,10 +658,14 @@
                         // hide the arrows
                         allow_nav_arrow = false;
                         this.canPlayLRAnim = false;
+                        fadeEdge.anim_hide();
                     }
                 },
                 transitionEnd: function() {
                     console.log('on transitionEnd: realIndex=' + this.realIndex + ' lastActiveSlideId='+lastActiveSlideId);
+
+                    fadeEdge.anim_show();
+
                     if (lastActiveSlideId === null) {return}
 
                     allow_nav_arrow = true;
@@ -693,6 +719,8 @@
 
                     ecoSlides[startSlide].allowTouchMove = true;
                     ecoSlides[startSlide].anim.expand();
+
+                    fadeEdge.anim_show();
 
                     lastActiveSlideId = startSlide;
                 }
@@ -819,6 +847,65 @@
         }
     };
 
+    const fadeEdge = {
+        el_left: document.querySelector('#edge-left'),
+        el_right: document.querySelector('#edge-right'),
+        el_container: document.querySelector('#fade-edge'),
+        _lock_show: false,
+        _lock_hide: false,
+        anim_hide: function () {
+            this.reposition();
+
+            if (this._lock_hide) {
+                return;
+            }
+            this._lock_hide = true;
+
+            const self = this;
+            anime({
+                targets: this.el_container,
+                opacity: 0,
+                complete: function () {
+                    self._lock_hide = false;
+                }
+            })
+        },
+        anim_show: function () {
+            this.reposition();
+
+            if (this._lock_show) {
+                return;
+            }
+            this._lock_show = true;
+
+            const self = this;
+            anime({
+                targets: this. el_container,
+                opacity: 1,
+
+                complete: function () {
+                    self._lock_show = false;
+                }
+            })
+        },
+        reposition: function () {
+            this.el_container.style.display = 'block';
+
+            const activeSlide = document.querySelector('' +
+                '.swiper-slide-h.swiper-slide-active ' +
+                '.swiper-slide-v.swiper-slide-active ' +
+                '.slide-img');
+
+            var bRect = activeSlide.getBoundingClientRect();
+
+            var width = this.el_left.getBoundingClientRect().width;
+            this.el_left.style.left = `${bRect.left - width}px`;
+            this.el_right.style.left = `${bRect.left + bRect.width}px`;
+
+        }
+
+    };
+
 
     const arrowAct = {
         state: 'hidden',  //hidden, shown, animating
@@ -888,6 +975,7 @@
     arrowAct.hide();
 
     var allow_nav_arrow = true;
+
     var lastMouseOverElement = null;
     window.addEventListener('mousemove', function(evt) {
         const halfH = document.documentElement.clientHeight /2;
