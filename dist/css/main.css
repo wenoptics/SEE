@@ -19,7 +19,7 @@ body, html {
     padding: 10px;
     top: -10px;
     left: 20px;
-    height: 20vh;
+    max-height: 30vh;
     border-style: solid;
     border-color: #00000033;
     overflow-y: auto;
