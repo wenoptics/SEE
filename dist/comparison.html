@@ -269,7 +269,7 @@
         <!-- Additional required wrapper -->
         <div class="swiper-wrapper">
             <!-- Slides -->
-            <div class="swiper-slide swiper-slide-h" data-hash="slide1">Loading ... </div>
+            <div class="swiper-slide swiper-slide-h" data-hash="slide1" id="loading-text">Loading ... </div>
             <div class="swiper-slide swiper-slide-h" data-hash="slide2"style="background-color: darkgray">Slide 3</div>
             <div class="swiper-slide swiper-slide-h">
                 <div class="swiper-container" id="sw3" style="height: 600px;">
@@ -523,17 +523,22 @@
                             autoplay: true
                         });*/
                         const data_eco = data_ecosystem[ecoSwiper.realIndex];
-                        const data_node = data_eco.nodeList[this.realIndex];
+                        const data_node = data_eco.nodeList[this.activeIndex];
                         if (data_node === undefined) return;
                         var title = data_eco.name;
                         var subtitle = data_node ? data_node.name : 'node_name';
-                        var content = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged'.substring(Math.random()*200);
+                        var content = ''; //Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged'.substring(Math.random()*200);
                         if (typeof(data_node) === "object") {
                             if (data_eco.description !== '') {
                                 content = data_eco.description;
                             }
                         }
-                        // console.log('1data_node', data_node);
+                        console.log('1 data_node', data_node);
+                        console.log('1 this.realIndex', this.realIndex);
+                        console.log('1 this.activeIndex', this.activeIndex);
+
+                        // fixme A bug that transitionEnd() got call randomly
+                        //      (due to the Change other eco-systems' images in on-SlideChange)
                         setCaption(title, subtitle, content, data_eco.granularity, data_node.scale);
 
                     },
@@ -694,18 +699,18 @@
                         const data_node = data_eco.nodeList[ecoSlides[this.realIndex].realIndex];
                         var title = data_eco.name;
                         var subtitle = data_node ? data_node.name : 'node_name';
-                        var content = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged';
+                        var content = ''; //Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged';
                         if (typeof(data_node) === "object") {
                             if (data_eco.description !== '') {
                                 content = data_eco.description;
                             }
                         }
 
-                        if (data_node === undefined) {
-                            console.log('data_eco', data_eco);
-                            console.log('lastActiveSlideId', lastActiveSlideId);
-                            console.log('this.realIndex', this.realIndex);
-                        }
+                        // if (data_node === undefined) {
+                        //     console.log('data_eco', data_eco);
+                        //     console.log('lastActiveSlideId', lastActiveSlideId);
+                        //     console.log('this.realIndex', this.realIndex);
+                        // }
 
                         // console.log('2data_node', data_node);
                         setCaption(title, subtitle, content, data_eco.granularity, data_node.scale);
@@ -1126,6 +1131,14 @@
         data_ecosystem_pre[i].nodeList = JSON.parse(ajax('GET',
             'data/api.php/records/node?filter=fk_ecosystem_id,eq,' + eco_id, null, false)).records;
 
+        // Sort the ecosystem nodes first
+        data_ecosystem_pre[i].nodeList.sort((node1, node2) => {
+            if (node1.scale === null || node2.scale === null) {
+                return 0;
+            }
+            return parseInt(node1.scale) - parseInt(node2.scale);
+        });
+
         // construct the ecosystem id-hashmap
         eco_id_dict[eco_id] = data_ecosystem_pre[i];
 
@@ -1160,6 +1173,10 @@
 
     // Hide the loading state
     document.querySelector('#filter-loading').style.display = 'None';
+
+    if (data_ecosystem.length === 0) {
+        document.querySelector('#loading-text').innerHTML = "There's no ecosystem available yet! Try to <a href='upload.html'>Upload</a> yours!"
+    }
 
     loadFilterData(data_ecosystem);
     loadImgData('res/image_set', data_ecosystem);
