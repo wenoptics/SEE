@@ -821,7 +821,6 @@
         }
     };
 
-
     const el_fText = document.querySelector('.float-text');
     const el_dotBg = document.querySelector('div.dot-bg');
 
@@ -1024,6 +1023,21 @@
         }
 
     });
+
+    // Monitor the keyboard input (for navigating up&down)
+    window.addEventListener("keydown", function(event) {
+
+        if (event.key === 'ArrowUp') {
+            if (ecoSlides[ecoSwiper.realIndex]) {
+                ecoSlides[ecoSwiper.realIndex].slidePrev();
+            }
+        } else if (event.key === 'ArrowDown') {
+            if (ecoSlides[ecoSwiper.realIndex]) {
+                ecoSlides[ecoSwiper.realIndex].slideNext();
+            }
+        }
+
+    }, true);
 
     window.addEventListener('click', function (evt) {
         // Nav-arrows monitor

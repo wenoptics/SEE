@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/css/uikit.min.css" />
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="css/main.css">
     <title>Network View</title>
@@ -35,6 +36,24 @@
             .float-text--content {
                 height: 30vh;
             }
+        }
+
+        #graph-controls-container {
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            right: 10vw;
+            bottom: 10vh;
+            border: 1px solid #0000000f;
+            border-bottom-width: 5px;
+            border-right-width: 5px;
+            /* border-radius: 10px; */
+            background-color: #d0d0d029;
+            transform: skewX(-10deg);
+        }
+        .btn-graph-controls {
+            padding: 5px;
+            border-radius: 0;
         }
     </style>
 </head>
@@ -90,9 +109,18 @@
     </div>
 </div>
 
+
+<div id="graph-controls-container">
+    <span class="uk-icon-button btn-graph-controls" id="btn-zoom-in" href="#" uk-icon="icon: plus; ratio: 2"></span>
+    <span class="uk-icon-button btn-graph-controls" id="btn-zoom-out" href="#" uk-icon="icon: minus; ratio: 2"></span>
+    <span class="uk-icon-button btn-graph-controls" id="btn-zoom-reset" href="#" uk-icon="icon: refresh; ratio: 2" style="margin-top: 4vh"></span>
+</div>
+
 <script src="https://unpkg.com/animejs@3.0.0/lib/anime.min.js"></script>
 <script src="js/force-graph.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/89/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/js/uikit.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/js/uikit-icons.min.js"></script>
 <script src="js/utilities.js"></script>
 
 <script>
@@ -268,7 +296,7 @@
         })
         // fixme [look] the size of the particle and the linkwidth is not constant (after scale)
         .linkWidth(link => highlightLinks.indexOf(link) >= 0 ? 8 : 3)
-        .linkCurvature(0.1)
+        .linkCurvature(0.08)
         .linkDirectionalParticles(4)
         .linkDirectionalParticleWidth(link => highlightLinks.indexOf(link) >= 0 ? 4 : 0)
         .zoomLimits([0.1, 20])
@@ -277,6 +305,16 @@
             Graph.centerAt(node.x, node.y, 500);
             Graph.zoom(20, 1500);
         });
+
+    document.querySelector('#btn-zoom-in').addEventListener('click', function () {
+        Graph.zoom(Graph.zoom() * 1.3, 500);
+    });
+    document.querySelector('#btn-zoom-out').addEventListener('click', function () {
+        Graph.zoom(Graph.zoom() / 1.3, 500);
+    });
+    document.querySelector('#btn-zoom-reset').addEventListener('click', function () {
+        Graph.zoom(1, 500);
+    });
 
 
     document.body.addEventListener('mousemove', function (evt) {

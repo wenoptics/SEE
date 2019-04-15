@@ -513,6 +513,23 @@
         el_gTop.style['box-shadow'] = 8*pdx+'px '+8*pdy+'px '+blur+'px 4px #77777759';
     };
 
+    // Monitor the keyboard input (for navigating left-n-right)
+    window.addEventListener("keydown", function(event) {
+
+        // console.log(event.key);
+
+        if (event.key === 'ArrowLeft') {
+            if (swiperMain) {
+                swiperMain.slidePrev();
+            }
+        } else if (event.key === 'ArrowRight') {
+            if (swiperMain) {
+                swiperMain.slideNext();
+            }
+        }
+
+    }, true);
+
 
 </script>
 
