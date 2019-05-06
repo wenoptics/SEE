@@ -7,3 +7,5 @@
 *.iml
 out
 gen
+/dist/data/private/key.php
+/dist/data/private/database.php
