@@ -101,6 +101,7 @@
 
     </style>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/introjs.min.css"/>
     <!-- UIkit CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/css/uikit.min.css" />
     <link rel="stylesheet" href="css/swiper.css">
@@ -117,7 +118,8 @@
         <a href="/" class="w3-bar-item w3-button"><b></b> Speculative Explorer </a>
         <!-- Float links to the right. Hide them on small screens -->
         <div class="w3-right w3-hide-small">
-            <a href="upload.html" class="w3-bar-item w3-button">Upload</a>
+            <a href="upload.html" class="w3-bar-item w3-button" data-step="4" data-intro="Upload your ecosystem!">Upload</a>
+            <a href="#" class="w3-bar-item w3-button" id="btn-start-guide">Guide</a>
             <a href="#about" class="w3-bar-item w3-button">About</a>
         </div>
     </div>
@@ -127,7 +129,8 @@
 
     <div class='dot-bg'></div>
 
-    <div class="mode-widgets" style="
+    <div class="mode-widgets" data-step="2" data-intro="switch between modes."
+         style="
         position: fixed; right: 10vw; top: 8vh;
         transform: skew(-10deg);z-index: 10000;
         border-bottom: 4px solid #00000033;
@@ -149,7 +152,8 @@
     <div class="filter-widgets" style="
         z-index: 20000; position: fixed; top: 8vh; left: 5vw; transform: skew(-0deg); width: 35vw">
         <!--todo Optimize for small screen-->
-        <div style="border-bottom: 4px solid #00000033; overflow: auto;">
+        <div style="border-bottom: 4px solid #00000033; overflow: auto;"
+             data-step="3" data-intro="Select specific ecosystem that you want to compare with">
             <div id="filter-button" onclick="filterAnimation.toggle()" class="mode-btn"
                   style="background-color: #77777785; border-right-width: 6px; margin-right: 3vw">
                 <img id="filter-expand-arrow" style="height: 10px; margin-right: 8px"
@@ -339,6 +343,7 @@
 <script src="https://unpkg.com/animejs@3.0.0/lib/anime.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/js/uikit.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/js/uikit-icons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/intro.min.js"></script>
 
 <script src="js/utilities.js"></script>
 <script src="js/swiper.js"></script>
@@ -719,8 +724,14 @@
                     lastActiveSlideId = this.realIndex;
                 },
                 init: function() {
-                    const startSlide = this.realIndex || this.params.initialSlide;
+                    var startSlide = this.realIndex || this.params.initialSlide;
                     console.log('on init: "startSlide" = ' + startSlide);
+
+                    if (ecoSlides.length === 0) {
+                        return;
+                    } else if (ecoSlides.length <= startSlide) {
+                        startSlide = 0;
+                    }
 
                     ecoSlides[startSlide].allowTouchMove = true;
                     ecoSlides[startSlide].anim.expand();
@@ -858,7 +869,7 @@
         _lock_show: false,
         _lock_hide: false,
         anim_hide: function () {
-            this.reposition();
+            if (this.reposition() === false) return;
 
             if (this._lock_hide) {
                 return;
@@ -875,7 +886,7 @@
             })
         },
         anim_show: function () {
-            this.reposition();
+            if (this.reposition() === false) return;
 
             if (this._lock_show) {
                 return;
@@ -900,12 +911,17 @@
                 '.swiper-slide-v.swiper-slide-active ' +
                 '.slide-img');
 
+            if (activeSlide === null) {
+                return false;
+            }
+
             var bRect = activeSlide.getBoundingClientRect();
 
             var width = this.el_left.getBoundingClientRect().width;
             this.el_left.style.left = `${bRect.left - width}px`;
             this.el_right.style.left = `${bRect.left + bRect.width}px`;
 
+            return true;
         }
 
     };
@@ -1091,7 +1107,8 @@
 
     // mode switch
     function modeBtnListener(evt) {
-        const nodeId = data_ecosystem[ecoSwiper.realIndex].nodeList[ecoSlides[ecoSwiper.realIndex].realIndex].id;
+        const nodeId = data_ecosystem[ecoSwiper.realIndex]
+            .nodeList[ecoSlides[ecoSwiper.realIndex].realIndex].id;
         const ecoId = data_ecosystem[ecoSwiper.realIndex].id;
         switch (evt.target.dataset.mode) {
             case 'network':
@@ -1175,19 +1192,39 @@
     document.querySelector('#filter-loading').style.display = 'None';
 
     if (data_ecosystem.length === 0) {
-        document.querySelector('#loading-text').innerHTML = "There's no ecosystem available yet! Try to <a href='upload.html'>Upload</a> yours!"
-    }
+        document.querySelector('#loading-text').innerHTML = "There's no ecosystem available yet! Try to &ensp;<span><a href='upload.html'>  UPLOAD  </a></span>&ensp; one!";
+    } else {
+        loadFilterData(data_ecosystem);
+        loadImgData('res/image_set', data_ecosystem);
+        loadSwipers(data_ecosystem);
 
-    loadFilterData(data_ecosystem);
-    loadImgData('res/image_set', data_ecosystem);
-    loadSwipers(data_ecosystem);
+        document.querySelector('#btn-start-guide').addEventListener('click', function () {
+            introJs().addStep({
+                intro: 'Swipe up and down to navigate within an ecosystem'
+            }).addStep({
+                intro: 'or swipe left and right to navigate across ecosystems'
+            }).setOption('highlightClass', 'highlightClass')
+                .oncomplete(()=>{
+                    setTimeout(() => {
+                        introJs('body').setOption('highlightClass', 'highlightClass').start()
+                    }, 20);
+                }).start();
+        });
+    }
 
     // Auto hide the filter panel
     setTimeout(()=>{
         filterAnimation.collapse();
     }, 1000);
 
+
 </script>
+
+<style>
+    .highlightClass {
+        background-color: rgba(255,255,255,.5)
+    }
+</style>
 
 </body>
 </html>
