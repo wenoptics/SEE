@@ -978,8 +978,8 @@
         var submit_eco_url = 'data/api.php/records/ecosystem';
         if (mode === 'edit') {
             // edit mode
-            submit_method = 'PUT';
-            submit_eco_url += '/' + eco_id;
+            submit_method = 'POST';  // <- PUT
+            submit_eco_url += '/' + eco_id + '?method=PUT';
         }
         ajax(submit_method, submit_eco_url, JSON.stringify(set_data), false, function (resp) {
 
@@ -1008,7 +1008,8 @@
                     node_id = ajax('POST', 'data/api.php/records/node', JSON.stringify(data), false);
                 } else {
                     node_id = payload.nodeElement[i].dataset['node_id'];
-                    ajax('PUT', 'data/api.php/records/node/'+node_id, JSON.stringify(data), false);
+                    // Use POST + ?method=PUT to circumvate the empty body issus on production env
+                    ajax('POST', 'data/api.php/records/node/'+node_id+'?method=PUT', JSON.stringify(data), false);
                 }
 
                 node_id_index[ i ] = node_id;
@@ -1031,7 +1032,7 @@
                         conn_arr.push(node_id_map[conn_idx]);
                     });
 
-                    ajax('PUT', 'data/api.php/records/node/'+node_id_index[i],
+                    ajax('POST', 'data/api.php/records/node/'+node_id_index[i]+'?method=PUT',
                         JSON.stringify({connections: conn_arr.toString()}),
                         false);
                 }

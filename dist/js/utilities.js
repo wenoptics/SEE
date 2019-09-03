@@ -28,6 +28,7 @@ function ajax(method, url, data, ascyn, onSuccess, onFail) {
         }
     };
     xhttp.open(method, url, ascyn);
+    xhttp.setRequestHeader("Content-type", "application/json; charset=UTF-8");
     xhttp.send(data);
     if (ascyn === false) {
         return xhttp.responseText;
