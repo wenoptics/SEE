@@ -117,7 +117,8 @@
 </div>
 
 <script src="https://unpkg.com/animejs@3.0.0/lib/anime.min.js"></script>
-<script src="js/force-graph.js"></script>
+<!--<script src="js/force-graph.js"></script>-->
+<script src="https://unpkg.com/force-graph"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/89/three.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/js/uikit.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/js/uikit-icons.min.js"></script>
@@ -299,7 +300,7 @@
         .linkCurvature(0.08)
         .linkDirectionalParticles(4)
         .linkDirectionalParticleWidth(link => highlightLinks.indexOf(link) >= 0 ? 4 : 0)
-        .zoomLimits([0.1, 20])
+        // .zoomLimits([0.1, 20])
         .onNodeClick(node => {
             // Center/zoom on node
             Graph.centerAt(node.x, node.y, 500);
