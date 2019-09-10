@@ -539,8 +539,26 @@
                         this.allowTouchMove = false;
                         this.el.style.opacity = 1;
                     }*/
+                    transitionEnd: function () {
+
+                        if (!ecoSwiper) return;
+                        const data_eco = data_ecosystem[ecoSwiper.realIndex];
+                        const data_node = data_eco.nodeList[this.activeIndex];
+                        if (data_node === undefined) return;
+                        var title = data_eco.name;
+                        var subtitle = data_node ? data_node.name : 'node_name';
+                        var content = ''; //Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged'.substring(Math.random()*200);
+                        if (typeof(data_node) === "object") {
+                            if (data_eco.description !== '') {
+                                content = data_eco.description;
+                            }
+                        }
+
+                        // fixme A bug that transitionEnd() got call randomly
+                        //      (due to the Change other eco-systems' images in on-SlideChange)
+                        setCaption(title, subtitle, content, data_eco.granularity, data_node.scale);
+                    }
                 },
-                touchStart: function (evt) {}
             });
 
             sp.anim = {
@@ -602,6 +620,7 @@
             ecoSwiper.removeAllSlides();
         }
 
+        var lastActiveSlideId;
         // Swiper of each ecosystem
         ecoSwiper = new Swiper('#swiper-container-h', {
 
@@ -727,7 +746,27 @@
 
 
                 }*/
+                transitionEnd: function() {
+                    if (lastActiveSlideId !== this.realIndex) {
+                        // make sure that it actually moved
 
+                        // Text animation
+                        floatTextAnimation.show();
+
+                        const data_eco = data_ecosystem[this.realIndex];
+                        const data_node = data_eco.nodeList[ecoSlides[this.realIndex].realIndex];
+                        var title = data_eco.name;
+                        var subtitle = data_node ? data_node.name : 'node_name';
+                        var content = ''; //Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged';
+                        if (typeof(data_node) === "object") {
+                            if (data_eco.description !== '') {
+                                content = data_eco.description;
+                            }
+                        }
+                        setCaption(title, subtitle, content, data_eco.granularity, data_node.scale);
+                    }
+                    lastActiveSlideId = this.realIndex;
+                }
             }
         });
     }
