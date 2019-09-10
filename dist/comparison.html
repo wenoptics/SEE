@@ -539,85 +539,66 @@
                         this.allowTouchMove = false;
                         this.el.style.opacity = 1;
                     }*/
-                    transitionEnd: function () {
 
-                        if (!ecoSwiper) return;
-                        const data_eco = data_ecosystem[ecoSwiper.realIndex];
-                        const data_node = data_eco.nodeList[this.activeIndex];
-                        if (data_node === undefined) return;
-                        var title = data_eco.name;
-                        var subtitle = data_node ? data_node.name : 'node_name';
-                        var content = ''; //Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged'.substring(Math.random()*200);
-                        if (typeof(data_node) === "object") {
-                            if (data_eco.description !== '') {
-                                content = data_eco.description;
-                            }
-                        }
-
-                        // fixme A bug that transitionEnd() got call randomly
-                        //      (due to the Change other eco-systems' images in on-SlideChange)
-                        setCaption(title, subtitle, content, data_eco.granularity, data_node.scale);
-                    }
                 },
             });
-
-            sp.anim = {
-                collapse: function () {
-                    anime({
-                        targets: sp,
-                        ttTranslateValue: 0,
-                        elasticity: 200,
-                        duration: 600,
-                        easing: 'easeInBack',
-                        autoplay: true,
-                        update: function () {
-                            sp.coverflowEffect.updateTtTranslate();
-                        }
-                    });
-                },
-                expand: function () {
-                    /*anime({
-                        targets: sp,
-                        ttTranslateValue: 1,
-                        elasticity: 200,
-                        duration: 450,
-                        easing: 'easeInOutSine',
-                        autoplay: true,
-                        update: function() {
-                            sp.coverflowEffect.updateTtTranslate();
-                        }
-                    });*/
-                }
-            };
 
             ecoSlides.push(sp);
         }
 
-        var anim_lr_expend = function (swiper) {
-            anime({
-                targets: '.swiper-slide-h',
-                autoplay: true,
-                translateY: function (el, i, l) {
-                    return Math.sign(i - swiper.realIndex) * (30);
-                },
-                scale: function (el, i, l) {
-                    return (1 - Math.abs(i - swiper.realIndex) * 0.1);
-                },
-                opacity: function (el, i, l) {
-                    if (i === swiper.realIndex) return 1;
-                    return .6
-                },
-                duration: 500,
-                easing: 'easeInOutSine',
-                delay: function (el, i, l) {
-                    return Math.abs(i - swiper.realIndex) * 100;
-                },
-            });
-        };
-
         // init the swiper
         if (ecoSwiper) {
             ecoSwiper.removeAllSlides();
+        }
+
+        function getNearestScaleIndex(itemEcosystem, targetScale) {
+            // Premise: itemEcosystem.nodeList is ascending.
+            if (itemEcosystem.nodeList.length === 1) {
+                return 0;
+            }
+            if (targetScale <= itemEcosystem.nodeList[0].scale)
+                return 0;
+            if (targetScale >= itemEcosystem.nodeList[itemEcosystem.nodeList.length-1].scale) {
+                return itemEcosystem.nodeList.length-1;
+            }
+            for (var i = 0; i < itemEcosystem.nodeList.length - 1; i++) {
+                if (itemEcosystem.nodeList[i].scale <= targetScale
+                    && targetScale <= itemEcosystem.nodeList[i + 1].scale) {
+                    if ( targetScale - itemEcosystem.nodeList[i].scale < itemEcosystem.nodeList[i + 1] - targetScale)
+                        return i;
+                    else
+                        return i+1;
+                }
+            }
+        }
+
+        function attachTransitionEndEvent(swiper) {
+            var handler = function () {
+                if (!ecoSwiper) return;
+                const data_eco = data_ecosystem[ecoSwiper.realIndex];
+                const data_node = data_eco.nodeList[swiper.activeIndex];
+
+                console.log('ecoSwiper.realIndex',ecoSwiper.realIndex);
+                for (var ecoIdx_=0; ecoIdx_<data_ecosystem.length; ecoIdx_++) {
+                    if (ecoIdx_ === ecoSwiper.realIndex)
+                        continue;
+                    console.log(ecoIdx_);
+                    var idx_ = getNearestScaleIndex( data_ecosystem[ecoIdx_], data_node.scale);
+                    ecoSlides[ecoIdx_].slideTo(idx_);
+                }
+
+                if (data_node === undefined) return;
+                var title = data_eco.name;
+                var subtitle = data_node ? data_node.name : 'node_name';
+                var content = ''; //Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged'.substring(Math.random()*200);
+                if (typeof (data_node) === "object") {
+                    if (data_eco.description !== '') {
+                        content = data_eco.description;
+                    }
+                }
+                setCaption(title, subtitle, content, data_eco.granularity, data_node.scale);
+            };
+            swiper.on('transitionEnd', handler);
         }
 
         var lastActiveSlideId;
@@ -764,6 +745,10 @@
                             }
                         }
                         setCaption(title, subtitle, content, data_eco.granularity, data_node.scale);
+
+                        if (lastActiveSlideId !== undefined)
+                            ecoSlides[lastActiveSlideId].off('transitionEnd');
+                        attachTransitionEndEvent(ecoSlides[this.realIndex]);
                     }
                     lastActiveSlideId = this.realIndex;
                 }
@@ -1174,6 +1159,10 @@
         // Fetch every image node
         data_ecosystem_pre[i].nodeList = JSON.parse(ajax('GET',
             'data/api.php/records/node?filter=fk_ecosystem_id,eq,' + eco_id, null, false)).records;
+
+        for (var j in data_ecosystem_pre[i].nodeList) {
+            data_ecosystem_pre[i].nodeList[j].scale = parseInt(data_ecosystem_pre[i].nodeList[j].scale);
+        }
 
         // Sort the ecosystem nodes first
         data_ecosystem_pre[i].nodeList.sort((node1, node2) => {
