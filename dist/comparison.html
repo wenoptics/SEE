@@ -52,7 +52,7 @@
             border-style: solid;
             border-color: white;
             background-color: white;
-            box-shadow: 0 0 12px 1px #8080806e;
+            box-shadow: 0 0 12px 0px #8080806e;
         }
 
         .slide-img {
@@ -94,7 +94,7 @@
             text-shadow:
                     #533d4a 1px 1px, #533d4a 2px 2px, #533d4a 3px 3px,
                     #533d4a 1px 1px, #533d4a 2px 2px, #533d4a 3px 3px;
-            transition: all 0.7s;
+            transition: all 300ms;
         }
 
         .swiper-slide-h.swiper-slide-active .label-on-ecosystem {
@@ -123,7 +123,6 @@
         }
         .swiper-slide-h.swiper-slide-active {
             /*Highlight stripe*/
-            /*background-color: #f0f8ff91 !important;*/
             background: rgb(2,0,36);
             background: linear-gradient(90deg, transparent 0%, rgba(2, 0, 36, 0.1) 10%, rgba(9, 9, 121, 0.12) 35%, rgba(0, 212, 255, 0.14) 100%);
             opacity: 1 !important;
@@ -136,8 +135,8 @@
             width: 65%;
             right: 0;
             box-shadow: inset 13px 0px 13px 0px white;
-            background: url(data/ImageSecure/image.php?id=197) center center no-repeat;
-            background-size: cover;
+            /*background: url(data/ImageSecure/image.php?id=197) center center no-repeat;*/
+            /*background-size: cover;*/
             opacity: 0.1;
 
             /*background: rgb(2,0,36);*/
@@ -423,22 +422,31 @@
                 var imgPath = imageSetData[setIdx].nodeList[i];
                 imgPath = 'data/ImageSecure/image.php?id=' + imgPath.fk_image_id;
                 ecoInnerSlideList +=
-                    `<div class="swiper-slide swiper-slide-v">
-                        <div class="slide-v-container">
-                            <img class="slide-img" src="${imgPath}" alt=""/>
-                        </div>
-                    </div>`;
+                    '<div class="swiper-slide swiper-slide-v">' +
+                    '   <div class="slide-v-container">' +
+                    '       <img class="slide-img" src="'+ imgPath +'" alt=""/>' +
+                    '   </div>' +
+                    '</div>';
             }
 
             const slideId = 'slide-' + setIdx;
+
+            var imgCoverPath = 'data/ImageSecure/image.php?id=' + imageSetData[setIdx].nodeList[0].fk_image_id;
             appendDom(ecosysContainer,
-                `<div class="swiper-slide swiper-slide-h" data-hash="${slideId}">
-                    <div class="ecoCover"></div>
-                    <div class="label-on-ecosystem">${imageSetData[setIdx].name}</div>
-                        <div class="swiper-container swiper-container-v" id="${slideId}">
-                            <div class="swiper-wrapper">${ecoInnerSlideList}</div>
-                        </div>
-                </div>`);
+                '<div class="swiper-slide swiper-slide-h" data-hash="' + slideId + '">' +
+                '   <div class="ecoCover" style="background: url('+ imgCoverPath +') center center no-repeat; background-size: cover;"></div>' +
+                '   <div class="label-on-ecosystem">' + imageSetData[setIdx].name + '</div>' +
+                '    <div class="swiper-container swiper-container-v" id="'+slideId+'">' +
+                '        <div class="swiper-wrapper">' +
+                            ecoInnerSlideList +
+                // '            <div class="swiper-slide swiper-slide-v">' +
+                // '               <img class="slide-v-container" src="res/image_set/Powers of Ten/images/-4.jpg" />' +
+                // '            </div>' +
+                '        </div>' +
+                // '        <!-- Add Pagination -->' +
+                // '        <div class="swiper-pagination"></div>' +
+                '    </div>' +
+                '</div>');
         }
 
     }
