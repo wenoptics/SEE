@@ -52,49 +52,55 @@
             border-style: solid;
             border-color: white;
             background-color: white;
-            box-shadow: 0 0 10px 0 #8080806e;
+            box-shadow: 0 0 12px 1px #8080806e;
         }
 
         .slide-img {
-            height: 300px;
-            width: 300px;
+            height: 15vh;
+            width: 15vh;
             object-fit: cover
         }
 
-        @media only screen and (max-width: 640px) {
-            /*600px and down*/
+        /*@media only screen and (max-width: 640px) {
+            !*600px and down*!
             .slide-img {
                 height: 45vw;
                 width: 45vw;
             }
         }
         @media only screen and (min-width: 640px) {
-            /*640px and up*/
+            !*640px and up*!
             .slide-img {
                 height: 20vw;
                 width: 20vw;
             }
         }
         @media only screen and (min-width: 1024px) {
-            /*1024px and up*/
+            !*1024px and up*!
             .slide-img {
                 height: 14vw;
                 width: 14vw;
             }
-        }
+        }*/
 
         .label-on-ecosystem {
+            position: absolute;
+            right: 0.5em;
+            font-size: 2em;
+            white-space: nowrap;
             display: block;
-            position: fixed;
             z-index: 10000;
             color: white;
             text-shadow:
                     #533d4a 1px 1px, #533d4a 2px 2px, #533d4a 3px 3px,
                     #533d4a 1px 1px, #533d4a 2px 2px, #533d4a 3px 3px;
+            transition: all 0.7s;
         }
 
         .swiper-slide-h.swiper-slide-active .label-on-ecosystem {
-            display: none;
+            opacity: 0.5;
+            font-size: 1em;
+            bottom: 0;
         }
 
 
@@ -117,8 +123,26 @@
         }
         .swiper-slide-h.swiper-slide-active {
             /*Highlight stripe*/
-            background-color: #f0f8ff91 !important;
+            /*background-color: #f0f8ff91 !important;*/
+            background: rgb(2,0,36);
+            background: linear-gradient(90deg, transparent 0%, rgba(2, 0, 36, 0.1) 10%, rgba(9, 9, 121, 0.12) 35%, rgba(0, 212, 255, 0.14) 100%);
             opacity: 1 !important;
+            transform: scale(1);
+        }
+
+        .ecoCover {
+            position: absolute;
+            height: 100%;
+            width: 65%;
+            right: 0;
+            box-shadow: inset 13px 0px 13px 0px white;
+            background: url(data/ImageSecure/image.php?id=197) center center no-repeat;
+            background-size: cover;
+            opacity: 0.1;
+
+            /*background: rgb(2,0,36);*/
+            /*background: linear-gradient(90deg, transparent 0%, rgba(2, 0, 36, 0.1) 10%, rgba(9, 9, 121, 0.12) 35%, rgba(0, 212, 255, 0.14) 100%);*/
+
         }
 
 
@@ -298,16 +322,9 @@
         <!-- Additional required wrapper -->
         <div class="swiper-wrapper" style="position: fixed;">
             <!-- Slides -->
-            <div class="swiper-slide swiper-slide-h">
-                <div class="swiper-wrapper" id="sw2">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide swiper-slide-v">
-                            <div class="slide-v-container">Vertical Slide 1</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="swiper-slide swiper-slide-h">Slide 2</div>
+
+            <div class="swiper-slide swiper-slide-h"
+                 id="loading-text">Loading ... </div>
         </div>
 
         <!-- If we need scrollbar -->
@@ -406,28 +423,22 @@
                 var imgPath = imageSetData[setIdx].nodeList[i];
                 imgPath = 'data/ImageSecure/image.php?id=' + imgPath.fk_image_id;
                 ecoInnerSlideList +=
-                    '<div class="swiper-slide swiper-slide-v">' +
-                    '   <div class="slide-v-container">' +
-                    '       <img class="slide-img" src="'+ imgPath +'" alt=""/>' +
-                    '   </div>' +
-                    '</div>';
+                    `<div class="swiper-slide swiper-slide-v">
+                        <div class="slide-v-container">
+                            <img class="slide-img" src="${imgPath}" alt=""/>
+                        </div>
+                    </div>`;
             }
 
             const slideId = 'slide-' + setIdx;
             appendDom(ecosysContainer,
-                '<div class="swiper-slide swiper-slide-h" data-hash="' + slideId + '">' +
-                '   <div class="label-on-ecosystem">' + imageSetData[setIdx].name + '</div>' +
-                '    <div class="swiper-container swiper-container-v" id="'+slideId+'">' +
-                '        <div class="swiper-wrapper">' +
-                            ecoInnerSlideList +
-                // '            <div class="swiper-slide swiper-slide-v">' +
-                // '               <img class="slide-v-container" src="res/image_set/Powers of Ten/images/-4.jpg" />' +
-                // '            </div>' +
-                '        </div>' +
-                // '        <!-- Add Pagination -->' +
-                // '        <div class="swiper-pagination"></div>' +
-                '    </div>' +
-                '</div>');
+                `<div class="swiper-slide swiper-slide-h" data-hash="${slideId}">
+                    <div class="ecoCover"></div>
+                    <div class="label-on-ecosystem">${imageSetData[setIdx].name}</div>
+                        <div class="swiper-container swiper-container-v" id="${slideId}">
+                            <div class="swiper-wrapper">${ecoInnerSlideList}</div>
+                        </div>
+                </div>`);
         }
 
     }
@@ -578,11 +589,12 @@
                 const data_eco = data_ecosystem[ecoSwiper.realIndex];
                 const data_node = data_eco.nodeList[swiper.activeIndex];
 
-                console.log('ecoSwiper.realIndex',ecoSwiper.realIndex);
+                // console.log('ecoSwiper.realIndex',ecoSwiper.realIndex);
+                // Iterate thru all the ecosystems, find the nearest scale and slideTo the scale
                 for (var ecoIdx_=0; ecoIdx_<data_ecosystem.length; ecoIdx_++) {
                     if (ecoIdx_ === ecoSwiper.realIndex)
                         continue;
-                    console.log(ecoIdx_);
+                    // console.log(ecoIdx_);
                     var idx_ = getNearestScaleIndex( data_ecosystem[ecoIdx_], data_node.scale);
                     ecoSlides[ecoIdx_].slideTo(idx_);
                 }
@@ -1153,62 +1165,70 @@
 
     // Fetch the ecosystem data, and read filtered ecosystems from localStorage
     data_ecosystem_pre = JSON.parse(ajax('GET', 'data/api.php/records/ecosystem', null, false)).records;
-    for (var i = 0; i < data_ecosystem_pre.length; i++) {
-        const eco_id = String(data_ecosystem_pre[i].id);
+    if (data_ecosystem_pre !== undefined) {
 
-        // Fetch every image node
-        data_ecosystem_pre[i].nodeList = JSON.parse(ajax('GET',
-            'data/api.php/records/node?filter=fk_ecosystem_id,eq,' + eco_id, null, false)).records;
+        for (var i = 0; i < data_ecosystem_pre.length; i++) {
+            const eco_id = String(data_ecosystem_pre[i].id);
 
-        for (var j in data_ecosystem_pre[i].nodeList) {
-            data_ecosystem_pre[i].nodeList[j].scale = parseInt(data_ecosystem_pre[i].nodeList[j].scale);
+            // Fetch every image node
+            data_ecosystem_pre[i].nodeList = JSON.parse(ajax('GET',
+                'data/api.php/records/node?filter=fk_ecosystem_id,eq,' + eco_id, null, false)).records;
+
+            for (var j in data_ecosystem_pre[i].nodeList) {
+                data_ecosystem_pre[i].nodeList[j].scale = parseInt(data_ecosystem_pre[i].nodeList[j].scale);
+            }
+
+            // Sort the ecosystem nodes first
+            data_ecosystem_pre[i].nodeList.sort((node1, node2) => {
+                if (node1.scale === null || node2.scale === null) {
+                    return 0;
+                }
+                return parseInt(node1.scale) - parseInt(node2.scale);
+            });
+
+            // construct the ecosystem id-hashmap
+            eco_id_dict[eco_id] = data_ecosystem_pre[i];
+
+            // load filter state from the localStorage
+            if (filter_persistence.hidden.indexOf(eco_id) >= 0) {
+                // hide this node
+                data_ecosystem_pre[i].filter = {'hide': true}
+            } else {
+                data_ecosystem_pre[i].filter = {'hide': false};
+                if (filter_persistence.order.indexOf(eco_id) < 0) {
+                    // this is a new ecosystem, append it to the 'order' list to show it by default
+                    filter_persistence.order.push(eco_id);
+                }
+            }
+
         }
 
-        // Sort the ecosystem nodes first
-        data_ecosystem_pre[i].nodeList.sort((node1, node2) => {
-            if (node1.scale === null || node2.scale === null) {
-                return 0;
-            }
-            return parseInt(node1.scale) - parseInt(node2.scale);
-        });
-
-        // construct the ecosystem id-hashmap
-        eco_id_dict[eco_id] = data_ecosystem_pre[i];
-
-        // load filter state from the localStorage
-        if (filter_persistence.hidden.indexOf(eco_id) >= 0) {
-            // hide this node
-            data_ecosystem_pre[i].filter = {'hide': true}
+        if (filter_persistence.order.length === 0) {
+            data_ecosystem = data_ecosystem_pre;
         } else {
-            data_ecosystem_pre[i].filter = {'hide': false};
-            if (filter_persistence.order.indexOf(eco_id) < 0) {
-                // this is a new ecosystem, append it to the 'order' list to show it by default
-                filter_persistence.order.push(eco_id);
-            }
-        }
-
-    }
-
-    if (filter_persistence.order.length === 0) {
-        data_ecosystem = data_ecosystem_pre;
-    } else {
-        // re-order the ecosystem according to the 'order' array
-        data_ecosystem = [];
-        for (i = 0; i < filter_persistence.order.length; i++) {
-            var eco_id = String(filter_persistence.order[i]);
-            if (eco_id_dict[eco_id]) {
-                // make sure that it actually exists
-                //      e.g. the case that an ecosystem has been deleted
-                data_ecosystem.push(eco_id_dict[eco_id]);
+            // re-order the ecosystem according to the 'order' array
+            data_ecosystem = [];
+            for (i = 0; i < filter_persistence.order.length; i++) {
+                var eco_id = String(filter_persistence.order[i]);
+                if (eco_id_dict[eco_id]) {
+                    // make sure that it actually exists
+                    //      e.g. the case that an ecosystem has been deleted
+                    data_ecosystem.push(eco_id_dict[eco_id]);
+                }
             }
         }
     }
+
 
     // Hide the loading state
     document.querySelector('#filter-loading').style.display = 'None';
 
-    if (data_ecosystem.length === 0) {
-        document.querySelector('#loading-text').innerHTML = "There's no ecosystem available yet! Try to &ensp;<span><a href='upload.html'>  UPLOAD  </a></span>&ensp; one!";
+    if (data_ecosystem_pre === undefined) {
+        document.querySelector('#loading-text').innerHTML =
+            "Internal error, please contact the administrator.";
+    } else if (data_ecosystem.length === 0) {
+        document.querySelector('#loading-text').innerHTML =
+            "There's no ecosystem available yet! Try to &ensp;<span><a href='upload.html'>  UPLOAD  </a></span>&ensp; one!";
     } else {
         loadFilterData(data_ecosystem);
         loadImgData('res/image_set', data_ecosystem);
